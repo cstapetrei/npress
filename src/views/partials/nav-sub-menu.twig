@@ -1,0 +1,14 @@
+<ul class="dropdown-menu" aria-labelledby="{{ parent_id }}">
+    {% for m in menu_items|default([]) %}
+    {% set liClass = '' %}
+    {% if m.children.length|default(0) %}
+        {% set liClass = settings.navbar_layout == 'logo-left-menu-right' ? ' dropleft dropdown-submenu' : ' dropdown-submenu' %}
+    {% endif %}
+    <li class="{{ liClass }}">
+        <a id="menu-item-{{ m.id }}" class="dropdown-item{{ m.children.length|default(0) ? " dropdown-toggle" : "" }}" href="{{ m.url }}">{{ m.label }}</a>
+        {% if m.children.length|default(0) %}
+            {% include 'partials/nav-sub-menu.twig' with { settings: settings, parent_id: "menu-item-"~m.id, menu_items: m.children } %}
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>

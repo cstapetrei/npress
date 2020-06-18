@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% include 'partials/meta.twig' with { page: page } only %}
+    <title>{{ page.seo_title|default(settingsMap.site_name) }}</title>
+    <link rel="stylesheet" href="/css/all.min.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/noty.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/loader.css">
+    <link rel="stylesheet" href="/css/custom.css">
+
+    <script type="text/javascript" src="/vendor/twig.js"></script>
+    {% block css %}
+    {% endblock %}
+
+    {% block header_js %}
+    {% endblock %}
+</head>
+<body class="{{ body_class|default('') }}" data-page-id="{{ page.id }}">
+
+    <header class="{{ settingsMap.site_width|default('container') }}">
+        <div class="row">
+            <div class="col">
+                {% block header %}
+                    {% include 'partials/header_content.twig' with { page: page } only %}
+                {% endblock %}
+            </div>
+        </div>
+    </header>
+
+    {% block navigation %}
+        {% include 'partials/nav.twig' with { settings: settingsMap, menu: menu, page: page } only %}
+    {% endblock %}
+
+    <main id="main-content" class="{{ settingsMap.site_width|default('container') }}" role="main">
+        <div class="row">
+            <section class="{{ page.show_sidebar|default(false) ? "col-8" : "col-12" }}">
+                {% block content %}
+                {% endblock %}
+            </section>
+
+            {% block sidebar %}
+                {% if page.show_sidebar|default(false) %}
+                    <aside class="col-4">
+                        {{ page.sidebar_content }}
+                    </aside>
+                {% endif %}
+            {% endblock %}
+        </div>
+
+        {% block comments %}
+            {% if page.show_comment_section|default(false) %}
+            <div class="row comments-section-row mt-3">
+                {% if page.show_comment_form|default(false) %}
+                    {% include 'partials/comment_form.twig' with { settings: settingsMap, page: page } only %}
+                {% endif %}
+                <section class="col-12 comments-section js-comments-section">
+                    <h4>Comments</h4>
+                    <div class="comment-list js-comment-list">
+                    </div>
+                </section>
+            </div>
+            {% endif %}
+        {% endblock %}
+    </main>
+
+    {% block footer %}
+    <footer class="page-footer py-2">
+        {% include 'partials/footer_content.twig' with { page: page } only %}
+    </footer>
+    {% endblock %}
+
+    <script type="text/javascript" src="/vendor/fetch.umd.js"></script>
+    <script type="text/javascript" src="/vendor/polyfill.min.js"></script>
+    <script type="text/javascript" src="/vendor/bootstrap-native.min.js"></script>
+    <script type="text/javascript" src="/vendor/noty.min.js"></script>
+    <script type="text/javascript" src="/vendor/npress_public_api.js"></script>
+    <script type="text/javascript" src="/vendor/npress.js"></script>
+    {% if page.show_comment_section|default(false) %}
+        {% if page.show_comment_form|default(false) and settingsMap.recaptcha_enabled %}
+            <script src="https://www.google.com/recaptcha/api.js?render={{ settingsMap.recaptcha_site_key }}"></script>
+        {% endif %}
+        <script type="text/javascript" src="/vendor/npress-comment-section.js"></script>
+    {% endif %}
+    {% block js %}
+    {% endblock %}
+
+</body>
+</html>

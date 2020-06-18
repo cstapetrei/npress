@@ -1,0 +1,40 @@
+<table class="table table-bordered table-hover dataTable table-sm" role="grid">
+    <thead>
+        <tr role="row">
+            <th>Id</th>
+            <th>Name</th>
+            <th>Slug</th>
+            <th>Code</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for item in data %}
+        <tr role="row">
+            <td>{{ item.id }}</td>
+            <td>
+                {{ item.name }}
+            </td>
+            <td>
+                {{ item.slug }}
+            </td>
+            <td>
+                <code>{{ item.content|escape|slice(0,100) }}{{ item.content|length > 100 ? '...' : '' }}</code>
+            </td>
+            <td>
+                <a href="#" class="btn btn-primary btn-xs js-edit" data-id="{{ item.id }}" title="Edit"><i class="fas fa-edit"></i></a>
+                <button class="btn btn-danger btn-xs js-delete" data-id="{{ item.id }}" title="Delete"><i class="fas fa-trash-alt"></i></button>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Slug</th>
+            <th>Code</th>
+            <th>Actions</th>
+        </tr>
+    </tfoot>
+</table>

@@ -1,0 +1,35 @@
+{% extends "admin-layout.twig" %}
+
+{% block header_css %}
+    <link rel="stylesheet" href="/vendor/codemirror/codemirror.css">
+    <link rel="stylesheet" href="/vendor/codemirror/addon/hint/show-hint.css">
+    <link rel="stylesheet" href="/vendor/codemirror/addon/fold/foldgutter.css">
+{% endblock %}
+
+{% block footer_js %}
+    <script type="text/javascript" src="/vendor/codemirror/codemirror.js"></script>
+    <script type="text/javascript" src="/vendor/codemirror/addon/fold/foldcode.js"></script>
+    <script type="text/javascript" src="/vendor/codemirror/addon/fold/foldgutter.js"></script>
+    <script type="text/javascript" src="/vendor/codemirror/addon/fold/brace-fold.js"></script>
+    <script type="text/javascript" src="/vendor/codemirror/addon/fold/xml-fold.js"></script>
+    <script type="text/javascript" src="/vendor/codemirror/addon/fold/indent-fold.js"></script>
+    <script type="text/javascript" src="/vendor/codemirror/addon/fold/markdown-fold.js"></script>
+    <script type="text/javascript" src="/vendor/codemirror/addon/fold/comment-fold.js"></script>
+    <script type="text/javascript" src="/vendor/codemirror/addon/hint/show-hint.js"></script>
+    <script type="text/javascript" src="/vendor/codemirror/addon/hint/javascript-hint.js"></script>
+    <script type="text/javascript" src="/vendor/codemirror/mode/javascript/javascript.js"></script>
+    <script type="text/javascript" src="/vendor/codemirror/addon/hint/css-hint.js"></script>
+    <script type="text/javascript" src="/vendor/codemirror/mode/css/css.js"></script>
+    <script type="text/javascript" src="/js/admin/base-admin-page.js"></script>
+    <script type="text/javascript" src="/js/admin/codeblocks.js"></script>
+{% endblock %}
+
+{% block body %}
+    <div class="card">
+        <div class="card-header">
+            <button class="btn btn-primary btn-sm js-new-item">New item</button>
+        </div>
+        <div class="card-body js-data-table-wrapper"></div>
+        <div class="card-footer js-pagination-wrapper"></div>
+    </div>
+{% endblock %}

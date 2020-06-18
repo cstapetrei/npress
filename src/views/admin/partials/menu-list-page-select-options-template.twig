@@ -1,0 +1,4 @@
+<option>- none -</option>
+{% for p in data %}
+    <option value="{{ p.id }}" data-uri="{{ p.uri }}">{{ p.title }}</option>
+{% endfor %}

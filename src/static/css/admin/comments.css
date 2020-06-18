@@ -1,0 +1,17 @@
+.comments-data-wrapper .list-group-item{
+    border-left: none;
+    border-right: none;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.comments-data-wrapper .list-group-item > .list-group-item{
+    position: static;
+    border-bottom: none;
+    padding-left: 1rem;
+}
+
+.comments-data-wrapper .btn-wrap{
+    position: absolute;
+    right: 0;
+}

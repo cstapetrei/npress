@@ -1,0 +1,25 @@
+#file-upload-dropzone{
+    overflow-x: auto;
+    height: 160px;
+    padding: 0;
+}
+
+#file-upload-dropzone .dz-default.dz-message{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    margin: 0;
+}
+
+#file-upload-dropzone .dz-preview .dz-image{
+    width: 100px;
+}
+
+#file-upload-dropzone .dz-progress{
+    height: 8px;
+}
+
+.file-table-wrapper td{
+    word-break: break-all;
+}

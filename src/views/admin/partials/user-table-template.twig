@@ -1,0 +1,36 @@
+<table class="table table-bordered table-hover dataTable table-sm" role="grid">
+    <thead>
+        <tr role="row">
+            <th>Id</th>
+            <th>Email</th>
+            <th>Created at</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for u in data %}
+        <tr role="row">
+            <td>{{ u.id }}</td>
+            <td>
+                {{ u.email }}
+            </td>
+            <td>{{ u.created_at|date('d/m/Y') }}</td>
+            <td>{{ u.status|capitalize }}</td>
+            <td>
+                <a href="#" class="btn btn-primary btn-xs js-edit" data-id="{{ u.id }}" title="Edit"><i class="fas fa-edit"></i></a>
+                <button class="btn btn-danger btn-xs js-delete" data-id="{{ u.id }}" title="Delete"><i class="fas fa-trash-alt"></i></button>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <th>Id</th>
+            <th>Email</th>
+            <th>Created at</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </tfoot>
+</table>

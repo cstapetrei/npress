@@ -1,0 +1,33 @@
+<table class="table table-hover table-sm">
+    <thead class="thead-dark">
+        <th>Id</th>
+        <th>Author Email</th>
+        <th>Author Name</th>
+        <th>Page</th>
+        <th>Content</th>
+        <th>Date</th>
+        <th></th>
+    </thead>
+    </tbody>
+        {% for c in data %}
+        <tr>
+            <td>{{ c.id }}</td>
+            <td>{{ c.author_email }}</td>
+            <td>{{ c.author_name }}</td>
+            <td>
+                {% if c.source_page %}
+                    <a href="{{ c.source_page.uri }}" target="_blank">{{ c.source_page.title }}</a>
+                {% else %}
+                    {{ c.page_id }}
+                {% endif %}
+            </td>
+            <td>{{ c.content }}</td>
+            <td>{{ c.created_at|date('d/m/Y') }}</td>
+            <td>
+                <a href="#" class="btn btn-primary js-edit" data-id="{{ c.id }}"><i class="fas fa-edit"></i></a>
+                <button class="btn btn-danger js-delete" data-id="{{ c.id }}"><i class="fas fa-trash-alt"></i></button>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

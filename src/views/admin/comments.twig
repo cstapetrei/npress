@@ -1,0 +1,24 @@
+{% extends "admin-layout.twig" %}
+
+{% block header_css %}
+    <link rel="stylesheet" href="/css/admin/comments.css">
+{% endblock %}
+
+{% block footer_js %}
+    <script type="text/javascript" src="/js/admin/comments.js"></script>
+{% endblock %}
+
+{% block body %}
+<div class="card">
+    <div class="card-header">
+        <form class="form-inline">
+            <button type="button" class="btn btn-primary btn-sm mr-2 js-new-item">New item</button>
+            <div class="form-group">
+                <label for="page-select">Select page</label>
+                <select id="page-select" class="mx-2 form-control js-page-select" name="page"></select>
+            </div>
+        </form>
+    </div>
+    <div class="card-body comments-data-wrapper js-comments-data-wrapper"></div>
+</div>
+{% endblock %}

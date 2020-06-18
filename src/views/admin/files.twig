@@ -1,0 +1,36 @@
+{% extends "admin-layout.twig" %}
+
+{% block header_css %}
+    <link rel="stylesheet" href="/css/dropzone.min.css">
+    <link rel="stylesheet" href="/css/luminous-basic.min.css">
+    <link rel="stylesheet" href="/css/admin/files.css">
+{% endblock %}
+
+{% block header_js %}
+    <script type="text/javascript" src="/vendor/dropzone.min.js"></script>
+    <script type="text/javascript" src="/vendor/Luminous.min.js"></script>
+{% endblock %}
+
+{% block nav_title %}Files{% endblock %}
+
+{% block footer_js %}
+    <script type="text/javascript" src="/js/admin/base-admin-page.js"></script>
+    <script type="text/javascript" src="/js/admin/files.js"></script>
+{% endblock %}
+
+{% block body %}
+<div class="card">
+    <div class="card-header">
+        <form id="file-upload-dropzone" action="/admin/api/file" enctype="multipart/form-data" method="post" class="dropzone js-upload-file-form">
+            <div class="fallback">
+                <input name="file" type="file" multiple />
+            </div>
+        </form>
+    </div>
+    <div class="card-body file-table-wrapper js-data-table-wrapper"></div>
+    <div class="card-footer js-pagination-wrapper"></div>
+</div>
+{% endblock %}
+
+{% block templates %}
+{% endblock %}

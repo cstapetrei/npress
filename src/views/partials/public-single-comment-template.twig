@@ -1,0 +1,8 @@
+{% set children = data.children | default([]) %}
+<div class="list-group-item js-single-comment" data-id="{{ data.id }}">
+    <p class="mb-1"><strong>{{ data.author_name }}</strong> ({{ data.author_email }}) <small>{{ data.created_at|date('Y-m-d H:s') }}</small></p>
+    <p class="mb-0">{{ data.content }}</p>
+    {% for d in children %}
+        {% include "public-single-comment-template.twig" with { data: d } only %}
+    {% endfor %}
+</div>

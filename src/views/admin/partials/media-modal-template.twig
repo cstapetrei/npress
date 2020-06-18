@@ -1,0 +1,10 @@
+{# mode == 1 => single selection #}
+{# mode == 2 => multiple selection #}
+<div class="row">
+    <div class="col">
+        <input class="form-control" type="search" placeholder="Search" aria-label="Search" />
+    </div>
+</div>
+<div class="js-media-modal-results my-2">
+    {% include "media-modal-content-template.twig" with { data: data, mode: mode } only %}
+</div>

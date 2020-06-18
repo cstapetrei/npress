@@ -1,0 +1,4 @@
+<option value="0" selected>-</option>
+{% for i in data %}
+<option value="{{ i.id }}" data-slug="{{ i.slug }}">{{ i.name }}</option>
+{% endfor %}

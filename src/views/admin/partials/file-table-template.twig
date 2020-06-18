@@ -1,0 +1,39 @@
+<table class="table table-bordered table-hover dataTable" role="grid">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Uri</th>
+            <th>Type</th>
+            <th>Created at</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    </tbody>
+        {% for f in data %}
+            <tr>
+                <td>{{ f.id }}</td>
+                <td>{{ f.name }}</td>
+                <td><a href="{{ f.uri }}" target="_blank"{{ f.isImage ? ' data-toggle="luminous"' : '' }}>{{ f.uri }}</td>
+                <td>{{ f.type }}</td>
+                <td>{{ f.created_at|date('d/m/Y') }}</td>
+                <td>{{ f.status|capitalize }}</td>
+                <td>
+                    <button class="btn btn-xs btn-danger js-delete" data-file-id="{{ f.id }}"><i class="fas fa-trash-alt"></i></button>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Uri</th>
+            <th>Type</th>
+            <th>Created at</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </tfoot>
+</table>

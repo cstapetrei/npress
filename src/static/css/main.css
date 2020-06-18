@@ -1,0 +1,93 @@
+html{
+    font-size: 14px;
+}
+
+header{
+    margin-top: 60px;
+}
+
+footer{
+    border-top: 1px solid gainsboro;
+}
+
+nav.navbar{
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+}
+
+.img-fluid{
+    max-height: 100%;
+}
+
+.navbar-brand.navbar-brand-with-icon{
+    width: 40px;
+    height: 40px;
+}
+
+.navbar-nav li:hover > ul.dropdown-menu {
+    display: block;
+    margin-top: 0;
+}
+
+.navbar a{
+    color: inherit;
+}
+
+.dropdown-submenu {
+    position:relative;
+}
+
+.dropdown-submenu>.dropdown-menu {
+    top:0;
+    left:100%;
+    margin-top:-6px;
+}
+.dropleft.dropdown-submenu>.dropdown-menu {
+    left: -100%;
+}
+.dropdown-menu > li > a:hover:after {
+    text-decoration: underline;
+    transform: rotate(-90deg);
+}
+
+.collapse-add-comment-form-btn:not(.collapsed) .fa-chevron-down{
+    transform: rotateX(180deg);
+}
+
+.comments-section-row{
+    border-top: 1px solid #eee;
+}
+
+.comments-section .list-group-item{
+    border: none;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.comments-section .list-group-item > .list-group-item{
+    padding-left: 1rem;
+}
+
+.navbar-collapse{
+    flex-grow: initial;
+}
+
+@media (min-width: 992px){
+    .navbar-expand-lg>.container, .navbar-expand-lg>.container-fluid {
+        justify-content: space-between;
+    }
+}
+
+@media (max-width: 991px){
+    .navbar .navbar-nav .dropdown-menu{
+        display: block;
+        border: 0;
+    }
+    .navbar .navbar-nav .dropdown-toggle:after{
+        display: none;
+    }
+    .navbar .navbar-nav .dropdown-menu a{
+        padding: 0;
+        color: inherit;
+    }
+}

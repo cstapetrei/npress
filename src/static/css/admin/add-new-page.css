@@ -1,0 +1,13 @@
+.pell-editor{
+    border: 1px solid #ced4da;
+}
+.pell-content {
+    height: 400px;
+}
+.add-new-page-form .btn-wrap{
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    left: 10px;
+    z-index: 5;
+}

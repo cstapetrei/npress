@@ -1,0 +1,16 @@
+{% extends "admin-layout.twig" %}
+
+{% block footer_js %}
+    <script type="text/javascript" src="/js/admin/base-admin-page.js"></script>
+    <script type="text/javascript" src="/js/admin/users.js"></script>
+{% endblock %}
+
+{% block body %}
+    <div class="card">
+        <div class="card-header">
+            <button class="btn btn-primary btn-sm js-new-item">New item</button>
+        </div>
+        <div class="card-body js-data-table-wrapper"></div>
+        <div class="card-footer js-pagination-wrapper"></div>
+    </div>
+{% endblock %}

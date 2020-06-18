@@ -1,0 +1,28 @@
+<form class="col-12 my-3 js-comment-form" method="post" action="/public/comment" data-recaptcha-enabled="{{ settings.recaptcha_enabled|default(0) }}">
+    <input type="hidden" name="page_id" value="{{ page.id|default(0) }}" />
+    {% if settings.recaptcha_enabled|default(false) %}
+        <input type="hidden" name="recaptcha_site_key" value="{{ settings.recaptcha_site_key }}">
+    {% endif %}
+    <a class="d-block collapse-add-comment-form-btn collapsed" data-toggle="collapse"  aria-expanded="false" href="#comment-form-add-item" aria-controls="comment-form-add-item" role="tab">
+        <h4 class="d-inline-block">Click here to leave a comment</h4>
+        <i class="fas fa-chevron-down float-right"></i>
+    </a>
+    <div class="collapse" id="comment-form-add-item">
+        <div class="form-group">
+            <label for="comment-form-name">Name</label>
+            <input id="comment-form-name" type="text" name="author_name" class="form-control" placeholder="John Doe">
+        </div>
+        <div class="form-group">
+            <label for="comment-form-email">Email</label>
+            <input id="comment-form-email" type="email" name="author_email" class="form-control" placeholder="name@example.com">
+        </div>
+        <div class="form-group">
+            <label for="comment-form-content">Content</label>
+            <textarea id="comment-form-content" class="form-control" name="content" placeholder="Hello!"></textarea>
+        </div>
+        {% if settings.recaptcha_enabled|default(false) %}
+            <div class="js-recaptcha-container mb-2"></div>
+        {% endif %}
+        <button type="submit" class="btn btn-primary">Send</button>
+    </div>
+</form>

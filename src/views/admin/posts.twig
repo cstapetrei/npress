@@ -1,0 +1,23 @@
+{% extends "admin-layout.twig" %}
+
+{% block header %}
+    <div class="d-flex">
+        <h1 class="mr-auto p-2">Posts</h1>
+        <div class="btn-wrap p-2">
+            <button class="btn btn-primary js-new-user">New item</button>
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer_js %}
+    <script type="text/javascript" src="/js/admin/posts.js"></script>
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-12 js-posts-table-wrapper">
+        </div>
+        <div class="col-12 js-pagination-wrapper">
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,7 @@
+{% set children = data.children | default([]) %}
+<div class="list-group-item py-1 js-single-comment" data-id="{{ data.id }}">
+    {% include "single-comment-form-template.twig" with { data: data } only %}
+    {% for d in children %}
+        {% include "single-comment-template.twig" with { data: d } only %}
+    {% endfor %}
+</div>

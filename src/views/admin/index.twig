@@ -1,0 +1,92 @@
+{% extends "admin-layout.twig" %}
+
+{% block header %}
+    <div class="d-flex">
+        <h1 class="mr-auto p-2">Admin</h1>
+    </div>
+{% endblock %}
+
+{% block footer_js %}
+    <script type="text/javascript" src="/js/admin/dashboard.js"></script>
+{% endblock %}
+
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-3">
+            <div class="small-box bg-info js-users-box">
+                <div class="inner">
+                    <h3>-</h3>
+                    <p>Users</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <a href="/admin/users" class="small-box-footer"><i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="small-box bg-info js-pages-box">
+                <div class="inner">
+                    <h3>-</h3>
+                    <p>Pages</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-copy"></i>
+                </div>
+                <a href="/admin/pages" class="small-box-footer"><i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="small-box bg-info js-files-box">
+                <div class="inner">
+                    <h3>-</h3>
+                    <p>Files</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-folder-open"></i>
+                </div>
+                <a href="/admin/files" class="small-box-footer"><i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="small-box bg-info js-comments-box">
+                <div class="inner">
+                    <h3>-</h3>
+                    <p>Comments</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <a href="/admin/comments" class="small-box-footer"><i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="small-box bg-info js-menus-box">
+                <div class="inner">
+                    <h3>-</h3>
+                    <p>Menus</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-ellipsis-h"></i>
+                </div>
+                <a href="/admin/menus" class="small-box-footer"><i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="small-box bg-info js-codeblocks-box">
+                <div class="inner">
+                    <h3>-</h3>
+                    <p>CodeBlocks</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-boxes"></i>
+                </div>
+                <a href="/admin/codeblocks" class="small-box-footer"><i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block templates %}
+{% endblock %}

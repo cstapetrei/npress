@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <style>
+        .container{
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            background-color: #eee;
+        }
+    </style>
+</head>
+<body>
+<div class="container p-5 w-25">
+    <h4 class="text-center mb-2">{{ settings.site_name|default("Site name") }}</h4>
+    <form method="post">
+        {% if errors|default([])|length %}
+            <div class="form-group">
+                {% for e in errors %}
+                <p class="alert alert-danger" role="alert">{{ e }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+        <div class="form-group">
+            <input type="text" name="email" class="form-control" placeholder="Your Email *" value="" />
+        </div>
+        <div class="form-group">
+            <input type="password" name="password" class="form-control" placeholder="Your Password *" value="" />
+        </div>
+        <div class="form-group mb-0 text-center">
+            <button type="submit" class="btn btn-primary">Login</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

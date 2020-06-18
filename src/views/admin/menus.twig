@@ -1,0 +1,87 @@
+{% extends "admin-layout.twig" %}
+
+{% block header_css %}
+    <link rel="stylesheet" href="/css/admin/menus.css">
+{% endblock %}
+
+{% block header_js %}
+    <script type="text/javascript" src="/vendor/Sortable.min.js"></script>
+    <script type="text/javascript" src="/vendor/v8n.min.js"></script>
+{% endblock %}
+
+{% block footer_js %}
+    <script type="text/javascript" src="/js/admin/menus.js"></script>
+{% endblock %}
+
+{% block body %}
+    <div class="card">
+        <div class="card-header">
+            <button class="btn btn-primary btn-sm js-new-item">New item</button>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-4">
+                    <div class="js-data-wrapper">
+                        <div class="form-group">
+                            <label for="menu-select">Select menu</label>
+                            <select id="menu-select" class="form-control js-menu-select" name="menu"></select>
+                        </div>
+                    </div>
+                    <div class="add-page-item-accordion js-add-page-item-accordion">
+                        <div class="card mb-1">
+                            <div class="card-header px-1 py-1">
+                                <button class="btn btn-sm btn-link btn-block" data-toggle="collapse" data-target="#select-existing-page-collapse" aria-expanded="true">
+                                    Add an existing page
+                                </button>
+                            </div>
+                            <div id="select-existing-page-collapse" class="collapse show">
+                                <div class="card-body">
+                                    <form class="js-add-menu-item-form" data-type="existing-page">
+                                        <fieldset disabled>
+                                            <div class="form-group">
+                                                <label for="add-item-page-select">Select Page</label>
+                                                <select id="add-item-page-select" class="form-control js-page-select" name="page"></select>
+                                            </div>
+                                            <button class="btn btn-sm btn-primary" type="submit">Add item</button>
+                                        </fieldset>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header px-1 py-1">
+                                <button class="btn btn-sm btn-link btn-block collapsed" data-toggle="collapse" data-target="#custom-page-collapse" aria-expanded="false">
+                                    Add a custom url
+                                </button>
+                            </div>
+
+                            <div id="custom-page-collapse" class="collapse">
+                                <div class="card-body">
+                                    <form class="js-add-menu-item-form" data-type="custom-page">
+                                        <div class="form-group">
+                                            <label for="add-item-label">Label</label>
+                                            <input id="add-item-label" type="text" name="label" class="form-control" data-validate data-validate-presence />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="add-item-url">URL</label>
+                                            <input id="add-item-url" type="text" name="url" class="form-control" data-validate data-validate-url/>
+                                        </div>
+                                        <button class="btn btn-sm btn-primary" type="submit">Add item</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-8">
+                    <form class="selected-menu-items js-selected-menu-items">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block templates %}
+{% endblock %}
