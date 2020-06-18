@@ -74,6 +74,10 @@ Due to the compiled nature of typescript, the non-twig assets in a theme folder 
 
 There is a barebones `my-theme` folder already created for inspiration, but please ignore it's esthetics since it's there only as a code sample. :)
 
+### Requirements
+
+Any modern browser should do just fine. Older browsers most likely won't work since they don't support javascript arrow functions and other ES6 features natively.
+
 ## Thanks
 To the following (or, in other words, what this project is using) for their awesome work :)
 
