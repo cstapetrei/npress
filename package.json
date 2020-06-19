@@ -1,5 +1,5 @@
 {
-  "name": "nodejs-tsc-playground",
+  "name": "NPress",
   "version": "1.0.0",
   "description": "NodeJS + Typescript pseudo framework project",
   "scripts": {
@@ -32,14 +32,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@gitlab.com/cstapetrei/nodejs-tsc-playground.git"
+    "url": "git@github.com:cstapetrei/npress.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://gitlab.com/cstapetrei/nodejs-tsc-playground/issues"
+    "url": "https://github.com/cstapetrei/npress/issues"
   },
-  "homepage": "https://gitlab.com/cstapetrei/nodejs-tsc-playground#README",
+  "homepage": "https://github.com/cstapetrei/npress/tree/master",
   "dependencies": {
     "@types/express": "^4.17.6",
     "@types/express-session": "^1.17.0",
