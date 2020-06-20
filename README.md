@@ -4,7 +4,7 @@ This may very well fall under the 'yet another' category, but it's my take on CM
 
 At the moment it isn't production ready since it hasn't been thoroughly tested, but you can clone it and have a look around.
 
-If you're not in the mood for cloning the repo, you could always visit this little [Demo instance](http://ec2-18-130-83-127.eu-west-2.compute.amazonaws.com/) (which will be cleaned up once in a while).
+If you're not in the mood for cloning the repo, you could always visit this little [Demo instance](http://ec2-18-130-83-127.eu-west-2.compute.amazonaws.com/) and it's [Admin](http://ec2-18-130-83-127.eu-west-2.compute.amazonaws.com/admin) (user: `admin@npess.com` and password: `123123`).
 
 ## "How it's made"
 
