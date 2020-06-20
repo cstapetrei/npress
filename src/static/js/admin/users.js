@@ -45,7 +45,7 @@
             this.dataTableWrapper.innerHTML = Twig.twig({ref: 'user-table-template'}).render({ data: response.data });
             this.paginator.setTotalCount(response.total);
             this.updateHistory();
-            NPress.refreshTooltips();
+            N.refreshTooltips();
         }
         onDeleteItemClick(e, el){
             let rowId = el.getAttribute('data-id');
@@ -67,8 +67,11 @@
                 return;
             }
             const onEditItemSubmitClick = (e, modal) => {
-                let requestData = NPress.serializeElementInputs(modal.modalBody);
-                NPress.api.users.update(requestData, { form: modal.modalContent }).then((e)=>{
+                if (!N.validateElInputs(modal.modalBody)){
+                    return;
+                }
+                let requestData = N.serializeElementInputs(modal.modalBody);
+                N.api.users.update(requestData, { form: modal.modalContent }).then((e)=>{
                     modal.onCloseModal();
                     this.getData(this.paginator.options.currentPage);
                 }).catch((e)=>{
@@ -100,8 +103,8 @@
                 if (!N.validateElInputs(modal.modalBody)){
                     return;
                 }
-                let requestData = NPress.serializeElementInputs(modal.modalBody);
-                NPress.api.users.create(requestData, { form: modal.modalContent }).then((e)=>{
+                let requestData = N.serializeElementInputs(modal.modalBody);
+                N.api.users.create(requestData, { form: modal.modalContent }).then((e)=>{
                     modal.onCloseModal();
                     this.getData( this.currentFetchedItemCount == this.paginator.options.itemsPerPage ? this.paginator.options.currentPage + 1 : this.paginator.options.currentPage );
                 }).catch((e)=>{

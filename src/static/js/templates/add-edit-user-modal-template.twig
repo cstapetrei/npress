@@ -7,11 +7,11 @@
 </div>
 <div class="form-group">
     <label>Password</label>
-    <input type="password" class="form-control" name="password" data-validate-presence data-validate-min-length="6" data-validate-identical-to='input[name="password_confirm"]'>
+    <input type="password" class="form-control" name="password" {% if data.id is empty %}data-validate-presence data-validate-min-length="6" data-validate-identical-to='input[name="password_confirm"]'{% endif %}>
 </div>
 <div class="form-group">
     <label>Password confirm</label>
-    <input type="password" class="form-control" name="password_confirm" data-validate-presence>
+    <input type="password" class="form-control" name="password_confirm" {% if data.id is empty %}data-validate-presence{% endif %}>
 </div>
 <div class="form-group">
     <label>Date</label>
