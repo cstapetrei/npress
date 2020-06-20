@@ -60,11 +60,16 @@ Finally, visit http://localhost:3000/ for the public area. For the admin section
 
 Everything in the admin dashboard should be pretty much self explanatory.
 
-The only "foreign" notion could be **Codeblocks**. In this section you define twig blocks that can be reused in the page editor section:
+The only "foreign" notion could be **Codeblocks**. In this section you define twig blocks that can be reused in the page editor section. Here's an example:
 ```
+// let's say we have the following block
 [[my-code-slug attr1=value1 attr2=value2]]
+
+// defined with
+<p>This is my code {{ attr1 }} {{ attr2 }}</p>
 ```
-This bit will get replaced with your block definition when viewing your page publicly.
+
+When rendering, every pair of  `[[` `]]` will get replaced by their corresponding definition (with attributes being replaced by their values). If you use an unknown (undefined) slug, the block will just be erased.
 
 ### Themes
 
