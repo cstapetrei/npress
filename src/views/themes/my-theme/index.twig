@@ -9,8 +9,9 @@
 {% endblock %}
 
 {% block header %}
-My theme header
-<img src="{{ "imgs/Speaker_Icon.svg"|theme_asset }}" />
+    My theme header
+    <img class="img-fluid" src="{{ "imgs/Speaker_Icon.svg"|theme_asset }}" />
+    {% include "./partials/header_partial.twig" %}
 {% endblock %}
 
 {% block content %}
