@@ -185,34 +185,32 @@ NPress.validateElInputs = (element) => {
     NPress.clearErrors(element);
 
     let elementHasErrors = false;
-    element.querySelectorAll('[data-validate]').forEach( (input) => {
-        if (typeof input.value === 'undefined'){
-            return;
-        }
-        let errors = [];
-        let validateUrl = input.hasAttribute('data-validate-url');
-        if (validateUrl){
-            let message = input.getAttribute('data-validate-url-message');
-            let relativeUrlResult = v8n().pattern(/^\/[\w\-_~:/?#[\]@!\$&'\(\)\*\+,;=]+$/).test(input.value);
-            let absoluteUrlResult = v8n().pattern(/^(?:http(s)?:)?(\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/).test(input.value);
-            if (!relativeUrlResult && !absoluteUrlResult){
-                errors.push({ property: input.getAttribute('name'), constraints: [message || 'Invalid Url'] });
-            }
-        }
+    let errors = [];
 
-        let validatePresence = input.hasAttribute('data-validate-presence');
-        if (validatePresence){
-            let message = input.getAttribute('data-validate-presence-message');
-            if (v8n().empty().test(input.value)){
-                errors.push({ property: input.getAttribute('name'), constraints: [message || 'Empty not allowed'] });
-            }
-        }
-
-        if (errors.length){
-            NPress.outputErrors(element, errors);
-            elementHasErrors = true;
+    // validate presence fields
+    element.querySelectorAll('[data-validate-presence]').forEach( (input) => {
+        if (typeof input.value === 'undefined'){ return; }
+        let message = input.getAttribute('data-validate-presence-message');
+        if (v8n().empty().test(input.value)){
+            errors.push({ property: input.getAttribute('name'), constraints: [message || 'Field cannot be empty'] });
         }
     });
+
+    // validate url fields
+    element.querySelectorAll('[data-validate-url]').forEach( (input) => {
+        if (typeof input.value === 'undefined'){ return; }
+        let message = input.getAttribute('data-validate-url-message');
+        let relativeUrlResult = v8n().pattern(/^\/[\w\-_~:/?#[\]@!\$&'\(\)\*\+,;=]+$/).test(input.value);
+        let absoluteUrlResult = v8n().pattern(/^(?:http(s)?:)?(\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/).test(input.value);
+        if (!relativeUrlResult && !absoluteUrlResult){
+            errors.push({ property: input.getAttribute('name'), constraints: [message || 'Invalid Url'] });
+        }
+    });
+
+    if (errors.length){
+        NPress.outputErrors(element, errors);
+        elementHasErrors = true;
+    }
 
     return !elementHasErrors;
 }

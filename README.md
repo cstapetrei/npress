@@ -69,7 +69,9 @@ The only "foreign" notion could be **Codeblocks**. In this section you define tw
 <p>This is my code {{ attr1 }} {{ attr2 }}</p>
 ```
 
-When rendering, every pair of  `[[` `]]` will get replaced by their corresponding definition (with attributes being replaced by their values). If you use an unknown (undefined) slug, the block will just be erased.
+When rendering, every pair of  `[[` `]]` will get replaced by their corresponding definition (with attributes being replaced by their values).
+
+If you use an undefined slug, the block will just be erased.
 
 ### Themes
 

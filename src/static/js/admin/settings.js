@@ -36,7 +36,7 @@
         }
         onSaveSettingsClick(e, el){
             e.preventDefault();
-            NPress.api.settings.updateAll( N.serializeElementInputs(el), { form: el }).then((e)=>{
+            N.api.settings.updateAll( N.serializeElementInputs(el), { form: el }).then((e)=>{
                 new Noty({text: 'Settings updated', type: 'success' }).show();
                 this.getData();
             }).catch((e)=>{
@@ -59,8 +59,11 @@
                         label: 'Save',
                         className: 'btn btn-primary',
                         onClick: (e, modal) => {
-                            let requestData = NPress.serializeElementInputs(modal.modalBody);
-                            NPress.api.settings.create(requestData, { form: modal.modalContent }).then((e)=>{
+                            if (!N.validateElInputs(modal.modalBody)){
+                                return;
+                            }
+                            let requestData = N.serializeElementInputs(modal.modalBody);
+                            N.api.settings.create(requestData, { form: modal.modalContent }).then((e)=>{
                                 modal.onCloseModal();
                                 getData();
                             }).catch((e)=>{
@@ -77,7 +80,7 @@
         renderData(response){
             this.dataWrapper.innerHTML = Twig.twig({ref: 'setting-page-data-template'}).render({ data: response.data });
             this.updateHistory();
-            NPress.refreshTooltips();
+            N.refreshTooltips();
         }
     }
 

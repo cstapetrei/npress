@@ -1,12 +1,15 @@
 import { Entity, Column, BeforeInsert, BeforeUpdate, AfterLoad } from "typeorm";
 import { Base } from "./Base";
 import { IsNotEmpty } from "class-validator";
+import { StringHelper } from "../library/helpers/StringHelper";
+import { IsUnique } from "../library/decorators/validation/IsUnique";
 
 @Entity()
 export class Setting extends Base{
 
     @Column('varchar')
     @IsNotEmpty({ message: 'Key must not be empty' })
+    @IsUnique()
     key: string;
 
     @Column('text')
@@ -27,7 +30,7 @@ export class Setting extends Base{
     assign(requestBody: any): Setting {
         super.assign(requestBody);
 
-        this.key = requestBody.key;
+        this.key = StringHelper.slugify(requestBody.key, '_');
         this.value = requestBody.value;
         this.name = requestBody.name || requestBody.key;
         this.description = requestBody.description || '';

@@ -5,8 +5,8 @@
 {% set inputTypes = ['text','email','checkbox', 'date', 'number', 'tel', 'image'] %}
 
 <div class="form-group">
-    <label>Key</label>
-    <input type="text" class="form-control" name="key" value="{{ data.key|default('') }}">
+    <label>Key <small>(field will be slugified)</label>
+    <input type="text" class="form-control" name="key" value="{{ data.key|default('') }}" data-validate-presence>
 </div>
 <div class="form-group">
     <label>Value</label>
