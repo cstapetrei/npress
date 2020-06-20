@@ -3,15 +3,15 @@
 {% endif %}
 <div class="form-group">
     <label>Email</label>
-    <input type="email" class="form-control" name="email" value="{{ data.email|default('') }}">
+    <input type="email" class="form-control" name="email" value="{{ data.email|default('') }}" data-validate-email>
 </div>
 <div class="form-group">
     <label>Password</label>
-    <input type="password" class="form-control" name="password">
+    <input type="password" class="form-control" name="password" data-validate-presence data-validate-min-length="6" data-validate-identical-to='input[name="password_confirm"]'>
 </div>
 <div class="form-group">
     <label>Password confirm</label>
-    <input type="password" class="form-control" name="password_confirm">
+    <input type="password" class="form-control" name="password_confirm" data-validate-presence>
 </div>
 <div class="form-group">
     <label>Date</label>

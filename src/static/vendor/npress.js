@@ -169,7 +169,7 @@ NPress.outputErrors = (element, errorArray) => {
         let input = target.querySelector(`[name="${item.property}"]`);
         if (input){
             for(let constraintName in item.constraints){
-                input.parentNode.appendChild(NPress.node(`<span class="text-danger">${item.constraints[constraintName]}</span>`));
+                input.parentNode.appendChild(NPress.node(`<span class="d-block text-danger">${item.constraints[constraintName]}</span>`));
             }
         }
     });
@@ -204,6 +204,56 @@ NPress.validateElInputs = (element) => {
         let absoluteUrlResult = v8n().pattern(/^(?:http(s)?:)?(\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/).test(input.value);
         if (!relativeUrlResult && !absoluteUrlResult){
             errors.push({ property: input.getAttribute('name'), constraints: [message || 'Invalid Url'] });
+        }
+    });
+
+    // validate numeric fields
+    element.querySelectorAll('[data-validate-numeric]').forEach( (input) => {
+        if (typeof input.value === 'undefined'){ return; }
+        let message = input.getAttribute('data-validate-numeric-message');
+        if (v8n().numeric().test(input.value)){
+            errors.push({ property: input.getAttribute('name'), constraints: [message || 'Invalid number'] });
+        }
+    });
+
+    // validate min-length fields
+    element.querySelectorAll('[data-validate-min-length]').forEach( (input) => {
+        if (typeof input.value === 'undefined'){ return; }
+        let val = input.getAttribute('data-validate-min-length');
+        let message = input.getAttribute('data-validate-min-length-message');
+        if (!v8n().minLength(val).test(input.value)){
+            errors.push({ property: input.getAttribute('name'), constraints: [message || `Length must be higher than ${val}`] });
+        }
+    });
+
+    // validate max-length fields
+    element.querySelectorAll('[data-validate-max-length]').forEach( (input) => {
+        if (typeof input.value === 'undefined'){ return; }
+        let val = input.getAttribute('data-validate-max-length');
+        let message = input.getAttribute('data-validate-max-length-message');
+        if (!v8n().maxLength(val).test(input.value)){
+            errors.push({ property: input.getAttribute('name'), constraints: [message || `Length must be lower than ${val}`] });
+        }
+    });
+
+    // validate email fields
+    element.querySelectorAll('[data-validate-email]').forEach( (input) => {
+        if (typeof input.value === 'undefined'){ return; }
+        let message = input.getAttribute('data-validate-email-message');
+        if (!v8n().pattern(/^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/).test(input.value)){
+            errors.push({ property: input.getAttribute('name'), constraints: [message || `Invalid email`] });
+        }
+    });
+
+    // validate identical fields
+    element.querySelectorAll('[data-validate-identical-to]').forEach( (input) => {
+        if (typeof input.value === 'undefined'){ return; }
+        let toField = document.querySelector(input.getAttribute('data-validate-identical-to'));
+        if (!toField || typeof toField.value === 'undefined') { return; }
+        let message = input.getAttribute('data-validate-identical-message');
+        if (input.value !== toField.value){
+            errors.push({ property: input.getAttribute('name'), constraints: [message || `Fields must be identical`] });
+            errors.push({ property: toField.getAttribute('name'), constraints: [message || `Fields must be identical`] });
         }
     });
 

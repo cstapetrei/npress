@@ -97,6 +97,9 @@
             e.preventDefault();
 
             const onNewItemSubmitClick = (e, modal) => {
+                if (!N.validateElInputs(modal.modalBody)){
+                    return;
+                }
                 let requestData = NPress.serializeElementInputs(modal.modalBody);
                 NPress.api.users.create(requestData, { form: modal.modalContent }).then((e)=>{
                     modal.onCloseModal();
