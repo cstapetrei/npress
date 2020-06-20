@@ -81,6 +81,9 @@
             let self = this;
 
             const onEditItemSubmitClick = (e, modal) => {
+                if (!N.validateElInputs(modal.modalBody)){
+                    return;
+                }
                 modal.cm.save();
                 let requestData = N.serializeElementInputs(modal.modalBody);
                 N.api.codeblocks.update(requestData, { form: modal.modalContent }).then((e)=>{
@@ -117,6 +120,9 @@
             e.preventDefault();
 
             const onNewItemSubmitClick = (e, modal) => {
+                if (!N.validateElInputs(modal.modalBody)){
+                    return;
+                }
                 modal.cm.save();
                 let requestData = N.serializeElementInputs(modal.modalBody);
                 N.api.codeblocks.create(requestData, { form: modal.modalContent }).then((e)=>{

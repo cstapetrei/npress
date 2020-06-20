@@ -36,8 +36,11 @@
             e.preventDefault();
 
             const onNewItemSubmitClick = (e, modal) => {
-                let requestData = NPress.serializeElementInputs(modal.modalBody);
-                NPress.api.menus.create(requestData, { form: modal.modalContent }).then((e)=>{
+                if (!N.validateElInputs(modal.modalBody)){
+                    return;
+                }
+                let requestData = N.serializeElementInputs(modal.modalBody);
+                N.api.menus.create(requestData, { form: modal.modalContent }).then((e)=>{
                     modal.onCloseModal();
                     this.getData();
                 }).catch((e)=>{
@@ -93,7 +96,7 @@
                 });
             });
             requestData.menuId = this.selectedMenuListGroup.getAttribute('data-menu-id');
-            NPress.api.menus.updateItems(requestData, { form: this.selectedMenuItemsEl }).then((e)=>{
+            N.api.menus.updateItems(requestData, { form: this.selectedMenuItemsEl }).then((e)=>{
                 new Noty({text: 'Menu updated', type: 'success' }).show();
                 this.getData();
             }).catch((e)=>{
@@ -117,7 +120,7 @@
                     newItemData = { label: opt.textContent, url: opt.getAttribute('data-uri') };
                     break;
                 case 'custom-page':
-                    if (!NPress.validateElInputs(el)){
+                    if (!N.validateElInputs(el)){
                         return;
                     }
                     newItemData = { label: el.elements.label.value, url: el.elements.url.value };
@@ -176,7 +179,7 @@
                 this.menuSelect.value = valueBeforeRender;
                 this.menuSelect.dispatchEvent(new Event('change'));
             }
-            NPress.refreshTooltips();
+            N.refreshTooltips();
         }
         onDeleteItemClick(e, el){
             let fileId = el.getAttribute('data-file-id');
