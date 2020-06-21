@@ -125,7 +125,7 @@ export default class App {
         Container.set("CodeblockService", new CodeblockService());
         Container.set("EventEmitter", new events.EventEmitter());
         Container.set("App", this.app);
-        Container.set("logger", new Logger());
+        Container.set("Logger", new Logger());
 
         this.initListeners();
 

@@ -22,14 +22,14 @@ process.env.NODE_ENV = process.env.NODE_ENV || args.NODE_ENV || envConfig.env ||
 process.on('unhandledRejection', (err: {} | null | undefined, promise) => {
     console.log('Unhandled Rejection at:', err, promise)
     if (process.env.NODE_ENV === 'production'){
-        (Container.get("logger") as Logger).error(""+err);
+        (Container.get("Logger") as Logger).error(""+err);
     }
 });
 
 process.on('uncaughtException', (err:Error) => {
     console.error('Uncaught exception', err);
     if (process.env.NODE_ENV === 'production'){
-        (Container.get("logger") as Logger).error(""+err);
+        (Container.get("Logger") as Logger).error(""+err);
     }
 });
 
