@@ -1,11 +1,11 @@
 {% extends "admin-layout.twig" %}
 
 {% block header_css %}
-    {% include 'admin/partials/_codemirror-css-dependencies.twig' only %}
+    {% include 'admin/partials/_codemirror-css-dependencies.twig' %}
 {% endblock %}
 
 {% block footer_js %}
-    {% include 'admin/partials/_codemirror-js-dependencies.twig' only %}
+    {% include 'admin/partials/_codemirror-js-dependencies.twig' %}
     <script type="text/javascript" src="/js/admin/base-admin-page.js"></script>
     <script type="text/javascript" src="/js/admin/codeblocks.js"></script>
 {% endblock %}
