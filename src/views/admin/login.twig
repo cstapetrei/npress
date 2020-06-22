@@ -14,7 +14,7 @@
 </head>
 <body>
 <div class="container p-5 w-25">
-    <h4 class="text-center mb-2">{{ settings.site_name|default("Site name") }}</h4>
+    <h4 class="text-center mb-2">{{ settings('site_name')|default("Site name") }}</h4>
     <form method="post">
         {% if errors|default([])|length %}
             <div class="form-group">

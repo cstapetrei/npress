@@ -5,7 +5,7 @@
                 <li class="nav-item{{ m.children.length|default(0) ? ' dropdown' : '' }}">
                     <a id="menu-item-{{ m.id }}" class="nav-link{{ m.children.length|default(0) ? ' dropdown-toggle' : '' }}" href="{{ m.url }}">{{ m.label }}</a>
                     {% if m.children.length|default(0) %}
-                        {% include 'partials/nav-sub-menu.twig' with { settings: settings, parent_id: "menu-item-"~m.id, menu_items: m.children } %}
+                        {% include 'partials/nav-sub-menu.twig' with { parent_id: "menu-item-"~m.id, menu_items: m.children } %}
                     {% endif %}
                 </li>
             {% endfor %}
@@ -14,23 +14,23 @@
 {% endset %}
 
 {% set logoHtml %}
-    <a class="navbar-brand{{ settings.site_logo|default(false) ? " navbar-brand-with-icon" : ""}}" href="/">
-        {% if settings.site_logo|default(false) %}
-            <img class="img-fluid" src="{{ settings.site_logo }}" alt="logo">
+    <a class="navbar-brand{{ settings('site_logo')|default(false) ? " navbar-brand-with-icon" : ""}}" href="/">
+        {% if settings('site_logo')|default(false) %}
+            <img class="img-fluid" src="{{ settings('site_logo') }}" alt="logo">
         {% else %}
-            {{ settings.site_name|default('Site name') }}
+            {{ settings('site_name')|default('Site name') }}
         {% endif %}
     </a>
 {% endset %}
 
 <nav class="navbar navbar-expand-lg fixed-top">
-    <div class="{{ settings.site_width|default('container') }}">
-        {{ settings.navbar_layout == 'logo-left-menu-right' ? logoHtml|raw : menuHtml|raw }}
+    <div class="{{ settings('site_width')|default('container') }}">
+        {{ settings('navbar_layout') == 'logo-left-menu-right' ? logoHtml|raw : menuHtml|raw }}
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon">
                 <i class="fas fa-bars"></i>
             </span>
         </button>
-        {{ settings.navbar_layout == 'logo-left-menu-right' ? menuHtml|raw : logoHtml|raw }}
+        {{ settings('navbar_layout') == 'logo-left-menu-right' ? menuHtml|raw : logoHtml|raw }}
     </div>
 </nav>

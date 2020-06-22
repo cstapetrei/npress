@@ -1,11 +1,11 @@
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
 <!-- Brand Logo -->
-<a class="brand-link {{ settings.site_logo|default(false) ? " navbar-brand-with-icon" : ""}}" href="/" target="_blank">
-    {% if settings.site_logo|default(false) %}
-        <img src="{{ settings.site_logo }}" alt="Logo" class="brand-image img-circle elevation-3">
+<a class="brand-link {{ settings('site_logo')|default(false) ? " navbar-brand-with-icon" : ""}}" href="/" target="_blank">
+    {% if settings('site_logo')|default(false) %}
+        <img src="{{ settings('site_logo') }}" alt="Logo" class="brand-image img-circle elevation-3">
     {% endif %}
-    <span class="brand-text font-weight-light">{{ settings.site_name|default('Site name') }}</span>
+    <span class="brand-text font-weight-light">{{ settings('site_name')|default('Site name') }}</span>
 </a>
 
 <!-- Sidebar -->

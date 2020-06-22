@@ -97,6 +97,9 @@ export default class App {
                 return path + value;
             }
         );
+        Twig.extendFunction("settings", function(value) {
+            return (Container.get('settingsMap') as IStringToString)[value] || '';
+        });
     }
     private initViews(): void{
         let viewsPath = path.join(__dirname,'views');

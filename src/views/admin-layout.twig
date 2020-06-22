@@ -32,14 +32,13 @@
 
 {% block navigation %}
     {% include 'admin/partials/nav.twig' with {
-      settings: settingsMap,
       show_search: show_search,
       nav_title: nav_title
     } only %}
 {% endblock %}
 
 {% block sidebar %}
-    {% include 'admin/partials/sidebar.twig' with { settings: settingsMap, menu: menu } only %}
+    {% include 'admin/partials/sidebar.twig' with { menu: menu } only %}
 {% endblock %}
 
 <!-- Content Wrapper. Contains page content -->
@@ -72,7 +71,7 @@
 <!-- /.control-sidebar -->
 
 {% block footer %}
-    {% include 'admin/partials/footer.twig' with { settings: settingsMap, menu: menu } only %}
+    {% include 'admin/partials/footer.twig' with { menu: menu } only %}
 {% endblock %}
 
 </div>

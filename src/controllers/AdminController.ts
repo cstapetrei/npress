@@ -25,7 +25,7 @@ export class AdminController{
             }
             errors.push("Invalid user or password.");
         }
-        res.render('admin/login', { errors: errors, settings: Container.get('settingsMap') });
+        res.render('admin/login', { errors: errors });
     }
     public static async logout(req: Request, res: Response) {
         if (req.session){
