@@ -84,7 +84,7 @@
             CodeMirror.fromTextArea(document.querySelector('textarea[name="google_analytics_script"]'), {
                 lineNumbers: true,
                 extraKeys: {"Ctrl-Space": "autocomplete"},
-                mode: {name: "javascript", globalVars: true},
+                mode: {name: "htmlmixed", globalVars: true},
                 foldGutter: true,
                 gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
             });
