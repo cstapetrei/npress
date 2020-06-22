@@ -52,7 +52,10 @@
                     <div class="card-header">
                         <ul class="nav nav-pills w-100" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link btn-sm active" id="nav-seo-tab" data-toggle="tab" href="#nav-seo" aria-controls="nav-seo" role="tab">SEO</a>
+                                <a class="nav-link btn-sm active" id="nav-header-tab" data-toggle="tab" href="#nav-header" aria-controls="nav-header" role="tab">Header</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link btn-sm" id="nav-seo-tab" data-toggle="tab" href="#nav-seo" aria-controls="nav-seo" role="tab">SEO</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link btn-sm" id="nav-comments-tab" data-toggle="tab" href="#nav-comments" aria-controls="nav-comments" role="tab">Comments</a>
@@ -66,7 +69,17 @@
                         </ul>
                     </div>
                     <div class="card-body tab-content">
-                        <div class="tab-pane fade show active" id="nav-seo" role="tabpanel" aria-labelledby="nav-seo-tab">
+                        <div class="tab-pane fade show active" id="nav-header" role="tabpanel" aria-labelledby="nav-header-tab">
+                            <div class="form-group col">
+                                <label for="page-settings-header-full-width">Header full width</label>
+                                <input id="page-settings-header-full-width" type="checkbox" name="header_full_width" value="{{ data.header_full_width|default(0) }}"{{ data.header_full_width|default(0) ? ' checked' : '' }}>
+                            </div>
+                            <div class="form-group col">
+                                <label for="page-settings-header-content">Header Content</label>
+                                <textarea class="form-control js-header-content-textarea" name="header_content">{{ data.header_content|default('') }}</textarea>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="nav-seo" role="tabpanel" aria-labelledby="nav-seo-tab">
                             <div class="form-group col">
                                 <label>Title</label>
                                 <input type="text" class="form-control" placeholder="SEO Title" name="seo_title" value="{{ data.seo_title|default('') }}">

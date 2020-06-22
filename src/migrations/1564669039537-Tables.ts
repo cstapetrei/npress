@@ -143,6 +143,17 @@ export class Tables1564669039537 implements MigrationInterface {
                     default: '0'
                 },
                 {
+                    name: 'header_full_width',
+                    type: "int",
+                    length: '1',
+                    default: '0'
+                },
+                {
+                    name: 'header_content',
+                    type: "text",
+                    isNullable: true
+                },
+                {
                     name: 'status',
                     type: "varchar",
                     length: '16',

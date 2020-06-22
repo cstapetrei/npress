@@ -21,14 +21,8 @@
 </head>
 <body class="{{ body_class|default('') }}" data-page-id="{{ page.id }}">
 
-    <header class="{{ settings('site_width')|default('container') }}">
-        <div class="row">
-            <div class="col">
-                {% block header %}
-                    {% include 'partials/header_content.twig' with { page: page } only %}
-                {% endblock %}
-            </div>
-        </div>
+    <header class="container{{ page.header_full_width|default(0) ? '-fluid' : '' }}">
+        {{ page.header_content|default('<h1>'~page.title~'</h1>')|raw }}
     </header>
 
     {% block navigation %}

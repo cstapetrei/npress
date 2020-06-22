@@ -39,6 +39,15 @@
                 gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
             });
 
+            this.headerContentCodeMirror = CodeMirror.fromTextArea(document.querySelector('textarea[name="header_content"]'), {
+                lineNumbers: true,
+                extraKeys: {"Ctrl-Space": "autocomplete"},
+                mode: {name: "xml", globalVars: true},
+                htmlMode: true,
+                foldGutter: true,
+                gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+            });
+
             flatpickr(document.querySelectorAll("[data-calendar]"), {});
 
             this.initEvents();
@@ -55,6 +64,11 @@
             N.live(this.form, 'click', '#nav-sidebar-tab', (e) => {
                 setTimeout((e) => {
                     this.sidebarCodeMirror.refresh();
+                },200);
+            });
+            N.live(this.form, 'click', '#nav-header-tab', (e) => {
+                setTimeout((e) => {
+                    this.headerContentCodeMirror.refresh();
                 },200);
             });
         }

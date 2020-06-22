@@ -57,6 +57,12 @@ export class Page extends Base{
     @Column('int')
     is_homepage: boolean;
 
+    @Column('int')
+    header_full_width: boolean;
+
+    @Column('text')
+    header_content: string;
+
     assign(requestBody: any): Page {
         super.assign(requestBody);
 
@@ -73,6 +79,8 @@ export class Page extends Base{
         this.show_comment_form = requestBody.show_comment_form || false;
         this.show_sidebar = requestBody.show_sidebar || false;
         this.sidebar_content = requestBody.sidebar_content || '';
+        this.header_full_width = requestBody.header_full_width || false;
+        this.header_content = requestBody.header_content || '';
 
         this.uri = this.uri[0] !== '/' ? '/'+this.uri : this.uri;
         return this;
