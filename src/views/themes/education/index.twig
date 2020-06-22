@@ -1,0 +1,34 @@
+{% extends "./layout.twig" %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ "style.css"|theme_asset }}">
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="{{ "script.js"|theme_asset }}"></script>
+{% endblock %}
+
+{% block header %}
+    My theme header
+    <img class="img-fluid" src="{{ "imgs/Speaker_Icon.svg"|theme_asset }}" />
+    {% include "./partials/header_partial.twig" %}
+{% endblock %}
+
+{% block content %}
+{{ page.content }}
+
+{% endblock %}
+
+{% block sidebar %}
+My theme sidebar
+{% endblock %}
+
+{% block comments %}
+My theme comment block
+{% endblock %}
+
+{% block footer %}
+<footer>
+My theme footer
+</footer>
+{% endblock %}
