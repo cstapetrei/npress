@@ -20,19 +20,29 @@
         initEvents(){
             this.newItemBtn.addEventListener('click', this.onNewItemClick);
             N.live(this.dataWrapper, 'submit', 'form', this.onSaveSettingsClick.bind(this));
-            N.live(this.dataWrapper, 'click', '.js-browse-media-btn', this.onBrowseForLogoClick.bind(this));
+            N.live(this.dataWrapper, 'click', '.js-browse-media-btn', this.onBrowseForImageClick.bind(this));
+            N.live(this.dataWrapper, 'click', '.js-remove-image-btn', this.onRemoveImageClick.bind(this));
         }
         onSearch(e){
             this.getData(1, e.detail.query);
         }
-        onBrowseForLogoClick(e, el){
+        onBrowseForImageClick(e, el){
             new N.MediaModal({
                 filter: 'image',
                 onSelect: event => {
                     el.parentElement.querySelector('.js-setting-image').setAttribute('src', event[0].uri);
-                    el.parentElement.querySelector('input[name="site_logo"]').value = event[0].uri;
+                    el.parentElement.querySelector('input[type="hidden"]').value = event[0].uri;
                 }
             });
+        }
+        onRemoveImageClick(e, el){
+            let row = el.closest('.form-group');
+            if (!row){ return; }
+            let input = row.querySelector('input[type="hidden"]');
+            let img = row.querySelector('.js-setting-image');
+            input.value = '';
+            img.src = '';
+            el.remove();
         }
         onSaveSettingsClick(e, el){
             e.preventDefault();

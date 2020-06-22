@@ -12,6 +12,9 @@
                         <img class="js-setting-image" src="{{ s.value|default('') }}"/>
                     </figure>
                     <button type="button" class="btn btn-primary btn-sm js-browse-media-btn">Browse</button>
+                    {% if s.value is not empty %}
+                        <button type="button" class="btn btn-danger btn-sm js-remove-image-btn">Remove</button>
+                    {% endif %}
                 {% elseif s.input_type == 'select' %}
                     <select class="form-control" name="{{ s.key }}">
                         {% for o in s.options %}
