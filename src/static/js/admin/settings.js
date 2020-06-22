@@ -81,6 +81,13 @@
             this.dataWrapper.innerHTML = Twig.twig({ref: 'setting-page-data-template'}).render({ data: response.data });
             this.updateHistory();
             N.refreshTooltips();
+            CodeMirror.fromTextArea(document.querySelector('textarea[name="google_analytics_script"]'), {
+                lineNumbers: true,
+                extraKeys: {"Ctrl-Space": "autocomplete"},
+                mode: {name: "javascript", globalVars: true},
+                foldGutter: true,
+                gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+            });
         }
     }
 

@@ -19,7 +19,7 @@
                         {% endfor %}
                     </select>
                 {% elseif s.input_type == 'textarea' %}
-                    <textarea class="form-control" id="sid-{{ s.id }}" name="{{ s.key }}" rows="10">{{ s.value }}</textarea>
+                    <textarea class="form-control" id="sid-{{ s.id }}" name="{{ s.key }}">{{ s.value }}</textarea>
                 {% else %}
                     <input id="sid-{{ s.id }}" type="{{ s.input_type }}" class="{{ s.input_type != 'checkbox' ? " form-control" : "" }}" name="{{ s.key }}" value="{{ s.value }}"{{ s.input_type == 'checkbox' and s.value == 1 ? ' checked' : '' }}>
                 {% endif %}
