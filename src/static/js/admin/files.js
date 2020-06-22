@@ -19,6 +19,7 @@
         }
         initEvents(){
             N.live(this.dataTableWrapper,'click','.js-delete', this.onDeleteItemClick.bind(this));
+            N.live(this.dataTableWrapper,'focusout','form input[type="text"]', this.onFilePropertyChange.bind(this));
             Dropzone.options.fileUploadDropzone = {
                 paramName: "file",
                 maxFilesize: 64,
@@ -55,7 +56,7 @@
             NPress.refreshTooltips();
         }
         onDeleteItemClick(e, el){
-            let fileId = el.getAttribute('data-file-id');
+            let fileId = el.getAttribute('data-id');
             if (!fileId){
                 return;
             }
@@ -67,6 +68,21 @@
                     });
                  }
             });
+        }
+        onFilePropertyChange(e, el){
+            let form = el.closest('form');
+            let fileId = form.getAttribute('data-id');
+            let initialValue = el.getAttribute('data-initial-value');
+            if (el.value === initialValue || !fileId){
+                return;
+            }
+            let requestData = N.serializeElementInputs(form);
+            requestData.id = fileId;
+            N.api.files.update(requestData, { form: form }).then(() => {
+                new Noty({text: 'File updated', type: 'success' }).show();
+            }).catch((e)=>{
+                new Noty({text: 'Error updating file', type: 'error' }).show();
+            });;
         }
     }
 

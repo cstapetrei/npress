@@ -97,13 +97,13 @@
                 onSelect: event => {
                     let selectedFile = event[0];
                     if (parseInt(selectedFile.isImage)){
-                        this.editor.selection.insertHTML(`<img class="img-fluid" src="${selectedFile.uri}" />`);
+                        this.editor.selection.insertHTML(`<img class="img-fluid" src="${selectedFile.uri}" title="${selectedFile.htmlTitle}" alt="${selectedFile.htmlAlt}"/>`);
                     } else if (parseInt(selectedFile.isAudio)) {
-                        this.editor.selection.insertHTML(`<audio class="img-fluid" controls src="${selectedFile.uri}" />`);
+                        this.editor.selection.insertHTML(`<audio class="img-fluid" controls src="${selectedFile.uri}" title="${selectedFile.htmlTitle}"/>`);
                     } else if (parseInt(selectedFile.isVideo)) {
-                        this.editor.selection.insertHTML(`<video class="img-fluid" controls src="${selectedFile.uri}" />`);
+                        this.editor.selection.insertHTML(`<video class="img-fluid" controls src="${selectedFile.uri}" title="${selectedFile.htmlTitle}"/>`);
                     } else {
-                        this.editor.selection.insertHTML(`<a href="${selectedFile.uri}" />`);
+                        this.editor.selection.insertHTML(`<a href="${selectedFile.uri}" title="${selectedFile.htmlTitle}"/>`);
                     }
                 }
             });

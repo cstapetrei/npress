@@ -19,6 +19,12 @@ export class File extends Base{
     @IsUnique()
     uri: string;
 
+    @Column('text')
+    html_title: string;
+
+    @Column('text')
+    html_alt: string;
+
     isImage: boolean|number = false;
     isVideo: boolean|number = false;
     isAudio: boolean|number = false;
@@ -26,16 +32,18 @@ export class File extends Base{
     assign(requestBody: any): File {
         super.assign(requestBody);
 
-        this.name = requestBody.name;
-        this.type = requestBody.type || "application/octet-stream";
-        this.uri = '/uploads/' + this.name;
-        this.uri = this.uri[0] !== '/' ? '/'+this.uri : this.uri;
+        this.name = requestBody.name || this.name;
+        this.type = requestBody.type || this.type || "application/octet-stream";
+        this.html_title = requestBody.html_title || this.html_title || "";
+        this.html_alt = requestBody.html_alt || this.html_alt || "";
         return this;
     }
 
     @BeforeInsert()
     setData(){
         this.status = Base.STATUS_ACTIVE;
+        this.uri = '/uploads/' + this.name;
+        this.uri = this.uri[0] !== '/' ? '/'+this.uri : this.uri;
     }
 
     @AfterLoad()

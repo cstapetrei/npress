@@ -53,4 +53,12 @@ export class AdminFileApiController{
             APIExceptionResponse(e,res);
         }
     }
+
+    public static async put(req: Request, res: Response) {
+        try{
+            res.json(await (Container.get("FileService") as FileService).update(parseInt(req.params.id), req.body) || []);
+        } catch(e){
+            APIExceptionResponse(e,res);
+        }
+    }
 }

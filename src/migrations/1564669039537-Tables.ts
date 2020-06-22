@@ -198,6 +198,16 @@ export class Tables1564669039537 implements MigrationInterface {
                     length: '128'
                 },
                 {
+                    name: 'html_title',
+                    type: "text",
+                    isNullable: true
+                },
+                {
+                    name: 'html_alt',
+                    type: "text",
+                    isNullable: true
+                },
+                {
                     name: 'status',
                     type: "varchar",
                     length: '16',

@@ -33,6 +33,7 @@ router.get('/api/pages', AdminPageApiController.getAll);
 router.get('/api/file', AdminFileApiController.getAll);
 router.post('/api/file', AdminFileApiController.post);
 router.delete('/api/file/:id', AdminFileApiController.delete);
+router.put('/api/file/:id', AdminFileApiController.put);
 router.post('/api/user', AdminUserApiController.post);
 router.put('/api/user/:id', AdminUserApiController.put);
 router.delete('/api/user/:id', AdminUserApiController.delete);

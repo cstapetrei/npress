@@ -331,6 +331,3 @@ NPress.refreshTooltips = () => {
         $('[title]').tooltip();
     }
 }
-
-// find all elements with title attribute and attach a tooltip for each
-NPress.refreshTooltips();

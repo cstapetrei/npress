@@ -49,7 +49,9 @@ NPress.MediaModal = class MediaModal{
                                 isVideo: item.getAttribute('data-is-video'),
                                 name: item.getAttribute('data-name'),
                                 type: item.getAttribute('data-type'),
-                                uri: item.value
+                                uri: item.value,
+                                htmlTitle: item.getAttribute('data-html-title'),
+                                htmlAlt: item.getAttribute('data-html-alt'),
                             }
                         } ));
                         modal.onCloseModal();

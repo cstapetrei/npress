@@ -1,39 +1,37 @@
-<table class="table table-bordered table-hover dataTable" role="grid">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Uri</th>
-            <th>Type</th>
-            <th>Created at</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    </tbody>
-        {% for f in data %}
-            <tr>
-                <td>{{ f.id }}</td>
-                <td>{{ f.name }}</td>
-                <td><a href="{{ f.uri }}" target="_blank"{{ f.isImage ? ' data-toggle="luminous"' : '' }}>{{ f.uri }}</td>
-                <td>{{ f.type }}</td>
-                <td>{{ f.created_at|date('d/m/Y') }}</td>
-                <td>{{ f.status|capitalize }}</td>
-                <td>
-                    <button class="btn btn-xs btn-danger js-delete" data-file-id="{{ f.id }}"><i class="fas fa-trash-alt"></i></button>
-                </td>
-            </tr>
-        {% endfor %}
-    </tbody>
-    <tfoot>
-        <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Uri</th>
-            <th>Type</th>
-            <th>Created at</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-    </tfoot>
-</table>
+<div class="row">
+    {% for item in data %}
+    <div class="col-12">
+        <div class="card card-outline card-primary collapsed-card">
+            <div class="card-header">
+                <div class="card-title">
+                <span>{{ item.name }}</span>
+                <a href="{{ item.uri }}" target="_blank"{{ item.isImage ? ' data-toggle="luminous"' : '' }}><small>{{ item.uri }}</small></a>
+                </div>
+                <div class="card-tools">
+                    <span class="badge badge-secondary">{{ item.created_at|date('d/m/Y') }} </span>
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i></button>
+                    <button type="button" class="btn btn-tool js-delete" data-id="{{ item.id }}" title="Delete"><i class="fas fa-trash-alt"></i></button>
+                </div>
+                <!-- /.card-tools -->
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <form class="js-file-properties-form" data-id="{{ item.id }}">
+                    <div class="form-group">
+                        <label>HTML Title</label>
+                        <input class="form-control" type="text" name="html_title" data-initial-value="{{ item.html_title|default('') }}" value="{{ item.html_title|default('') }}" />
+                    </div>
+                    {% if item.isImage %}
+                        <div class="form-group">
+                            <label>HTML Alt</label>
+                            <input class="form-control" type="text" name="html_alt" data-initial-value="{{ item.html_alt|default('') }}" value="{{ item.html_alt|default('') }}" />
+                        </div>
+                    {% endif %}
+                </form>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div>
+    {% endfor %}
+</div>
