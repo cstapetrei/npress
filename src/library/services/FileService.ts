@@ -44,7 +44,7 @@ export class FileService extends BaseService{
         let f:File|undefined = await fileRepo.findOne(id);
         if (f){
             fs.unlink(path.join(FileService.uploadPath, f.name), async (err: any) => {
-                if (f || err.code === 'ENOENT'){
+                if (f){
                     let result:DeleteResult = await fileRepo.delete(f.id).then().catch( (e:Error) => { throw e; });
                     (Container.get("EventEmitter") as EventEmitter).emit(this.eventMap[BaseService.DELETED_EVENT_KEY], f);
                     return result;
