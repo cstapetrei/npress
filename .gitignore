@@ -3,7 +3,7 @@
 node_modules/*
 build/*
 dist/*
-static/uploads/*
+src/static/js/templates/*
 src/logs/*.log
 src/static/uploads/*
 !src/static/uploads/.gitkeep
