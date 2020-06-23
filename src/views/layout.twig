@@ -16,12 +16,16 @@
     {% block css %}
     {% endblock %}
 
+    {% if page.custom_css is not empty %}
+        <style>{{ page.custom_css|raw }}</style>
+    {% endif %}
+
     {% block header_js %}
     {% endblock %}
 </head>
 <body class="{{ body_class|default('') }}" data-page-id="{{ page.id }}">
 
-    <header class="container{{ page.header_full_width|default(0) ? '-fluid' : '' }}">
+    <header class="{{ page.header_full_width|default(0) ? '' : 'container' }}">
         {{ page.header_content|default('<h1>'~page.title~'</h1>')|raw }}
     </header>
 
@@ -82,5 +86,8 @@
     {% block js %}
     {% endblock %}
 
+    {% if page.custom_js is not empty %}
+        <script type="text/javascript">{{ page.custom_js|raw }}</script>
+    {% endif %}
 </body>
 </html>

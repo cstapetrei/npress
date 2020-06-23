@@ -1,17 +1,22 @@
-{% extends "./layout.twig" %}
+{% extends "layout.twig" %}
 
 {% block css %}
-<link rel="stylesheet" href="{{ "style.css"|theme_asset }}">
+<link rel="stylesheet" href="{{ "education.css"|theme_asset }}">
 {% endblock %}
 
 {% block js %}
 <script type="text/javascript" src="{{ "script.js"|theme_asset }}"></script>
 {% endblock %}
 
-{% block header %}
-    My theme header
-    <img class="img-fluid" src="{{ "imgs/Speaker_Icon.svg"|theme_asset }}" />
-    {% include "./partials/header_partial.twig" %}
+{% block navigation %}
+    <div class="top-black-band fixed-top py-2">
+        <div class="{{ settings('site_width')|default('container') }}">
+            <span class="mr-2"><i class="fas fa-phone-alt"></i> +1 123-456-7890</span>
+            <span><i class="fas fa-map-marker-alt"></i> 1010 Moon ave, New York, NY US</span>
+        </div>
+    </div>
+
+    {% include 'partials/nav.twig' with { menu: menu, page: page } only %}
 {% endblock %}
 
 {% block content %}
@@ -24,11 +29,8 @@ My theme sidebar
 {% endblock %}
 
 {% block comments %}
-My theme comment block
 {% endblock %}
 
 {% block footer %}
-<footer>
-My theme footer
-</footer>
+    {% include './footer.twig' %}
 {% endblock %}

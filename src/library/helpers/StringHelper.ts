@@ -44,7 +44,7 @@ export class StringHelper {
                         resultObj.code = p;
                         continue;
                     }
-                    resultObj.properties[attribute] = value.replace(/["']+/g, '');
+                    resultObj.properties[attribute] = value ? value.replace(/["']+/g, '') : '';
                 }
                 if (filter === '*' || resultObj.code === filter){
                     result.push(resultObj);
