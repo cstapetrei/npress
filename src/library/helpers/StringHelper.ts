@@ -3,7 +3,7 @@ import { IStringToAny } from "../Interfaces";
 
 export class StringHelper {
 
-    static readonly CODEBLOCKS_REGEX:RegExp = /\[\[.*\]\]/ig;
+    static readonly CODEBLOCKS_REGEX:RegExp = /\[\[([\w-\_]+)\s+(.*)\]\]/ig;
     static readonly SLUG_CODEBLOCK_REGEX:RegExp = /([\w-\_]+)\s+/ig;
     static readonly ATTRS_CODEBLOCK_REGEX:RegExp = /(\S+)=["']?((?:.(?!["']?\s+(?:\S+)=|["']))+.)["']?/ig;
 
@@ -34,7 +34,8 @@ export class StringHelper {
         let matchedCodeblocks:Array<string>|null = str.match(this.CODEBLOCKS_REGEX);
         if (matchedCodeblocks){
             for(let ms of matchedCodeblocks) {
-                let slug = this.SLUG_CODEBLOCK_REGEX.exec(ms);
+                this.CODEBLOCKS_REGEX.lastIndex = this.ATTRS_CODEBLOCK_REGEX.lastIndex = 0;
+                let slug = this.CODEBLOCKS_REGEX.exec(ms);
                 if (!slug || !slug[1]){
                     continue;
                 }
