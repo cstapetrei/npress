@@ -1,3 +1,4 @@
+import express from "express";
 import { Request, Response } from "express";
 import { getRepository } from "typeorm";
 import { Page } from "../entity/Page";
@@ -19,7 +20,8 @@ export class AdminController{
             let existingUser = await (Container.get("UserService") as UserService).getByEmail(email);
             if (existingUser){
                 if (existingUser.password === PasswordHelper.hashString(password, existingUser.salt)){
-                    req.session = Object.assign(req.session, (Container.get("UserService") as UserService).getSessionDataForLogin(new User));
+                    req.session = Object.assign(req.session, (Container.get("UserService") as UserService).getSessionDataForLogin(existingUser));
+                    (Container.get("App") as express.Application).set('is_logged_in', 1);
                     return res.redirect('/admin');
                 }
             }
@@ -30,6 +32,7 @@ export class AdminController{
     public static async logout(req: Request, res: Response) {
         if (req.session){
             req.session.destroy( (err) => {} );
+            (Container.get("App") as express.Application).set('is_logged_in', 0);
             return res.redirect('/admin/login');
         }
         return res.redirect('/admin');

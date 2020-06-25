@@ -71,6 +71,10 @@
     </footer>
     {% endblock %}
 
+    {% if is_logged_in() %}
+        {% include 'admin/partials/bottom_logged_in_panel.twig' with { page: page } only %}
+    {% endif %}
+
     <script type="text/javascript" src="/vendor/fetch.umd.js"></script>
     <script type="text/javascript" src="/vendor/polyfill.min.js"></script>
     <script type="text/javascript" src="/vendor/bootstrap-native.min.js"></script>

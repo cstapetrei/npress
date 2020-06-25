@@ -59,6 +59,7 @@ export default class App {
             self.initStaticAssets();
             self.initMainMiddlewares();
             self.initSessions(config.session_secret);
+            self.initGlobals(config);
             self.initRoutes();
             self.initDI();
             self.startApp(config.server_port, config.server_ip);
@@ -81,6 +82,11 @@ export default class App {
         }));
     }
 
+    private initGlobals(config: any): void{
+        if (config.env === 'development' && config.disableLogin){
+            this.app.set('is_logged_in', 1);
+        }
+    }
     private startApp(port:number, ip:string = '127.0.0.1'): void{
         this.app.listen(port, ip, () => {
             console.log('Express server listening on port ' + port);
@@ -88,6 +94,8 @@ export default class App {
     }
 
     private extendTwig(): void{
+        let self = this;
+
         Twig.extendFilter('theme_asset', (value, args) => {
                 let settingsMap: IStringToString = Container.get('settingsMap');
                 let path = "/themes/"+settingsMap.active_theme;
@@ -99,6 +107,10 @@ export default class App {
         );
         Twig.extendFunction("settings", function(value) {
             return (Container.get('settingsMap') as IStringToString)[value] || '';
+        });
+
+        Twig.extendFunction("is_logged_in", function(value) {
+            return self.app.get('is_logged_in');
         });
     }
     private initViews(): void{

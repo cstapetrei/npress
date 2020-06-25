@@ -1,0 +1,5 @@
+<div class="bottom-logged-in-panel fixed-bottom px-2 py-2 bg-dark d-flex justify-content-end">
+    {% if page|default(false) %}
+        <a class="btn btn-primary btn-sm" href="/admin/edit-page/{{ page.id }}" target="_blank">Edit page</a>
+    {% endif %}
+</div>
