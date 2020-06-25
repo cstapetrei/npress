@@ -33,37 +33,36 @@
         {% include 'partials/nav.twig' with { menu: menu, page: page } only %}
     {% endblock %}
 
-    <main id="main-content" class="{{ settings('site_width')|default('container') }}" role="main">
-        <div class="row">
-            <section class="{{ page.show_sidebar|default(false) ? "col-8" : "col-12" }}">
-                {% block content %}
-                {% endblock %}
-            </section>
-
-            {% block sidebar %}
-                {% if page.show_sidebar|default(false) %}
-                    <aside class="col-4">
-                        {{ page.sidebar_content }}
-                    </aside>
-                {% endif %}
+    <main id="main-content" class="{{ settings('site_width') == 'container' ? 'container' : '' }}" role="main">
+        <section class="content">
+            {% block content %}
             {% endblock %}
-        </div>
-
-        {% block comments %}
-            {% if page.show_comment_section|default(false) %}
-            <div class="row comments-section-row mt-3">
-                {% if page.show_comment_form|default(false) %}
-                    {% include 'partials/comment_form.twig' with { page: page } only %}
-                {% endif %}
-                <section class="col-12 comments-section js-comments-section">
-                    <h4>Comments</h4>
-                    <div class="comment-list js-comment-list">
-                    </div>
-                </section>
-            </div>
+        </section>
+        {% block sidebar %}
+            {% if page.show_sidebar|default(false) %}
+                <aside>
+                    {{ page.sidebar_content }}
+                </aside>
             {% endif %}
         {% endblock %}
     </main>
+
+    {% block comments %}
+        {% if page.show_comment_section|default(false) %}
+            <section class="{{ settings('site_width')|default('container') }}">
+                <div class="row comments-section-row mt-3">
+                    {% if page.show_comment_form|default(false) %}
+                        {% include 'partials/comment_form.twig' with { page: page } only %}
+                    {% endif %}
+                    <section class="col-12 comments-section js-comments-section">
+                        <h4>Comments</h4>
+                        <div class="comment-list js-comment-list">
+                        </div>
+                    </section>
+                </div>
+            </section>
+        {% endif %}
+    {% endblock %}
 
     {% block footer %}
     <footer class="page-footer py-2">
