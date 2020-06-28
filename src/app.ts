@@ -83,7 +83,7 @@ export default class App {
     }
 
     private initGlobals(config: any): void{
-        if (config.env === 'development' && config.disableLogin){
+        if (config.env === 'development' && parseInt(config.disableLogin)){
             this.app.set('is_logged_in', 1);
         }
     }
