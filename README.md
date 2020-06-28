@@ -83,6 +83,12 @@ Due to the compiled nature of typescript, the non-twig assets in a theme folder 
 
 There is a barebones `my-theme` folder already created for inspiration, but please ignore it's esthetics since it's there only as a code sample. :)
 
+#### Education theme
+
+The education theme has in import folder with an .sql file and some other pics. To see what it looks like you need to import the sql to your db and afterwards copy the pics to your `src/static/uploads` folder.
+
+Thanks to [these guys](https://www.filathemes.com/downloads/education-lms/) for the free version so I could migrate it here. :)
+
 ### Requirements
 
 Any modern browser should do just fine. Older browsers most likely won't work since they don't support javascript arrow functions and other ES6 features natively.
