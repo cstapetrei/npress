@@ -196,6 +196,24 @@ NPress.api = {
             }, params));
         }
     },
+    themes: {
+        get: (params) => {
+            let page = params.page || 0;
+            let query = params.query || '';
+            return ajax(`/admin/api/themes?page=${page}&q=${query}`, params);
+        },
+        update: (data, params) => {
+            return ajax(`/admin/api/theme/${data.id}`, Object.assign({
+                method: "put",
+                data: data
+            }, params));
+        },
+        delete: (data, params) => {
+            return ajax(`/admin/api/theme/${data.id}`, Object.assign({
+                method: "delete"
+            }, params));
+        }
+    },
 };
 
 // find all elements with title attribute and attach a tooltip for each

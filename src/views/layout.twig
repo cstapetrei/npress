@@ -35,6 +35,7 @@
 
     <main id="main-content" class="{{ settings('site_width') == 'container' ? 'container' : '' }}" role="main">
         <section class="content">
+        <p>{{ is_logged_in() ? 'yes': 'no'}}</p>
             {% block content %}
             {% endblock %}
         </section>

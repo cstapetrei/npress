@@ -10,7 +10,8 @@ export const InjectDataInAdminPage = (req: Request, res: Response, next: NextFun
         "/admin/files": { label: "Files", active: false, icon: "fas fa-folder-open", tooltip: "Files" },
         "/admin/comments": { label: "Comments", active: false, icon: "fas fa-comments", tooltip: "Comments" },
         "/admin/menus": { label: "Menus", active: false, icon: "fas fa-ellipsis-h", tooltip: "Menus" },
-        "/admin/codeblocks": { label: "Codeblocks", active: false, icon: "fas fa-boxes", tooltip: "Codeblocks" }
+        "/admin/codeblocks": { label: "Codeblocks", active: false, icon: "fas fa-boxes", tooltip: "Codeblocks" },
+        "/admin/themes": { label: "Themes", active: false, icon: "fas fa-paint-brush", tooltip: "Themes" }
     };
     if (adminRoutes[req.originalUrl]){
         adminRoutes[req.originalUrl].active = true;
