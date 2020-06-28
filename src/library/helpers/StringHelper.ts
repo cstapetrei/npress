@@ -3,7 +3,9 @@ import { IStringToAny } from "../Interfaces";
 
 export class StringHelper {
 
-    static readonly CODEBLOCKS_REGEX:RegExp = /\[\[(?<code>[\s\w\=\"\"\'\'-]+)\]\]/ig;
+    static readonly CODEBLOCKS_REGEX:RegExp = /\[\[([\w-\_]+)\s+(.*)\]\]/ig;
+    static readonly SLUG_CODEBLOCK_REGEX:RegExp = /([\w-\_]+)\s+/ig;
+    static readonly ATTRS_CODEBLOCK_REGEX:RegExp = /(\S+)=["']?((?:.(?!["']?\s+(?:\S+)=|["']))+.)["']?/ig;
 
     public static slugify(string: string, spacePlaceholder: string = '-'): string {
         if (!string) {
@@ -32,19 +34,23 @@ export class StringHelper {
         let matchedCodeblocks:Array<string>|null = str.match(this.CODEBLOCKS_REGEX);
         if (matchedCodeblocks){
             for(let ms of matchedCodeblocks) {
+                this.CODEBLOCKS_REGEX.lastIndex = this.ATTRS_CODEBLOCK_REGEX.lastIndex = 0;
+                let slug = this.CODEBLOCKS_REGEX.exec(ms);
+                if (!slug || !slug[1]){
+                    continue;
+                }
                 let resultObj:IStringToAny = {
-                    code: "",
+                    code: slug[1],
                     match: ms,
                     properties: {}
                 };
-                let props:Array<string> = ms.replace('[[','').replace(']]','').trim().split(' ');
-                for (let p of props){
-                    let [attribute, value]:any = p.split('=');
-                    if (!resultObj.code && !value){
-                        resultObj.code = p;
-                        continue;
+                let attrMatches = this.ATTRS_CODEBLOCK_REGEX.exec(ms);
+                while (attrMatches){
+                    if (attrMatches){
+                        resultObj.properties[attrMatches[1]] = attrMatches[2].replace(/["']+/g, '') || '';
+                        ms.replace(attrMatches[0], '');
                     }
-                    resultObj.properties[attribute] = value.replace(/["']+/g, '');
+                    attrMatches = this.ATTRS_CODEBLOCK_REGEX.exec(ms);
                 }
                 if (filter === '*' || resultObj.code === filter){
                     result.push(resultObj);

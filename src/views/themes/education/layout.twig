@@ -8,71 +8,64 @@
     <link rel="stylesheet" href="/css/noty.css">
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/loader.css">
-    <link rel="stylesheet" href="/css/custom.css">
+    <link rel="stylesheet" href="{{ "education.css"|theme_asset }}">
 
     {{- settings('google_analytics_script')|raw -}}
 
     <script type="text/javascript" src="/vendor/twig.js"></script>
-    {% block css %}
-    {% endblock %}
-
-    {% if page.custom_css is not empty %}
-        <style>{{ page.custom_css|raw }}</style>
-    {% endif %}
-
-    {% block header_js %}
-    {% endblock %}
 </head>
 <body class="{{ body_class|default('') }}" data-page-id="{{ page.id }}">
 
-    <header class="{{ page.header_full_width|default(0) ? '' : 'container' }}">
+    <header class="container{{ page.header_full_width|default(0) ? '-fluid' : '' }}">
         {{ page.header_content|default('<h1>'~page.title~'</h1>')|raw }}
     </header>
 
-    {% block navigation %}
-        {% include 'partials/nav.twig' with { menu: menu, page: page } only %}
-    {% endblock %}
+    <div class="top-black-band fixed-top py-2">
+        <div class="{{ settings('site_width')|default('container') }}">
+            <span class="mr-2"><i class="fas fa-phone-alt"></i> +1 123-456-7890</span>
+            <span><i class="fas fa-map-marker-alt"></i> 1010 Moon ave, New York, NY US</span>
+        </div>
+    </div>
 
-    <main id="main-content" class="{{ settings('site_width') == 'container' ? 'container' : '' }}" role="main">
-        <section class="content">
-            {% block content %}
+    {% include 'partials/nav.twig' with { menu: menu, page: page } only %}
+
+    <main id="main-content" class="{{ settings('site_width')|default('container') }}" role="main">
+        <div class="row">
+            <section class="{{ page.show_sidebar|default(false) ? "col-8" : "col-12" }}">
+                {% block content %}
+                {% endblock %}
+            </section>
+
+            {% block sidebar %}
+                {% if page.show_sidebar|default(false) %}
+                    <aside class="col-4">
+                        {{ page.sidebar_content }}
+                    </aside>
+                {% endif %}
             {% endblock %}
-        </section>
-        {% block sidebar %}
-            {% if page.show_sidebar|default(false) %}
-                <aside>
-                    {{ page.sidebar_content }}
-                </aside>
+        </div>
+
+        {% block comments %}
+            {% if page.show_comment_section|default(false) %}
+            <div class="row comments-section-row mt-3">
+                {% if page.show_comment_form|default(false) %}
+                    {% include 'partials/comment_form.twig' with { page: page } only %}
+                {% endif %}
+                <section class="col-12 comments-section js-comments-section">
+                    <h4>Comments</h4>
+                    <div class="comment-list js-comment-list">
+                    </div>
+                </section>
+            </div>
             {% endif %}
         {% endblock %}
     </main>
-
-    {% block comments %}
-        {% if page.show_comment_section|default(false) %}
-            <section class="{{ settings('site_width')|default('container') }}">
-                <div class="row comments-section-row mt-3">
-                    {% if page.show_comment_form|default(false) %}
-                        {% include 'partials/comment_form.twig' with { page: page } only %}
-                    {% endif %}
-                    <section class="col-12 comments-section js-comments-section">
-                        <h4>Comments</h4>
-                        <div class="comment-list js-comment-list">
-                        </div>
-                    </section>
-                </div>
-            </section>
-        {% endif %}
-    {% endblock %}
 
     {% block footer %}
     <footer class="page-footer py-2">
         {% include 'partials/footer_content.twig' with { page: page } only %}
     </footer>
     {% endblock %}
-
-    {% if is_logged_in() %}
-        {% include 'admin/partials/bottom_logged_in_panel.twig' with { page: page } only %}
-    {% endif %}
 
     <script type="text/javascript" src="/vendor/fetch.umd.js"></script>
     <script type="text/javascript" src="/vendor/polyfill.min.js"></script>
@@ -89,8 +82,5 @@
     {% block js %}
     {% endblock %}
 
-    {% if page.custom_js is not empty %}
-        <script type="text/javascript">{{ page.custom_js|raw }}</script>
-    {% endif %}
 </body>
 </html>

@@ -3,23 +3,13 @@
 <!-- Brand Logo -->
 <a class="brand-link {{ settings('site_logo')|default(false) ? " navbar-brand-with-icon" : ""}}" href="/" target="_blank">
     {% if settings('site_logo')|default(false) %}
-        <img src="{{ settings('site_logo') }}" alt="Logo" class="brand-image img-circle elevation-3">
+        <img src="{{ settings('site_logo') }}" alt="Logo" class="brand-image">
     {% endif %}
     <span class="brand-text font-weight-light">{{ settings('site_name')|default('Site name') }}</span>
 </a>
 
 <!-- Sidebar -->
 <div class="sidebar">
-    <!-- Sidebar user panel (optional)
-    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-            <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-        </div>
-        <div class="info">
-            <a href="#" class="d-block">Alexander Pierce</a>
-        </div>
-    </div>
-    -->
 
     <!-- Sidebar Menu -->
     <nav class="mt-2">
