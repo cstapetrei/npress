@@ -1,5 +1,6 @@
 <div class="bottom-logged-in-panel fixed-bottom px-2 py-2 bg-dark d-flex justify-content-end">
+    <a class="btn btn-success mx-1" href="/admin" target="_blank">To Admin</a>
     {% if page|default(false) %}
-        <a class="btn btn-primary btn-sm" href="/admin/edit-page/{{ page.id }}" target="_blank">Edit page</a>
+        <a class="btn btn-primary mx-1" href="/admin/edit-page/{{ page.id }}" target="_blank">Edit page</a>
     {% endif %}
 </div>
