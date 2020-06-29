@@ -1,5 +1,6 @@
+{% set exceptions = [ 'active_theme' ] %}
 <form>
-    {% for s in data %}
+    {% for s in data if s.key not in exceptions %}
         <div class="form-group row" data-setting-id="{{ s.id }}">
             <label for="sid-{{ s.id }}" class="col-sm-2">
                 {{ s.name }}

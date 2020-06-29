@@ -60,4 +60,5 @@ router.put('/api/codeblock/:id', AdminCodeblockApiController.put);
 router.delete('/api/codeblock/:id', AdminCodeblockApiController.delete);
 router.get('/api/codeblocks', AdminCodeblockApiController.getAll);
 router.get('/api/themes', AdminThemeApiController.getAll);
+router.put('/api/theme/:id', AdminThemeApiController.put);
 export default router;

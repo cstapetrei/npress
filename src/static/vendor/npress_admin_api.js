@@ -207,11 +207,6 @@ NPress.api = {
                 method: "put",
                 data: data
             }, params));
-        },
-        delete: (data, params) => {
-            return ajax(`/admin/api/theme/${data.id}`, Object.assign({
-                method: "delete"
-            }, params));
         }
     },
 };

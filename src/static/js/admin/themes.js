@@ -3,7 +3,7 @@
     class ThemesPage extends N.BaseAdminPage{
         constructor(){
             super();
-            this.dataTableWrapper = document.querySelector('.js-data-table-wrapper');
+            this.dataWrapper = document.querySelector('.js-data-wrapper');
             this.currentPageData = {}
             this.currentFetchedItemCount = 0;
 
@@ -15,8 +15,10 @@
             this.onPageChange();
         }
         initTemplates(){
+            Twig.twig({ id: 'themes-page-data-template', href: "/js/templates/themes-page-data-template.twig", async: false });
         }
         initEvents(){
+            N.live(this.dataWrapper, 'click', '.js-activate', this.onActivate.bind(this));
         }
         onPageChange(e){
             this.getData(( e && e.detail.page ) || 1)
@@ -24,16 +26,21 @@
         onSearch(e){
             this.getData(1, e.detail.query);
         }
+        onActivate(){
+            N.api.themes.update({ form: this.dataWrapper }).then((response) => {
+                this.getData();
+            });
+        }
         getData(page = 1, query = false){
             N.api.themes.get({ query: query, page: page, form: this.dataTableWrapper }).then((response) => {
                 this.renderData(response);
             });
         }
         renderData(response){
-            // this.currentFetchedItemCount = response.count;
-            // this.dataTableWrapper.innerHTML = Twig.twig({ref: 'user-table-template'}).render({ data: response.data });
-            // this.paginator.setTotalCount(response.total);
-            // this.updateHistory();
+            this.currentFetchedItemCount = response.count;
+            this.dataWrapper.innerHTML = Twig.twig({ref: 'themes-page-data-template'}).render({ data: response.data });
+            this.paginator.setTotalCount(response.total);
+            this.updateHistory();
             N.refreshTooltips();
         }
     }
