@@ -5,7 +5,7 @@ import Container from "typedi";
 import express from "express";
 import path from "path";
 import fs from "fs";
-import { SettingService } from "./library/services/SettingService";
+import { SettingService } from "../library/services/SettingService";
 import { promisify } from 'util';
 import { IStringToString } from "../library/Interfaces";
 import { Base } from "../entity/Base";
@@ -15,7 +15,7 @@ export class AdminThemeApiController{
     public static async getAll(req: Request, res: Response) {
         try{
             let settingsMap: IStringToString = Container.get('settingsMap');
-            let responseObject:Array<IStringToString> = [{
+            let responseObject:IStringToString[] = [{
                 id: 'No theme',
                 name: 'No theme',
                 status: Base.STATUS_ACTIVE
@@ -56,7 +56,7 @@ export class AdminThemeApiController{
             } catch(e){
                 themeName = '';
             }
-            let activeTheme: Setting = (Container.get('settingObjects') as Setting[]).find( item => item.key === 'active_theme');
+            let activeTheme: Setting|undefined = (Container.get('settingObjects') as Setting[]).find( item => item.key === 'active_theme');
             if (activeTheme){
                 activeTheme.value = themeName;
                 await (Container.get('SettingService') as SettingService).update(activeTheme.id, activeTheme);
