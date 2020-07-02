@@ -7,6 +7,7 @@ import { AdminMenuApiController } from "../controllers/AdminMenuApiController";
 import { AdminCommentApiController } from "../controllers/AdminCommentApiController";
 import { AdminSettingApiController } from "../controllers/AdminSettingApiController";
 import { AdminCodeblockApiController } from "../controllers/AdminCodeblockApiController";
+import { AdminThemeApiController } from "../controllers/AdminThemeApiController";
 
 const router = Router();
 
@@ -21,6 +22,7 @@ router.get('/menus', AdminController.menus);
 router.get('/comments', AdminController.comments);
 router.get('/codeblocks', AdminController.codeblocks);
 router.get('/settings', AdminController.settings);
+router.get('/themes', AdminController.themes);
 router.get('/new-page', AdminController.newPage);
 router.get('/edit-page/:id', AdminController.editPage);
 router.post('/api/page', AdminPageApiController.post);
@@ -57,4 +59,6 @@ router.post('/api/codeblock', AdminCodeblockApiController.post);
 router.put('/api/codeblock/:id', AdminCodeblockApiController.put);
 router.delete('/api/codeblock/:id', AdminCodeblockApiController.delete);
 router.get('/api/codeblocks', AdminCodeblockApiController.getAll);
+router.get('/api/themes', AdminThemeApiController.getAll);
+router.put('/api/theme/:id', AdminThemeApiController.put);
 export default router;

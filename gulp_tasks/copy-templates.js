@@ -17,6 +17,7 @@ module.exports = function() {
             'src/views/admin/partials/menu-list-page-select-options-template.twig',
             'src/views/admin/partials/page-select-options-template.twig',
             'src/views/admin/partials/setting-page-data-template.twig',
+            'src/views/admin/partials/themes-page-data-template.twig',
             'src/views/admin/partials/media-modal-template.twig',
             "src/views/admin/partials/media-modal-content-template.twig",
             'src/views/admin/partials/single-comment-template.twig',

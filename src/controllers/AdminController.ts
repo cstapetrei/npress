@@ -65,6 +65,10 @@ export class AdminController{
         res.render('admin/settings', { nav_title: 'Settings' });
     }
 
+    public static async themes(req: Request, res: Response) {
+        res.render('admin/themes', { nav_title: 'Themes' });
+    }
+
     public static async newPage(req: Request, res: Response) {
         res.render('admin/new-edit-page', { body_class: 'add-new-page' });
     }
