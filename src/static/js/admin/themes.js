@@ -26,8 +26,9 @@
         onSearch(e){
             this.getData(1, e.detail.query);
         }
-        onActivate(){
-            N.api.themes.update({ form: this.dataWrapper }).then((response) => {
+        onActivate(e, el){
+            let themeName = el.getAttribute('data-id');
+            N.api.themes.update({id: themeName}, { form: this.dataWrapper }).then((response) => {
                 this.getData();
             });
         }
