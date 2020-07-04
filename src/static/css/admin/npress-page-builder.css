@@ -1,0 +1,26 @@
+.npress-page-builder{
+    position: relative;
+    min-height: 50px;
+    width: 100%;
+    border: 1px dashed #aaa;
+    background: #fff;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+.npress-page-builder .container,
+.npress-page-builder .container-fluid{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.npress-page-builder-toolbar{
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 10px;
+    position: absolute;
+    right: 0;
+    z-index: 1000;
+}
+.npress-page-builder-widget{
+    margin-bottom: 5px;
+    border: 1px dashed #aaa;
+}

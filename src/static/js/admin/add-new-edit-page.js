@@ -50,6 +50,8 @@
 
             flatpickr(document.querySelectorAll("[data-calendar]"), {});
 
+            new N.PageBuilder();
+
             this.initEvents();
         }
         initEvents(){

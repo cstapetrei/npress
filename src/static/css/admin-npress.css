@@ -2,6 +2,9 @@ html{
     font-size: 13px;
 }
 
+body{
+    position: relative;
+}
 header{
     margin-top: 55px;
 }

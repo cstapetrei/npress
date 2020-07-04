@@ -7,17 +7,20 @@
 {% block header_css %}
     {% include './partials/_codemirror-css-dependencies.twig' %}
     <link rel="stylesheet" href="/css/jodit.min.css">
+    <link rel="stylesheet" href="/css/admin/npress-page-builder.css">
     <link rel="stylesheet" href="/css/admin/add-new-page.css">
 {% endblock %}
 
 {% block footer_js %}
     {% include './partials/_codemirror-js-dependencies.twig' %}
     <script type="text/javascript" src="/vendor/jodit.min.js"></script>
+    <script type="text/javascript" src="/vendor/npress-page-builder.js"></script>
     <script type="text/javascript" src="/js/admin/add-new-edit-page.js"></script>
 {% endblock %}
 
 {% block body %}
     <form method="post" class="add-new-page-form js-{{ edit ? "edit" : "add-new" }}-page-form" data-page-id="{{ data.id|default('') }}">
+        <div id="npress-page-builder" class="npress-page-builder"></div>
         <div class="row">
             <div class="col-6">
                 <div class="card">
