@@ -14,7 +14,7 @@ NPress.PageBuilder = class PageBuilder{
         NPress.live(this.options.el, 'click', '.js-add-col', this.onAddColumn);
         NPress.live(this.options.el, 'click', '.js-add-element', (e, el) => {
             e.preventDefault();
-            let r = el.parentNode.querySelector('.col-content');
+            let r = el.closest('.npress-page-builder-widget-toolbar').parentNode.querySelector('.col-content');
             let item = document.createElement('h1');
             item.innerHTML = 'Test';
             r.appendChild(item);
@@ -22,10 +22,11 @@ NPress.PageBuilder = class PageBuilder{
     }
     addToolbar(){
         this.toolbarNode = document.createElement('aside');
-        this.toolbarNode.className = 'npress-page-builder-toolbar';
+        this.toolbarNode.className = 'npress-page-builder-widget-toolbar';
         this.toolbarNode.innerHTML = `
-            <button class="btn btn-default btn-block js-add-container" data-class="container">boxed</button>
-            <button class="btn btn-default btn-block js-add-fluid-container" data-class="container-fluid">fluid</button>
+            <button class="btn btn-default js-add-container" data-class="container">boxed</button>
+            <button class="btn btn-default js-add-fluid-container" data-class="container-fluid">fluid</button>
+            <button class="btn btn-default js-get-code">code</button>
         `;
         this.options.el.appendChild(this.toolbarNode);
 
@@ -35,12 +36,14 @@ NPress.PageBuilder = class PageBuilder{
     onAddColumn(e, el){
         e.preventDefault();
         let colClass = el.getAttribute("data-class");
-        let r = el.parentNode.querySelector('.row');
+        let r = el.closest('.npress-page-builder-widget-toolbar').parentNode.querySelector('.row');
         let c = document.createElement('div');
         c.className = `col-${colClass}`;
         c.innerHTML = `
             <div class="npress-page-builder-widget col-content"></div>
-            <button class="btn btn-default js-add-element">add</button>
+            <div class="npress-page-builder-widget-toolbar">
+                <button class="btn btn-default js-add-element">add</button>
+            </div>
         `;
         r.appendChild(c);
     }
@@ -49,10 +52,11 @@ NPress.PageBuilder = class PageBuilder{
         let containerClass = el.getAttribute("data-class");
         let c = document.createElement('div');
         c.className = `${containerClass} npress-page-builder-widget`;
-        c.innerHTML = `<div class="row"></div>`;
-        for (const i of Array(12).keys()){
-            c.innerHTML += `<button class="btn btn-default btn-xs js-add-col" data-class="${i+1}">${i+1}</button>`
+        let btnHtml = '';
+        for (let i = 1; i <= Array(12).length; i++){
+            btnHtml += `<button class="btn btn-default btn-xs js-add-col" data-class="${i}">${i}</button>`;
         }
-        this.options.el.appendChild(c);
+        c.innerHTML = `<div class="row"></div><div class="npress-page-builder-widget-toolbar">${btnHtml}</div>`;
+        this.options.el.insertBefore(c, this.toolbarNode);
     }
 }

@@ -8,7 +8,8 @@
     margin-bottom: 10px;
 }
 .npress-page-builder .container,
-.npress-page-builder .container-fluid{
+.npress-page-builder .container-fluid,
+.npress-page-builder .col-content{
     padding-top: 10px;
     padding-bottom: 10px;
 }
@@ -16,11 +17,12 @@
     background-color: #fff;
     border: 1px solid #ddd;
     padding: 10px;
-    position: absolute;
-    right: 0;
-    z-index: 1000;
 }
 .npress-page-builder-widget{
     margin-bottom: 5px;
     border: 1px dashed #aaa;
+}
+.npress-page-builder-widget-toolbar{
+    display: flex;
+    justify-content: center;
 }
