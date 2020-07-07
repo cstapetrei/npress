@@ -21,6 +21,7 @@
 .npress-page-builder-widget{
     position: relative;
     border: 1px dashed #aaa;
+    min-height: 20px;
 }
 .npress-page-builder-widget-toolbar{
     display: flex;
@@ -29,6 +30,11 @@
     bottom: 0;
     right: 0;
 }
-[class^="col-"] .npress-page-builder-widget-toolbar{
+.npress-page-builder-widget[data-type="text"],
+.npress-page-builder-widget[data-type="file"],
+.npress-page-builder-widget[data-type="code"]{
+    padding: 5px 0;
+}
+[class^="col-"] > .npress-page-builder-widget-toolbar{
     right: 9px;
 }

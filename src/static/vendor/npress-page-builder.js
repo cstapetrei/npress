@@ -23,12 +23,13 @@ NPress.PageBuilder = class PageBuilder{
         }
         let div = document.createElement('div');
         div.className = 'npress-page-builder-widget text-center';
+        div.setAttribute('data-type', type);
         switch(type){
             case 'text':
                 div.innerHTML += 'Placeholder text';
                 break;
-            case 'img':
-                div.innerHTML += '<img src="" class="img-fluid" />';
+            case 'file':
+                div.innerHTML += '<img src="" class="img-fluid" alt="placeholder image" />';
                 break;
             case 'code':
                 div.innerHTML += '<code>Placeholder text</code>';
@@ -46,6 +47,7 @@ NPress.PageBuilder = class PageBuilder{
     }
 
     onEditElement(e, el){
+        e.preventDefault();
         let content = el.closest('.npress-page-builder-widget').querySelector('.npress-page-builder-widget-content');
         let type = el.getAttribute('data-type');
         if (!type){
@@ -53,26 +55,86 @@ NPress.PageBuilder = class PageBuilder{
         }
         switch(type){
             case 'text':
-
+                new NPress.Modal({
+                    content: `<textarea name="widget_content">${content.innerHTML}</textarea>`,
+                    title: 'Edit',
+                    size: 'xl',
+                    buttons: [
+                        {
+                            label: 'Cancel',
+                            className: 'btn btn-info'
+                        },
+                        {
+                            label: 'Save',
+                            className: 'btn btn-primary',
+                            onClick: (e, modal) => {
+                                content.innerHTML = modal.modalBody.querySelector('textarea[name="widget_content"]').value;
+                                modal.onCloseModal();
+                            }
+                        }
+                    ],
+                    onInit: (instance) => {
+                        this.editor = new Jodit('textarea[name="widget_content"]', {
+                            height: 200
+                        });
+                    }
+                });
                 break;
-            case 'img':
-
+            case 'file':
+                new NPress.MediaModal({
+                    onSelect: event => {
+                        let selectedFile = event[0];
+                        if (parseInt(selectedFile.isImage)){
+                            content.innerHTML = `<img class="img-fluid" src="${selectedFile.uri}" title="${selectedFile.htmlTitle}" alt="${selectedFile.htmlAlt}"/>`;
+                        } else if (parseInt(selectedFile.isAudio)) {
+                            content.innerHTML = `<audio class="img-fluid" controls src="${selectedFile.uri}" title="${selectedFile.htmlTitle}"/>`;
+                        } else if (parseInt(selectedFile.isVideo)) {
+                            content.innerHTML = `<video class="img-fluid" controls src="${selectedFile.uri}" title="${selectedFile.htmlTitle}"/>`;
+                        } else {
+                            content.innerHTML = `<a href="${selectedFile.uri}" title="${selectedFile.htmlTitle}"/>`;
+                        }
+                    }
+                });
                 break;
             case 'code':
-
+                let widgetCodeMirror;
+                new NPress.Modal({
+                    content: `<textarea name="widget_content">${content.innerHTML}</textarea>`,
+                    title: 'Edit',
+                    size: 'xl',
+                    buttons: [
+                        {
+                            label: 'Cancel',
+                            className: 'btn btn-info'
+                        },
+                        {
+                            label: 'Save',
+                            className: 'btn btn-primary',
+                            onClick: (e, modal) => {
+                                content.innerHTML = widgetCodeMirror.getValue();
+                                modal.onCloseModal();
+                            }
+                        }
+                    ],
+                    onInit: (instance) => {
+                        setTimeout(() => {
+                            widgetCodeMirror = CodeMirror.fromTextArea(instance.modalBody.querySelector('textarea[name="widget_content"]'), {
+                                lineNumbers: true,
+                                extraKeys: {"Ctrl-Space": "autocomplete"},
+                                mode: {name: "xml", globalVars: true},
+                                htmlMode: true,
+                                foldGutter: true,
+                                gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+                            });
+                        }, 200);
+                    }
+                });
                 break;
         }
     }
 
     onRemoveElement(e, el){
-        let isColumn = el.getAttribute('data-is-column');
-        let isElement = el.getAttribute('data-is-element');
-        let widget = el.closest('.npress-page-builder-widget');
-        if (isElement){
-            widget = el.parentNode.parentNode;
-        } else if (isColumn){
-            widget = el.closest('[class^="col-"]');
-        }
+        let widget = el.closest('[data-type]');
         if (widget){
             widget.remove();
         }
@@ -95,9 +157,9 @@ NPress.PageBuilder = class PageBuilder{
         e.preventDefault();
         let colClass = el.getAttribute("data-class");
         let r = el.closest('.npress-page-builder-widget-toolbar').parentNode.querySelector('.row');
-        let c = document.createElement('div');
-        c.className = `col-${colClass}`;
-        c.innerHTML = `
+        let div = document.createElement('div');
+        div.className = `col-${colClass}`;
+        div.innerHTML = `
             <div class="npress-page-builder-widget col-content"></div>
             <div class="npress-page-builder-widget-toolbar">
                 <div class="dropdown">
@@ -106,27 +168,29 @@ NPress.PageBuilder = class PageBuilder{
                     </button>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="#" data-type="text">Text</a>
-                        <a class="dropdown-item" href="#" data-type="image">Image</a>
+                        <a class="dropdown-item" href="#" data-type="file">File</a>
                         <a class="dropdown-item" href="#" data-type="code">Code</a>
                     </div>
                 </div>
                 <button class="btn btn-danger btn-xs js-remove-element" data-is-column="1"><i class="fas fa-times"></i></button>
             </div>
         `;
-        NPress.live(c, 'click', '.dropdown-menu a', this.onAddElement.bind(this));
-        r.appendChild(c);
+        div.setAttribute('data-type', 'column');
+        NPress.live(div, 'click', '.dropdown-menu a', this.onAddElement.bind(this));
+        r.appendChild(div);
     }
     onAddContainer(e, el){
         e.preventDefault();
         let containerClass = el.getAttribute("data-class");
-        let c = document.createElement('div');
-        c.className = `${containerClass} npress-page-builder-widget`;
+        let div = document.createElement('div');
+        div.className = `${containerClass} npress-page-builder-widget`;
         let btnHtml = '';
         for (let i = 1; i <= Array(12).length; i++){
             btnHtml += `<button class="btn btn-default btn-xs js-add-col mx-1" data-class="${i}">${i}/12</button>`;
         }
         btnHtml += `<button class="btn btn-danger btn-xs js-remove-element"><i class="fas fa-times"></i></button>`;
-        c.innerHTML = `<div class="row"></div><div class="npress-page-builder-widget-toolbar">${btnHtml}</div>`;
-        this.options.el.insertBefore(c, this.toolbarNode);
+        div.innerHTML = `<div class="row"></div><div class="npress-page-builder-widget-toolbar">${btnHtml}</div>`;
+        div.setAttribute('data-type', 'container');
+        this.options.el.insertBefore(div, this.toolbarNode);
     }
 }
