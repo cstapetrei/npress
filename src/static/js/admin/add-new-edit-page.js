@@ -50,7 +50,7 @@
 
             flatpickr(document.querySelectorAll("[data-calendar]"), {});
 
-            new N.PageBuilder();
+            this.pageBuilder = new N.PageBuilder();
 
             this.initEvents();
         }
@@ -77,6 +77,9 @@
         onFormSubmit(e){
             e.preventDefault();
             let requestData = N.serializeElementInputs(e.target);
+            requestData.content = this.pageBuilder.getHtml();
+            // console.log(requestData);
+            // return false;
             if (this.editMode){
                 requestData.id = e.target.getAttribute('data-page-id');
                 N.api.pages.editPage(requestData, { form: document.body }).then(this.onSubmitSuccess).catch(this.onSubmitError);

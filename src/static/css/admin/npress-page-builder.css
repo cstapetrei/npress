@@ -13,28 +13,28 @@
     padding-top: 10px;
     padding-bottom: 30px;
 }
-.npress-page-builder-toolbar{
+.npress-page-builder .npress-page-builder-toolbar{
     background-color: #fff;
     border: 1px solid #ddd;
     padding: 10px;
 }
-.npress-page-builder-widget{
+.npress-page-builder .npress-page-builder-widget{
     position: relative;
     border: 1px dashed #aaa;
     min-height: 20px;
 }
-.npress-page-builder-widget-toolbar{
+.npress-page-builder .npress-page-builder-widget-toolbar{
     display: flex;
     justify-content: center;
     position: absolute;
     bottom: 0;
     right: 0;
 }
-.npress-page-builder-widget[data-type="text"],
-.npress-page-builder-widget[data-type="file"],
-.npress-page-builder-widget[data-type="code"]{
+.npress-page-builder .npress-page-builder-widget[data-type="text"],
+.npress-page-builder .npress-page-builder-widget[data-type="file"],
+.npress-page-builder .npress-page-builder-widget[data-type="code"]{
     padding: 5px 0;
 }
-[class^="col-"] > .npress-page-builder-widget-toolbar{
+.npress-page-builder [class^="col-"] > .npress-page-builder-widget-toolbar{
     right: 9px;
 }

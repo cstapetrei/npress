@@ -20,7 +20,9 @@
 
 {% block body %}
     <form method="post" class="add-new-page-form js-{{ edit ? "edit" : "add-new" }}-page-form" data-page-id="{{ data.id|default('') }}">
-        <div id="npress-page-builder" class="npress-page-builder"></div>
+        <div id="npress-page-builder" class="npress-page-builder">
+            {{ data.content }}
+        </div>
         <div class="row">
             <div class="col-6">
                 <div class="card">

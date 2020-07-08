@@ -11,19 +11,30 @@ NPress.PageBuilder = class PageBuilder{
         }
 
         this.addToolbar();
+
+
+        this.initEvents();
+        this.load();
+    }
+    initEvents(){
         NPress.live(this.options.el, 'click', '.js-add-col', this.onAddColumn.bind(this));
         NPress.live(this.options.el, 'click', '.js-remove-element', this.onRemoveElement);
+        NPress.live(this.options.el, 'click', '.js-add-container', this.onAddContainer.bind(this));
+        NPress.live(this.options.el, 'click', '.js-add-fluid-container', this.onAddContainer.bind(this));
+        NPress.live(this.options.el, 'click', '.js-get-code', (e, el) => { e.preventDefault() });
+        NPress.live(this.options.el, 'click', '.js-edit-element', this.onEditElement.bind(this));
+        NPress.live(this.options.el, 'click', '.dropdown-menu a', this.onAddElement.bind(this));
     }
     onAddElement(e, el){
         e.preventDefault();
         let content = el.closest('[class^="col-"]').querySelector('.col-content');
-        let type = el.getAttribute('data-type');
+        let type = el.getAttribute('data-widget-type');
         if (!type){
             return;
         }
         let div = document.createElement('div');
-        div.className = 'npress-page-builder-widget text-center';
-        div.setAttribute('data-type', type);
+        div.className = 'npress-page-builder-widget';
+        div.setAttribute('data-widget-type', type);
         switch(type){
             case 'text':
                 div.innerHTML += 'Placeholder text';
@@ -35,21 +46,15 @@ NPress.PageBuilder = class PageBuilder{
                 div.innerHTML += '<code>Placeholder text</code>';
                 break;
         }
-        div.innerHTML = `
-            <div class="npress-page-builder-widget-content">${div.innerHTML}</div>
-            <div class="npress-page-builder-widget-toolbar">
-                <button class="btn btn-default btn-xs js-edit-element" data-type="${type}"><i class="fas fa-edit"></i></button>
-                <button class="btn btn-danger btn-xs js-remove-element" data-is-element="1"><i class="fas fa-times"></i></button>
-            </div>
-        `;
-        NPress.live(div, 'click', '.js-edit-element', this.onEditElement.bind(this));
+        let toolbarHtml = this.getToolbarHtml(type);
+        div.innerHTML = `<div class="npress-page-builder-widget-content">${div.innerHTML}</div>${toolbarHtml}`;
         content.appendChild(div);
     }
 
     onEditElement(e, el){
         e.preventDefault();
         let content = el.closest('.npress-page-builder-widget').querySelector('.npress-page-builder-widget-content');
-        let type = el.getAttribute('data-type');
+        let type = el.getAttribute('data-widget-type');
         if (!type){
             return;
         }
@@ -134,7 +139,7 @@ NPress.PageBuilder = class PageBuilder{
     }
 
     onRemoveElement(e, el){
-        let widget = el.closest('[data-type]');
+        let widget = el.closest('[data-widget-type]');
         if (widget){
             widget.remove();
         }
@@ -148,10 +153,6 @@ NPress.PageBuilder = class PageBuilder{
             <button class="btn btn-default js-get-code btn-xs" title="Switch to source" data-toggle="tooltip"><i class="fas fa-code"></i></button>
         `;
         this.options.el.appendChild(this.toolbarNode);
-
-        NPress.live(this.toolbarNode, 'click', '.js-add-container', this.onAddContainer.bind(this));
-        NPress.live(this.toolbarNode, 'click', '.js-add-fluid-container', this.onAddContainer.bind(this));
-        NPress.live(this.toolbarNode, 'click', '.js-get-code', (e, el) => { e.preventDefault() });
     }
     onAddColumn(e, el){
         e.preventDefault();
@@ -159,24 +160,9 @@ NPress.PageBuilder = class PageBuilder{
         let r = el.closest('.npress-page-builder-widget-toolbar').parentNode.querySelector('.row');
         let div = document.createElement('div');
         div.className = `col-${colClass}`;
-        div.innerHTML = `
-            <div class="npress-page-builder-widget col-content"></div>
-            <div class="npress-page-builder-widget-toolbar">
-                <div class="dropdown">
-                    <button class="btn btn-default btn-xs" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-plus"></i>
-                    </button>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#" data-type="text">Text</a>
-                        <a class="dropdown-item" href="#" data-type="file">File</a>
-                        <a class="dropdown-item" href="#" data-type="code">Code</a>
-                    </div>
-                </div>
-                <button class="btn btn-danger btn-xs js-remove-element" data-is-column="1"><i class="fas fa-times"></i></button>
-            </div>
-        `;
-        div.setAttribute('data-type', 'column');
-        NPress.live(div, 'click', '.dropdown-menu a', this.onAddElement.bind(this));
+        let toolbarHtml = this.getToolbarHtml('column');
+        div.innerHTML = `<div class="npress-page-builder-widget col-content"></div>${toolbarHtml}`;
+        div.setAttribute('data-widget-type', 'column');
         r.appendChild(div);
     }
     onAddContainer(e, el){
@@ -184,13 +170,57 @@ NPress.PageBuilder = class PageBuilder{
         let containerClass = el.getAttribute("data-class");
         let div = document.createElement('div');
         div.className = `${containerClass} npress-page-builder-widget`;
-        let btnHtml = '';
-        for (let i = 1; i <= Array(12).length; i++){
-            btnHtml += `<button class="btn btn-default btn-xs js-add-col mx-1" data-class="${i}">${i}/12</button>`;
-        }
-        btnHtml += `<button class="btn btn-danger btn-xs js-remove-element"><i class="fas fa-times"></i></button>`;
-        div.innerHTML = `<div class="row"></div><div class="npress-page-builder-widget-toolbar">${btnHtml}</div>`;
-        div.setAttribute('data-type', 'container');
+        let btnHtml = this.getToolbarHtml('container');
+        div.innerHTML = `<div class="row"></div>${btnHtml}`;
+        div.setAttribute('data-widget-type', 'container');
         this.options.el.insertBefore(div, this.toolbarNode);
+    }
+    getToolbarHtml(widgetType = ''){
+        let result = '';
+        if (!widgetType){
+            return result;
+        }
+        switch(widgetType){
+            case 'container':
+                for (let i = 1; i <= Array(12).length; i++){
+                    result += `<button class="btn btn-default btn-xs js-add-col mx-1" data-class="${i}">${i}/12</button>`;
+                }
+                result += `<button class="btn btn-danger btn-xs js-remove-element"><i class="fas fa-times"></i></button>`;
+                break;
+            case 'column':
+                result = `
+                <div class="dropdown">
+                    <button class="btn btn-default btn-xs" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#" data-widget-type="text">Text</a>
+                        <a class="dropdown-item" href="#" data-widget-type="file">File</a>
+                        <a class="dropdown-item" href="#" data-widget-type="code">Code</a>
+                    </div>
+                </div>
+                <button class="btn btn-danger btn-xs js-remove-element" data-is-column="1"><i class="fas fa-times"></i></button>`;
+                break;
+            case 'text':
+            case 'file':
+            case 'code':
+                result = `
+                <button class="btn btn-default btn-xs js-edit-element" data-widget-type="${widgetType}"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-danger btn-xs js-remove-element" data-is-element="1"><i class="fas fa-times"></i></button>`;
+                break;
+        }
+        return `<div class="npress-page-builder-widget-toolbar">${result}</div>`;
+    }
+    getHtml(){
+        let copy = this.options.el.cloneNode(true);
+        copy.querySelectorAll('.npress-page-builder-widget-toolbar').forEach( item => item.remove() );
+        return copy.innerHTML;
+    }
+    load(){
+        this.options.el.querySelectorAll('[data-widget-type]').forEach(element => {
+            let type = element.getAttribute('data-widget-type');
+            let toolbarNode = NPress.node(this.getToolbarHtml(type));
+            element.appendChild(toolbarNode);
+        });
     }
 }
