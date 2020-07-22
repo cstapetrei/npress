@@ -10,7 +10,6 @@ import { Container } from "typedi";
 import { User } from "./entity/User";
 import { Auth } from "./library/middlewares/Auth";
 import session  from "express-session";
-import { InjectDataInAdminPage } from "./library/middlewares/InjectDataInAdminPage";
 import { Page } from "./entity/Page";
 import { PublicController } from "./controllers/PublicController";
 import { File } from "./entity/File";
@@ -74,7 +73,7 @@ export default class App {
     }
 
     private initRoutes(): void{
-        this.app.use('/admin', [Auth, this.acl.authorize.unless({ path: ['/admin/login'] }), InjectDataInAdminPage], adminRoutes);
+        this.app.use('/admin', [Auth, this.acl.authorize.unless({ path: ['/admin/login'] })], adminRoutes);
         this.app.use('/public', publicRoutes);
         this.app.use('*', PublicController.index);
     }
@@ -95,14 +94,14 @@ export default class App {
 
     private initAdminMenu():void{
         this.adminMenu = new Map<string, AdminMenu>();
-        this.adminMenu.set("/admin/settings", { url: "/admin/settings", label: "Settings", active: false, icon: "fas fa-cogs", tooltip: "Settings" });
-        this.adminMenu.set("/admin/users", { url: "/admin/users", label: "Users", active: false, icon: "fas fa-users", tooltip: "Users" });
-        this.adminMenu.set("/admin/pages", { url: "/admin/pages", label: "Pages", active: false, icon: "fas fa-copy", tooltip: "Pages" });
-        this.adminMenu.set("/admin/files", { url: "/admin/files", label: "Files", active: false, icon: "fas fa-folder-open", tooltip: "Files" });
-        this.adminMenu.set("/admin/comments", { url: "/admin/comments", label: "Comments", active: false, icon: "fas fa-comments", tooltip: "Comments" });
-        this.adminMenu.set("/admin/menus", { url: "/admin/menus", label: "Menus", active: false, icon: "fas fa-ellipsis-h", tooltip: "Menus" });
-        this.adminMenu.set("/admin/codeblocks", { url: "/admin/codeblocks", label: "Codeblocks", active: false, icon: "fas fa-boxes", tooltip: "Codeblocks" });
-        this.adminMenu.set("/admin/themes", { url: "/admin/themes", label: "Themes", active: false, icon: "fas fa-paint-brush", tooltip: "Themes" });
+        this.adminMenu.set("/admin/settings", { url: "/admin/settings", label: "Settings", icon: "fas fa-cogs", tooltip: "Settings" });
+        this.adminMenu.set("/admin/users", { url: "/admin/users", label: "Users", icon: "fas fa-users", tooltip: "Users" });
+        this.adminMenu.set("/admin/pages", { url: "/admin/pages", label: "Pages", icon: "fas fa-copy", tooltip: "Pages" });
+        this.adminMenu.set("/admin/files", { url: "/admin/files", label: "Files", icon: "fas fa-folder-open", tooltip: "Files" });
+        this.adminMenu.set("/admin/comments", { url: "/admin/comments", label: "Comments", icon: "fas fa-comments", tooltip: "Comments" });
+        this.adminMenu.set("/admin/menus", { url: "/admin/menus", label: "Menus", icon: "fas fa-ellipsis-h", tooltip: "Menus" });
+        this.adminMenu.set("/admin/codeblocks", { url: "/admin/codeblocks", label: "Codeblocks", icon: "fas fa-boxes", tooltip: "Codeblocks" });
+        this.adminMenu.set("/admin/themes", { url: "/admin/themes", label: "Themes", icon: "fas fa-paint-brush", tooltip: "Themes" });
     }
 
     private initSessions(secret: string): void{
@@ -119,6 +118,7 @@ export default class App {
             this.app.set('is_logged_in', 1);
         }
     }
+
     private startApp(port:number, ip:string = '127.0.0.1'): void{
         this.app.listen(port, ip, () => {
             console.log('Express server listening on port ' + port);
@@ -173,7 +173,8 @@ export default class App {
         Container.set("EventEmitter", new events.EventEmitter());
         Container.set("App", this.app);
         Container.set("Logger", new Logger());
-        Container.set("AdminRoutes", this.adminMenu);
+        Container.set("AdminRoutesMap", this.adminMenu);
+        Container.set("AdminRoutesArray", [...this.adminMenu.values()]);
 
         this.initListeners();
 

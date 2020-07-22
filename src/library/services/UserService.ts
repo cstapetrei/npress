@@ -91,5 +91,6 @@ export class UserService extends BaseService{
             }
         }
         Container.set("AdminRoutes", newAdminRoutesMap);
+        Container.set("AdminRoutesArray", [...newAdminRoutesMap.values()]);
     }
 }

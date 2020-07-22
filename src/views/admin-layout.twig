@@ -1,4 +1,3 @@
-{% set currentUrl = router.getRewriteUri() %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,7 +37,7 @@
 {% endblock %}
 
 {% block sidebar %}
-    {% include 'admin/partials/sidebar.twig' with { menu: menu } only %}
+    {% include 'admin/partials/sidebar.twig' with { menu: menu, currentUrl: currentUrl } only %}
 {% endblock %}
 
 <!-- Content Wrapper. Contains page content -->
