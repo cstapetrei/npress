@@ -1,4 +1,5 @@
 import path from "path";
+import fs from "fs";
 import events from "events";
 import Twig from "twig";
 import express from "express";
@@ -9,7 +10,6 @@ import { Container } from "typedi";
 import { User } from "./entity/User";
 import { Auth } from "./library/middlewares/Auth";
 import session  from "express-session";
-import { InjectDataInAdminPage } from "./library/middlewares/InjectDataInAdminPage";
 import { Page } from "./entity/Page";
 import { PublicController } from "./controllers/PublicController";
 import { File } from "./entity/File";
@@ -29,15 +29,18 @@ import { CodeblockService } from "./library/services/CodeblockService";
 import { PageListener } from "./library/listeners/PageListener";
 import { CodeblockListener } from "./library/listeners/CodeblockListener";
 import { Codeblock } from "./entity/Codeblock";
-import { IStringToString } from "./library/Interfaces";
+import { IStringToString, AdminMenu } from "./library/Interfaces";
 
 export default class App {
 
     public app: express.Application;
+    public acl: any;
+    private adminMenu: Map<string, AdminMenu>;
 
     constructor(config: any) {
         let self = this;
         this.app = express();
+        this.acl = require('express-acl');
 
         Container.set('config', config);
         useContainer(Container);
@@ -60,6 +63,8 @@ export default class App {
             self.initMainMiddlewares();
             self.initSessions(config.session_secret);
             self.initGlobals(config);
+            self.initAcl();
+            self.initAdminMenu();
             self.initRoutes();
             self.initDI();
             self.startApp(config.server_port, config.server_ip);
@@ -68,9 +73,35 @@ export default class App {
     }
 
     private initRoutes(): void{
-        this.app.use('/admin', [Auth, InjectDataInAdminPage], adminRoutes);
+        this.app.use('/admin', [Auth, this.acl.authorize.unless({ path: ['/admin/login'] })], adminRoutes);
         this.app.use('/public', publicRoutes);
         this.app.use('*', PublicController.index);
+    }
+
+    private initAcl():void{
+        let aclJson = [];
+        try{
+            let rawdata:any = fs.readFileSync('nacl.json');
+            aclJson = JSON.parse(rawdata);
+        } catch(e){
+            aclJson = [];
+        }
+
+        Container.set("Acl", aclJson);
+        Container.set("AvailableAclRoles", aclJson.map( (o:any) => o.group ));
+        this.acl.config({ rules: aclJson, defaultRole: 'guest', decodedObjectName: 'session' });
+    }
+
+    private initAdminMenu():void{
+        this.adminMenu = new Map<string, AdminMenu>();
+        this.adminMenu.set("/admin/settings", { url: "/admin/settings", label: "Settings", icon: "fas fa-cogs", tooltip: "Settings" });
+        this.adminMenu.set("/admin/users", { url: "/admin/users", label: "Users", icon: "fas fa-users", tooltip: "Users" });
+        this.adminMenu.set("/admin/pages", { url: "/admin/pages", label: "Pages", icon: "fas fa-copy", tooltip: "Pages" });
+        this.adminMenu.set("/admin/files", { url: "/admin/files", label: "Files", icon: "fas fa-folder-open", tooltip: "Files" });
+        this.adminMenu.set("/admin/comments", { url: "/admin/comments", label: "Comments", icon: "fas fa-comments", tooltip: "Comments" });
+        this.adminMenu.set("/admin/menus", { url: "/admin/menus", label: "Menus", icon: "fas fa-ellipsis-h", tooltip: "Menus" });
+        this.adminMenu.set("/admin/codeblocks", { url: "/admin/codeblocks", label: "Codeblocks", icon: "fas fa-boxes", tooltip: "Codeblocks" });
+        this.adminMenu.set("/admin/themes", { url: "/admin/themes", label: "Themes", icon: "fas fa-paint-brush", tooltip: "Themes" });
     }
 
     private initSessions(secret: string): void{
@@ -87,6 +118,7 @@ export default class App {
             this.app.set('is_logged_in', 1);
         }
     }
+
     private startApp(port:number, ip:string = '127.0.0.1'): void{
         this.app.listen(port, ip, () => {
             console.log('Express server listening on port ' + port);
@@ -141,6 +173,8 @@ export default class App {
         Container.set("EventEmitter", new events.EventEmitter());
         Container.set("App", this.app);
         Container.set("Logger", new Logger());
+        Container.set("AdminRoutesMap", this.adminMenu);
+        Container.set("AdminRoutesArray", [...this.adminMenu.values()]);
 
         this.initListeners();
 

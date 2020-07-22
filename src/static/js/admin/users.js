@@ -80,7 +80,7 @@
             };
 
             new N.Modal({
-                content: Twig.twig({ref: 'add-edit-user-modal-template'}).render({ data: this.currentPageData[rowId] }),
+                content: Twig.twig({ref: 'add-edit-user-modal-template'}).render({ data: this.currentPageData[rowId], available_acl_roles: NPress.availableAclRoles || [] }),
                 title: 'Edit user',
                 buttons: [
                     {
@@ -113,7 +113,7 @@
             };
 
             new N.Modal({
-                content: Twig.twig({ref: 'add-edit-user-modal-template'}).render(),
+                content: Twig.twig({ref: 'add-edit-user-modal-template'}).render({ available_acl_roles: NPress.availableAclRoles || [] }),
                 title: 'Add user',
                 buttons: [
                     {

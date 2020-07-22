@@ -4,6 +4,7 @@
             <th>Id</th>
             <th>Email</th>
             <th>Created at</th>
+            <th>Role</th>
             <th>Status</th>
             <th>Actions</th>
         </tr>
@@ -16,6 +17,7 @@
                 {{ u.email }}
             </td>
             <td>{{ u.created_at|date('d/m/Y') }}</td>
+            <td>{{ u.role|capitalize }}</td>
             <td>{{ u.status|capitalize }}</td>
             <td>
                 <a href="#" class="btn btn-primary btn-xs js-edit" data-id="{{ u.id }}" title="Edit"><i class="fas fa-edit"></i></a>

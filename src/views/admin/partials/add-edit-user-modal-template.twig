@@ -14,6 +14,15 @@
     <input type="password" class="form-control" name="password_confirm">
 </div>
 <div class="form-group">
+    <label>Role</label>
+    <select name="role" class="form-control">
+        {% for item in available_acl_roles %}
+            <option value="{{ item }}"{{ (data.role is empty and item == 'guest') or (data.role == item) ? ' selected' : ''}}>{{ item|capitalize }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+<div class="form-group">
     <label>Date</label>
     <input type="text" class="form-control" name="created_at" value="{{ data.created_at|default('') }}" data-calendar>
 </div>
