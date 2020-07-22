@@ -5,6 +5,7 @@ import Container from "typedi";
 import { EventEmitter } from "events";
 import { EntityNotFoundException } from "../exceptions/EntityNotFoundException";
 import { Base } from "../../entity/Base";
+import { AdminMenu } from "../Interfaces";
 
 export class UserService extends BaseService{
     constructor(){
@@ -60,7 +61,35 @@ export class UserService extends BaseService{
     getSessionDataForLogin(u: User){
         return {
             auth: 1,
-            email: u.email || ''
+            email: u.email || '',
+            role: u.role
         }
+    }
+
+    refreshAdminRoutesForUser(u: User){
+        if (u.role === User.ROLE_ADMIN){
+            return
+        }
+        let adminRoutesMap: Map<string, AdminMenu> = Container.get("AdminRoutes") as Map<string, AdminMenu>;
+        let newAdminRoutesMap: Map<string, AdminMenu> = new Map<string, AdminMenu>();
+        let adminRoutesKeys:Array<string> = [...adminRoutesMap.keys()];
+        let acl: any = Container.get("Acl");
+        let allowedAclArray:Array<string> = [];
+        for (let rule of acl){
+            if (rule.group === u.role){
+                allowedAclArray = rule.permissions.map((o:any) => o .action === 'allow' ? o.resource : null)
+                for (let a of allowedAclArray){
+                    if (!a || a === '/admin'){ continue; }
+                    const re = RegExp(a);
+                    for (let adminRoute of adminRoutesKeys){
+                        if (re.test(adminRoute)){
+                            newAdminRoutesMap.set(adminRoute, adminRoutesMap.get(adminRoute) as AdminMenu);
+                        }
+                    }
+                }
+                break;
+            }
+        }
+        Container.set("AdminRoutes", newAdminRoutesMap);
     }
 }

@@ -13,12 +13,17 @@
       "group": "user",
       "permissions": [
         {
-          "resource": "admin/users/*",
+          "resource": "/admin",
+          "methods": ["GET"],
+          "action": "allow"
+        },
+        {
+          "resource": "/admin/users/*",
           "methods": "*",
           "action": "allow"
         },
         {
-            "resource": "admin/api/users/*",
+            "resource": "/admin/api/users/*",
             "methods": "*",
             "action": "allow"
         }
@@ -28,7 +33,7 @@
       "group": "guest",
       "permissions": [
         {
-          "resource": "admin/*",
+          "resource": "/admin/*",
           "methods": "*",
           "action": "deny"
         }

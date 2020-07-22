@@ -1,12 +1,9 @@
 export interface AdminMenu {
+    url: string,
     label: string,
     active: boolean,
     icon?: string,
     tooltip?: string
-}
-
-export interface AdminMenuMap {
-    [url:string] : AdminMenu
 }
 
 export interface IStringToNumber {

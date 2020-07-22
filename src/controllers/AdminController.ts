@@ -22,6 +22,7 @@ export class AdminController{
                 if (existingUser.password === PasswordHelper.hashString(password, existingUser.salt)){
                     req.session = Object.assign(req.session, (Container.get("UserService") as UserService).getSessionDataForLogin(existingUser));
                     (Container.get("App") as express.Application).set('is_logged_in', 1);
+                    (Container.get("UserService") as UserService).refreshAdminRoutesForUser(existingUser);
                     return res.redirect('/admin');
                 }
             }

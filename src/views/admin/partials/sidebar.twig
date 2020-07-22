@@ -19,7 +19,7 @@
             <li class="nav-item has-treeview menu-open">
                 {% for url, m in menu %}
                     <li class="nav-item{{ m.active ? ' active' : ''}}">
-                        <a class="nav-link" href="{{ url }}">
+                        <a class="nav-link" href="{{ m.url }}">
                             {% if m.icon %}
                                 <i class="nav-icon {{ m.icon }}"></i>
                             {% endif %}
