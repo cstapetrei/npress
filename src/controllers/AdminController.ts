@@ -39,7 +39,7 @@ export class AdminController{
         return res.redirect('/admin');
     }
     public static async users(req: Request, res: Response) {
-        res.render('admin/users', { nav_title: 'Users' });
+        res.render('admin/users', { nav_title: 'Users', available_acl_roles: Container.get('AvailableAclRoles') });
     }
 
     public static async pages(req: Request, res: Response) {

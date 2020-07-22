@@ -87,7 +87,9 @@ export default class App {
         } catch(e){
             aclJson = [];
         }
+
         Container.set("Acl", aclJson);
+        Container.set("AvailableAclRoles", aclJson.map( (o:any) => o.group ));
         this.acl.config({ rules: aclJson, defaultRole: 'guest', decodedObjectName: 'session' });
     }
 
