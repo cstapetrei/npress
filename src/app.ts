@@ -34,10 +34,12 @@ import { IStringToString } from "./library/Interfaces";
 export default class App {
 
     public app: express.Application;
+    public acl: any;
 
     constructor(config: any) {
         let self = this;
         this.app = express();
+        this.acl = require('express-acl');
 
         Container.set('config', config);
         useContainer(Container);
@@ -60,6 +62,7 @@ export default class App {
             self.initMainMiddlewares();
             self.initSessions(config.session_secret);
             self.initGlobals(config);
+            self.initAcl();
             self.initRoutes();
             self.initDI();
             self.startApp(config.server_port, config.server_ip);
@@ -68,9 +71,13 @@ export default class App {
     }
 
     private initRoutes(): void{
-        this.app.use('/admin', [Auth, InjectDataInAdminPage], adminRoutes);
+        this.app.use('/admin', [Auth, InjectDataInAdminPage, this.acl.authorize], adminRoutes);
         this.app.use('/public', publicRoutes);
         this.app.use('*', PublicController.index);
+    }
+
+    private initAcl():void{
+        this.acl.config({ filename: 'nacl.json', defaultRole: 'guest' });
     }
 
     private initSessions(secret: string): void{
