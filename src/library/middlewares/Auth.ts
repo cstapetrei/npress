@@ -7,7 +7,7 @@ export const Auth = (req: Request, res: Response, next: NextFunction) => {
         res.locals.menu = Container.get("AdminRoutesArray");
         if (process.env.NODE_ENV === 'development' && +(process.env.disableLogin || 0)){
             req.session.auth = 1;
-            req.session.role = 'user';
+            req.session.role = 'admin';
             return next();
         }
 
