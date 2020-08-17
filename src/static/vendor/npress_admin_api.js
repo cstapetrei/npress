@@ -82,7 +82,8 @@ NPress.api = {
             let page = params.page || 0;
             let query = params.query || '';
             let perPage = params.perPage === undefined ? 10 : parseInt(params.perPage);
-            return ajax(`/admin/api/pages?page=${page}&pp=${perPage}&q=${query}`, params);
+            let order = params.order || 'id,asc';
+            return ajax(`/admin/api/pages?page=${page}&pp=${perPage}&q=${query}&order=${order}`, params);
         },
         getComments: (params) => {
             let page = params.page || 0;

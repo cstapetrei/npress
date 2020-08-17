@@ -39,7 +39,7 @@ export class BaseService{
     injectOrderParams(order:string, queryObject: SelectQueryBuilder<any>){
         if (order){
             let orderSplit = order.split(',');
-            orderSplit[0] = orderSplit[0].trim();
+            orderSplit[0] = `t.${orderSplit[0].trim()}`;
             orderSplit[1] = orderSplit[1].trim().toUpperCase();
             if (orderSplit[1] === 'ASC' || orderSplit[1] === 'DESC'){
                 queryObject.orderBy(orderSplit[0], (orderSplit[1] as 'ASC'|'DESC'));
