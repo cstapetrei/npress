@@ -8,7 +8,7 @@ import { Comment } from "../entity/Comment";
 export class AdminCommentApiController{
     public static async getAll(req: Request, res: Response) {
         try{
-            let result: [Comment[], number] = await (Container.get("CommentService") as CommentService).getPaged(parseInt(req.query.page as string)-1, 10, (req.query.q as string) || '', true)
+            let result: [Comment[], number] = await (Container.get("CommentService") as CommentService).getPaged(parseInt(req.query.page as string)-1, 10, (req.query.q as string) || '', req.query.order as string || 'id,asc', { get_source_page: '1' })
             return CountHeadersResponse(result[0], result[1], res);
         } catch(e){
             APIExceptionResponse(e,res);

@@ -1,5 +1,5 @@
 import { BaseService } from "./BaseService";
-import { Repository, getRepository, getManager, EntityManager, FindManyOptions, Like } from "typeorm";
+import { Repository, getRepository, getManager, EntityManager, FindManyOptions, Like, SelectQueryBuilder } from "typeorm";
 import Container from "typedi";
 import { Setting } from "../../entity/Setting";
 import { IStringToString } from "../Interfaces";
@@ -34,13 +34,12 @@ export class SettingService extends BaseService{
         Container.set('settingObjects', settings);
     }
 
-    getFindManyOptions(page: number, itemsPerPage: number = 10, query: string = '') : FindManyOptions{
-        let fo:FindManyOptions = super.getFindManyOptions(page, itemsPerPage, query);
-        fo.where = [
-            { key: Like(`%${query}%`) },
-            { name: Like(`%${query}%`) }
-        ];
-        return fo;
+    injectSearchParams(query:string, queryObject: SelectQueryBuilder<any>){
+        if (query){
+            queryObject.where( 't.key LIKE(:klike)', { klike: `%${query}%` });
+            queryObject.orWhere( 't.name LIKE(:nlike)', { nlike: `%${query}%` });
+        }
+        return queryObject
     }
 
     async updateAll(data: any){
@@ -56,11 +55,20 @@ export class SettingService extends BaseService{
         (Container.get("EventEmitter") as EventEmitter).emit(this.eventMap[SettingService.UPDATED_ALL_EVENT_KEY]);
         return [];
     }
-    async getPaged(page: number, itemsPerPage: number = 10, query: string = '') {
+    async getPaged(page: number, itemsPerPage: number = 10, query: string = '', order: string = 'id,asc', otherOptions: IStringToString = {}) {
         let repo: Repository<Setting> = getRepository(Setting);
-        let result:[Setting[], number] = await repo.findAndCount(this.getFindManyOptions(page, itemsPerPage, query)).then().catch( (e: any) => {
-            throw e;
-        });
+        let sqlObject = repo.createQueryBuilder('t'); // general alias t = table
+        let count = await sqlObject.getCount();
+        let maxPageCount = Math.ceil(count / itemsPerPage);
+        if (maxPageCount <= page){
+            page = maxPageCount-1;
+        }
+        this.injectPagingParams(page, itemsPerPage, sqlObject);
+        this.injectOrderParams(order, sqlObject);
+        this.injectSearchParams(query, sqlObject);
+        let fetchedRows:Setting[] = await sqlObject.getMany();
+        let result: [Setting[], number] = [fetchedRows, count];
+
         for (let s of result[0]){
             if (s.key === 'active_theme'){
                 let themeList:Array<string> = await this.getThemeList();

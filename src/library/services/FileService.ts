@@ -1,4 +1,4 @@
-import { Repository, getRepository, DeleteResult, Like, FindManyOptions } from "typeorm";
+import { Repository, getRepository, DeleteResult, Like, FindManyOptions, SelectQueryBuilder } from "typeorm";
 import { File } from "../../entity/File";
 import { EntityNotFoundException } from "../exceptions/EntityNotFoundException";
 import path from "path";
@@ -20,10 +20,12 @@ export class FileService extends BaseService{
         };
     }
 
-    getFindManyOptions(page: number, itemsPerPage: number = 10, query: string = '') : FindManyOptions{
-        let fo:FindManyOptions = super.getFindManyOptions(page, itemsPerPage, query);
-        fo.where = { name: Like(`%${query}%`) };
-        return fo;
+    injectSearchParams(query:string, queryObject: SelectQueryBuilder<any>){
+        if (query){
+            queryObject.where( 't.name LIKE(:nlike)', { nlike: `%${query}%` });
+            queryObject.orWhere( 't.uri LIKE(:ulike)', { ulike: `%${query}%` });
+        }
+        return queryObject
     }
 
     async saveNew(file: any) {

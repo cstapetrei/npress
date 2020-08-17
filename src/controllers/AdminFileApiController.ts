@@ -12,7 +12,7 @@ export class AdminFileApiController{
 
     public static async getAll(req: Request, res: Response) {
         try{
-            let result: [Base[], number] = await (Container.get("FileService") as FileService).getPaged(parseInt(req.query.page as string)-1, 10, (req.query.q as string) || '')
+            let result: [Base[], number] = await (Container.get("FileService") as FileService).getPaged(parseInt(req.query.page as string)-1, 10, (req.query.q as string) || '', req.query.order as string || 'id,asc')
             return CountHeadersResponse(result[0], result[1], res);
         } catch(e){
             APIExceptionResponse(e,res);

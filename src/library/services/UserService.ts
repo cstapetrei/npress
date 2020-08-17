@@ -1,6 +1,6 @@
 import { User } from "../../entity/User";
 import { BaseService } from "./BaseService";
-import { getRepository, Repository, FindManyOptions, Like } from "typeorm";
+import { getRepository, Repository, FindManyOptions, Like, SelectQueryBuilder } from "typeorm";
 import Container from "typedi";
 import { EventEmitter } from "events";
 import { EntityNotFoundException } from "../exceptions/EntityNotFoundException";
@@ -17,10 +17,11 @@ export class UserService extends BaseService{
         };
     }
 
-    getFindManyOptions(page: number, itemsPerPage: number = 10, query: string = '') : FindManyOptions{
-        let fo:FindManyOptions = super.getFindManyOptions(page, itemsPerPage, query);
-        fo.where = { email: Like(`%${query}%`) };
-        return fo;
+    injectSearchParams(query:string, queryObject: SelectQueryBuilder<any>){
+        if (query){
+            queryObject.where( 't.email LIKE(:elike)', { elike: `%${query}%` });
+        }
+        return queryObject
     }
 
     async saveNew(data: any) {
@@ -44,7 +45,7 @@ export class UserService extends BaseService{
             if (data.password){
                 existingEntity.password_changed = true;
             }
-            let result = await repo.save(existingEntity.assign(data)).then().catch( (e) => { throw e; });
+            let result = await repo.update(existingEntity.id, existingEntity.assign(data)).then().catch( (e) => { throw e; });
             if (this.eventMap[BaseService.UPDATED_EVENT_KEY]){
                 (Container.get("EventEmitter") as EventEmitter).emit(this.eventMap[BaseService.UPDATED_EVENT_KEY], existingEntity);
             }

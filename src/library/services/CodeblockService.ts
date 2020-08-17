@@ -1,5 +1,5 @@
 import { BaseService } from "./BaseService";
-import { Repository, getRepository, FindManyOptions, Like, In } from "typeorm";
+import { Repository, getRepository, FindManyOptions, Like, In, SelectQueryBuilder } from "typeorm";
 import { Codeblock } from "../../entity/Codeblock";
 import { StringHelper } from "../helpers/StringHelper";
 import { IStringToString } from "../Interfaces";
@@ -15,12 +15,11 @@ export class CodeblockService extends BaseService{
         };
     }
 
-    getFindManyOptions(page: number, itemsPerPage: number = 10, query: string = '') : FindManyOptions{
-        let fo:FindManyOptions = super.getFindManyOptions(page, itemsPerPage, query);
-        fo.where = [
-            { name: Like(`%${query}%`) }
-        ];
-        return fo;
+    injectSearchParams(query:string, queryObject: SelectQueryBuilder<any>){
+        if (query){
+            queryObject.where( 't.name LIKE(:nlike)', { nlike: `%${query}%` });
+        }
+        return queryObject
     }
 
     async getBySlugs(slugArray:(string | undefined)[]){

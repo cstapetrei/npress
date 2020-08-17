@@ -1,5 +1,5 @@
 import { BaseService } from "./BaseService";
-import { Repository, getRepository, getManager, EntityManager, FindManyOptions, Like } from "typeorm";
+import { Repository, getRepository, getManager, EntityManager, FindManyOptions, Like, SelectQueryBuilder } from "typeorm";
 import { EntityNotFoundException } from "../exceptions/EntityNotFoundException";
 import Container from "typedi";
 import { EventEmitter } from "events";
@@ -39,10 +39,11 @@ export class PageService extends BaseService{
         return result;
     }
 
-    getFindManyOptions(page: number, itemsPerPage: number = 10, query: string = '') : FindManyOptions{
-        let fo:FindManyOptions = super.getFindManyOptions(page, itemsPerPage, query);
-        fo.where = { title: Like(`%${query}%`) };
-        return fo;
+    injectSearchParams(query:string, queryObject: SelectQueryBuilder<any>){
+        if (query){
+            queryObject.where( 't.title LIKE(:tlike)', { tlike: `%${query}%` });
+        }
+        return queryObject
     }
 
     async setAsHomepage(pageId: number){
