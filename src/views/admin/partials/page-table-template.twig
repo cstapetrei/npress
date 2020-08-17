@@ -30,11 +30,9 @@
     </tbody>
     <tfoot>
         <tr>
-            <th>Id</th>
-            <th>Title</th>
-            <th>Uri</th>
-            <th>Created at</th>
-            <th>Status</th>
+            {% for item in columns %}
+                <th>{{ item.label }}</th>
+            {% endfor %}
             <th>Actions</th>
         </tr>
     </tfoot>

@@ -11,9 +11,11 @@
             this.initTemplates();
             this.initEvents();
 
-            this.paginator.element().addEventListener(N.Pagination.ON_AFTER_CHANGE_PAGE, this.onPageChange.bind(this));
-            this.search.element().addEventListener(N.SearchHandler.ON_AFTER_SEARCH_KEYUP, this.onSearch.bind(this));
-            this.onPageChange();
+            this.paginator.element().addEventListener(N.Pagination.ON_AFTER_CHANGE_PAGE, this.onRefreshData.bind(this));
+            this.paginator.element().addEventListener(N.Pagination.ON_AFTER_CHANGE_ITEMS_PER_PAGE, this.onRefreshData.bind(this));
+            this.search.element().addEventListener(N.SearchHandler.ON_AFTER_SEARCH_KEYUP, this.onRefreshData.bind(this));
+            this.sort.element().addEventListener(N.SortHandler.ON_AFTER_SORT_CLICKED, this.onRefreshData.bind(this));
+            this.onRefreshData();
         }
         initTemplates(){
             Twig.twig({ id: 'user-table-template', href: "/js/templates/user-table-template.twig", async: false });
@@ -24,14 +26,11 @@
             N.live(this.dataTableWrapper,'click','.js-edit', this.onEditItemClick.bind(this));
             this.newUserBtn.addEventListener('click', this.onNewItemClick.bind(this));
         }
-        onPageChange(e){
-            this.getData(( e && e.detail.page ) || 1)
+        onRefreshData(e){
+            this.getData(this.paginator.options.currentPage, this.paginator.options.itemsPerPage, this.search.options.query, this.sort.getOrderString() );
         }
-        onSearch(e){
-            this.getData(1, e.detail.query);
-        }
-        getData(page = 1, query = false){
-            N.api.users.get({ query: query, page: page, form: this.dataTableWrapper }).then((response) => {
+        getData(page = 1, itemsPerPage = 10, query = false, order = false){
+            N.api.users.get({ query: query, page: page, perPage: itemsPerPage, order: order, form: this.dataTableWrapper }).then((response) => {
                 this.currentPageData = {};
                 for(let i in response.data){
                     let user = response.data[i];
@@ -42,7 +41,7 @@
         }
         renderData(response){
             this.currentFetchedItemCount = response.count;
-            this.dataTableWrapper.innerHTML = Twig.twig({ref: 'user-table-template'}).render({ data: response.data });
+            this.dataTableWrapper.innerHTML = Twig.twig({ref: 'user-table-template'}).render({ data: response.data, sort: { column: this.sort.options.column, order: this.sort.options.sort } });
             this.paginator.setTotalCount(response.total);
             this.updateHistory();
             N.refreshTooltips();
