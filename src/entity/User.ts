@@ -50,15 +50,15 @@ export class User extends Base{
         }
     }
 
-    assign(requestBody: any): User {
+    assign(requestBody: Partial<User>): User {
         super.assign(requestBody);
 
-        this.email = requestBody.email;
+        this.email = requestBody.email || '';
         this.role = requestBody.role || User.ROLE_GUEST;
 
         if (this.password_changed){
-            this.password = requestBody.password;
-            this.password_confirm = requestBody.password_confirm;
+            this.password = requestBody.password || '';
+            this.password_confirm = requestBody.password_confirm || '';
         }
         return this;
     }
