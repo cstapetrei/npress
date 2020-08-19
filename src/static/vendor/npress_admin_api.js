@@ -4,7 +4,8 @@ NPress.api = {
         get: (params) => {
             let page = params.page || 0;
             let query = params.query || '';
-            return ajax(`/admin/api/users?page=${page}&q=${query}`, params);
+            let order = params.order || 'id,asc';
+            return ajax(`/admin/api/users?page=${page}&q=${query}&order=${order}`, params);
         },
         create: (data, params) => {
             return ajax('/admin/api/user', Object.assign({
@@ -63,7 +64,8 @@ NPress.api = {
         get: (params) => {
             let page = params.page || 0;
             let query = params.query || '';
-            return ajax(`/admin/api/file?page=${page}&q=${query}`, params);
+            let order = params.order || 'id,asc';
+            return ajax(`/admin/api/file?page=${page}&q=${query}&order=${order}`, params);
         },
         delete: (data, params) => {
             return ajax(`/admin/api/file/${data.id}`, Object.assign({
@@ -82,7 +84,8 @@ NPress.api = {
             let page = params.page || 0;
             let query = params.query || '';
             let perPage = params.perPage === undefined ? 10 : parseInt(params.perPage);
-            return ajax(`/admin/api/pages?page=${page}&pp=${perPage}&q=${query}`, params);
+            let order = params.order || 'id,asc';
+            return ajax(`/admin/api/pages?page=${page}&pp=${perPage}&q=${query}&order=${order}`, params);
         },
         getComments: (params) => {
             let page = params.page || 0;
@@ -123,7 +126,8 @@ NPress.api = {
     comments: {
         get: (params) => {
             let page = params.page || 0;
-            return ajax(`/admin/api/comments?page=${page}`, params);
+            let order = params.order || 'id,asc';
+            return ajax(`/admin/api/comments?page=${page}&order=${order}`, params);
         },
         create: (data, params) => {
             return ajax('/admin/api/comment', Object.assign({
@@ -146,7 +150,8 @@ NPress.api = {
     settings: {
         get: (params) => {
             let query = params.query || '';
-            return ajax(`/admin/api/settings?q=${query}`);
+            let order = params.order || 'id,asc';
+            return ajax(`/admin/api/settings?q=${query}&order=${order}`);
         },
         create: (data, params) => {
             return ajax('/admin/api/setting', Object.assign({
@@ -176,7 +181,8 @@ NPress.api = {
         get: (params) => {
             let page = params.page || 0;
             let query = params.query || '';
-            return ajax(`/admin/api/codeblocks?page=${page}&q=${query}`, params);
+            let order = params.order || 'id,asc';
+            return ajax(`/admin/api/codeblocks?page=${page}&q=${query}&order=${order}`, params);
         },
         create: (data, params) => {
             return ajax('/admin/api/codeblock', Object.assign({

@@ -10,9 +10,7 @@ export class Comment extends Base implements ITree{
     static readonly STATUS_PENDING = 'pending';
 
     @Column('int')
-    @IsNotEmpty({
-        message: 'Page must not be empty'
-    })
+    @IsNotEmpty({ message: 'Page must not be empty' })
     page_id: number;
 
     @Column('int')
@@ -37,15 +35,15 @@ export class Comment extends Base implements ITree{
 
     children: Comment[] = [];
 
-    assign(requestBody: any): Comment {
+    assign(requestBody: Partial<Comment>): Comment {
         super.assign(requestBody);
 
-        this.page_id = requestBody.page_id;
-        this.author_name = requestBody.author_name;
-        this.author_email = requestBody.author_email;
+        this.page_id = requestBody.page_id || 0;
+        this.author_name = requestBody.author_name || '';
+        this.author_email = requestBody.author_email || '';
         this.content = requestBody.content || '';
         this.parent_id = requestBody.parent_id || 0;
-        this.status = requestBody.status || false;
+        this.status = requestBody.status || Comment.STATUS_PENDING;
         return this;
     }
 

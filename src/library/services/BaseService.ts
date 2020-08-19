@@ -1,8 +1,9 @@
-import { Repository, getRepository, FindManyOptions } from "typeorm";
+import { Repository, getRepository, FindManyOptions, SelectQueryBuilder } from "typeorm";
 import { EntityNotFoundException } from "../exceptions/EntityNotFoundException";
 import Container from "typedi";
 import { EventEmitter } from "events";
 import { Base } from "../../entity/Base";
+import { IStringToString } from "../Interfaces";
 
 export class BaseService{
 
@@ -35,11 +36,43 @@ export class BaseService{
         return data;
     };
 
-    async getPaged(page: number, itemsPerPage: number = 10, query: string = '') {
+    injectOrderParams(order:string, queryObject: SelectQueryBuilder<any>){
+        if (order){
+            let orderSplit = order.split(',');
+            orderSplit[0] = `t.${orderSplit[0].trim()}`;
+            orderSplit[1] = orderSplit[1].trim().toUpperCase();
+            if (orderSplit[1] === 'ASC' || orderSplit[1] === 'DESC'){
+                queryObject.orderBy(orderSplit[0], (orderSplit[1] as 'ASC'|'DESC'));
+            }
+        }
+        return queryObject;
+    }
+
+    injectSearchParams(query:string, queryObject: SelectQueryBuilder<any>){
+        return queryObject;
+    }
+
+    injectPagingParams(page: number, itemsPerPage: number = 10, queryObject: SelectQueryBuilder<any>){
+        if (itemsPerPage && page >= 0){
+            queryObject.offset(itemsPerPage*page);
+            queryObject.limit(itemsPerPage);
+        }
+        return queryObject;
+    }
+
+    async getPaged(page: number, itemsPerPage: number = 10, query: string = '', order: string = 'id,asc', otherOptions: IStringToString = {}) {
         let repo: Repository<any> = getRepository(this.entityType);
-        let result:[Base[], number] = await repo.findAndCount(this.getFindManyOptions(page, itemsPerPage, query)).then().catch( (e: any) => {
-            throw e;
-        });
+        let sqlObject = repo.createQueryBuilder('t'); // general alias t = table
+        let count = await sqlObject.getCount();
+        let maxPageCount = Math.ceil(count / itemsPerPage);
+        if (maxPageCount <= page){
+            page = maxPageCount-1;
+        }
+        this.injectPagingParams(page, itemsPerPage, sqlObject);
+        this.injectOrderParams(order, sqlObject);
+        this.injectSearchParams(query, sqlObject);
+        let fetchedRows:Base[] = await sqlObject.getMany();
+        let result: [Base[], number] = [fetchedRows, count];
         return result;
     }
 
@@ -73,7 +106,7 @@ export class BaseService{
         const repo: Repository<Base> = getRepository(this.entityType);
         let existingEntity:Base|undefined = await repo.findOne(id);
         if (existingEntity){
-            let result = await repo.save(existingEntity.assign(data)).then().catch( (e) => { throw e; });
+            let result = await repo.update(existingEntity.id, existingEntity.assign(data)).then().catch( (e) => { throw e; });
             if (this.eventMap[BaseService.UPDATED_EVENT_KEY]){
                 (Container.get("EventEmitter") as EventEmitter).emit(this.eventMap[BaseService.UPDATED_EVENT_KEY], existingEntity);
             }

@@ -1,10 +1,11 @@
 import { User } from "../../entity/User";
 import { BaseService } from "./BaseService";
-import { getRepository, Repository, FindManyOptions, Like } from "typeorm";
+import { getRepository, Repository, FindManyOptions, Like, SelectQueryBuilder } from "typeorm";
 import Container from "typedi";
 import { EventEmitter } from "events";
 import { EntityNotFoundException } from "../exceptions/EntityNotFoundException";
 import { Base } from "../../entity/Base";
+import { AdminMenu } from "../Interfaces";
 
 export class UserService extends BaseService{
     constructor(){
@@ -16,10 +17,11 @@ export class UserService extends BaseService{
         };
     }
 
-    getFindManyOptions(page: number, itemsPerPage: number = 10, query: string = '') : FindManyOptions{
-        let fo:FindManyOptions = super.getFindManyOptions(page, itemsPerPage, query);
-        fo.where = { email: Like(`%${query}%`) };
-        return fo;
+    injectSearchParams(query:string, queryObject: SelectQueryBuilder<any>){
+        if (query){
+            queryObject.where( 't.email LIKE(:elike)', { elike: `%${query}%` });
+        }
+        return queryObject
     }
 
     async saveNew(data: any) {
@@ -43,7 +45,7 @@ export class UserService extends BaseService{
             if (data.password){
                 existingEntity.password_changed = true;
             }
-            let result = await repo.save(existingEntity.assign(data)).then().catch( (e) => { throw e; });
+            let result = await repo.update(existingEntity.id, existingEntity.assign(data)).then().catch( (e) => { throw e; });
             if (this.eventMap[BaseService.UPDATED_EVENT_KEY]){
                 (Container.get("EventEmitter") as EventEmitter).emit(this.eventMap[BaseService.UPDATED_EVENT_KEY], existingEntity);
             }
@@ -60,7 +62,36 @@ export class UserService extends BaseService{
     getSessionDataForLogin(u: User){
         return {
             auth: 1,
-            email: u.email || ''
+            email: u.email || '',
+            role: u.role
         }
+    }
+
+    refreshAdminRoutesForUser(u: User){
+        if (u.role === User.ROLE_ADMIN){
+            return
+        }
+        let adminRoutesMap: Map<string, AdminMenu> = Container.get("AdminRoutes") as Map<string, AdminMenu>;
+        let newAdminRoutesMap: Map<string, AdminMenu> = new Map<string, AdminMenu>();
+        let adminRoutesKeys:Array<string> = [...adminRoutesMap.keys()];
+        let acl: any = Container.get("Acl");
+        let allowedAclArray:Array<string> = [];
+        for (let rule of acl){
+            if (rule.group === u.role){
+                allowedAclArray = rule.permissions.map((o:any) => o .action === 'allow' ? o.resource : null)
+                for (let a of allowedAclArray){
+                    if (!a || a === '/admin'){ continue; }
+                    const re = RegExp(a);
+                    for (let adminRoute of adminRoutesKeys){
+                        if (re.test(adminRoute)){
+                            newAdminRoutesMap.set(adminRoute, adminRoutesMap.get(adminRoute) as AdminMenu);
+                        }
+                    }
+                }
+                break;
+            }
+        }
+        Container.set("AdminRoutes", newAdminRoutesMap);
+        Container.set("AdminRoutesArray", [...newAdminRoutesMap.values()]);
     }
 }

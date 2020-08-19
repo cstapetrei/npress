@@ -2,6 +2,7 @@ import { BaseService } from "./BaseService";
 import { Repository, getRepository, FindManyOptions, FindConditions, In } from "typeorm";
 import { Comment } from "../../entity/Comment";
 import { ArrayHelper } from "../helpers/ArrayHelper";
+import { IStringToString } from "../Interfaces";
 
 export class CommentService extends BaseService{
 
@@ -14,15 +15,23 @@ export class CommentService extends BaseService{
         };
     }
 
-    async getPaged(page: number, itemsPerPage: number = 10, query:string = '', getRelation:boolean = false) {
-        let repo: Repository<Comment> = getRepository(Comment);
-        let fo:FindManyOptions = super.getFindManyOptions(page, itemsPerPage, query);
-        if (getRelation){
-            fo.relations = ['source_page'];
+    async getPaged(page: number, itemsPerPage: number = 10, query: string = '', order: string = '', otherOptions: IStringToString = {}) {
+        let repo: Repository<Comment> = getRepository(this.entityType);
+        let sqlObject = repo.createQueryBuilder('t'); // general alias t = table
+        let count = await sqlObject.getCount();
+        let maxPageCount = Math.ceil(count / itemsPerPage);
+        if (maxPageCount <= page){
+            page = maxPageCount-1;
         }
-        let result:[Comment[], number] = await repo.findAndCount(fo).then().catch( (e: any) => {
-            throw e;
-        });
+        this.injectPagingParams(page, itemsPerPage, sqlObject);
+        this.injectOrderParams(order, sqlObject);
+        this.injectSearchParams(query, sqlObject);
+
+        if (+(otherOptions.get_source_page as string)){
+            sqlObject.innerJoinAndMapOne("t.source_page", "t.source_page", "sp");
+        }
+        let fetchedRows:Comment[] = await sqlObject.getMany();
+        let result: [Comment[], number] = [fetchedRows, count];
         return result;
     }
 

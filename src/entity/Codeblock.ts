@@ -25,10 +25,10 @@ export class Codeblock extends Base{
         this.status = Base.STATUS_ACTIVE;
     }
 
-    assign(requestBody: any): Codeblock {
+    assign(requestBody: Partial<Codeblock>): Codeblock {
         super.assign(requestBody);
 
-        this.name = requestBody.name;
+        this.name = requestBody.name as string;
         this.slug = StringHelper.slugify(this.name);
         this.content = requestBody.content || '';
         return this;

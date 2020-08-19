@@ -6,7 +6,7 @@ import { EventEmitter } from "events";
 import { Menu } from "../../entity/Menu";
 import { MenuItem } from "../../entity/MenuItem";
 import { BadRequestException } from "../exceptions/BadRequestException";
-import { IStringToNumber } from "../Interfaces";
+import { IStringToNumber, IStringToString } from "../Interfaces";
 import { ArrayHelper } from "../helpers/ArrayHelper";
 import { Base } from "../../entity/Base";
 
@@ -24,7 +24,7 @@ export class MenuService extends BaseService{
         };
     }
 
-    async getPaged(page: number, itemsPerPage: number = 10): Promise<[Menu[], number]> {
+    async getPaged(page: number, itemsPerPage: number = 10, query: string = '', order: string = 'id,asc', otherOptions: IStringToString = {}): Promise<[Menu[], number]> {
         let repo: Repository<Menu> = getRepository(Menu);
         page = page >= 0 ? page : 0;
         let offset = itemsPerPage*page;

@@ -29,7 +29,7 @@ export class File extends Base{
     isVideo: boolean|number = false;
     isAudio: boolean|number = false;
 
-    assign(requestBody: any): File {
+    assign(requestBody: Partial<File>): File {
         super.assign(requestBody);
 
         this.name = requestBody.name || this.name;

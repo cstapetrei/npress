@@ -27,12 +27,12 @@ export class Setting extends Base{
     @Column('varchar')
     input_type: string;
 
-    assign(requestBody: any): Setting {
+    assign(requestBody: Partial<Setting>): Setting {
         super.assign(requestBody);
 
-        this.key = StringHelper.slugify(requestBody.key, '_');
-        this.value = requestBody.value;
-        this.name = requestBody.name || requestBody.key;
+        this.key = StringHelper.slugify(requestBody.key || '', '_');
+        this.value = requestBody.value || '';
+        this.name = requestBody.name || requestBody.key || '';
         this.description = requestBody.description || '';
         this.input_type = requestBody.input_type || 'text';
         this.options = requestBody.options || '{}';

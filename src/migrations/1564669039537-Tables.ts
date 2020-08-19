@@ -38,6 +38,11 @@ export class Tables1564669039537 implements MigrationInterface {
                     length: '255',
                 },
                 {
+                    name: 'role',
+                    type: "varchar",
+                    length: '255',
+                },
+                {
                     name: 'status',
                     type: "varchar",
                     length: '16',
@@ -507,7 +512,7 @@ export class Tables1564669039537 implements MigrationInterface {
 
     private async runSeeds(queryRunner: QueryRunner){
         //password for admin@npress.com = 123123
-        await queryRunner.query("INSERT INTO user (email,password,salt,status) VALUES('admin@npress.com', 'd21a3ebbd9dcd4af4003b2121615b056d2e1adcbd163a61284dff7fc1b0850d68b81e1ed2f897d61d4f74e9a7b481993b6449386d7ca9f46606e49e55a472877', '90136f0e500493e216fc27b097c79055', '"+Base.STATUS_ACTIVE+"')");
+        await queryRunner.query("INSERT INTO user (email,password,salt,role,status) VALUES('admin@npress.com', 'd21a3ebbd9dcd4af4003b2121615b056d2e1adcbd163a61284dff7fc1b0850d68b81e1ed2f897d61d4f74e9a7b481993b6449386d7ca9f46606e49e55a472877', '90136f0e500493e216fc27b097c79055', 'admin', '"+Base.STATUS_ACTIVE+"')");
         await queryRunner.query("INSERT INTO page (title,uri,content,status,is_homepage) VALUES('Sample page', '/sample-page', '<h2>Sample page h2</h2><h3>Sample page h3</h3><p>Sample page first paragraph</p>[[my-first-code-block]]', '"+Page.STATUS_ACTIVE+"',1)");
         await queryRunner.query("INSERT INTO page (title,uri,content,status) VALUES('Another sample page', '/another-sample-page', '<h2>Another sample page h2</h2><h3>Another sample page h3</h3><p>Another sample page first paragraph</p>', '"+Page.STATUS_ACTIVE+"')");
         await queryRunner.query("INSERT INTO comment (page_id,parent_id,author_name,author_email,content,status) VALUES(1, 0,'Comment title','comment_author@npress.com','My first comment', '"+Base.STATUS_ACTIVE+"')");

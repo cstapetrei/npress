@@ -15,7 +15,8 @@ class Pagination{
             hash: window.location.hash,
         }, options);
 
-        NPress.live(this.element(), 'click', 'a', this.onPageClick.bind(this));
+        NPress.live(this.element(), 'click', '.js-page, .js-next, .js-prev', this.onPageClick.bind(this));
+        NPress.live(this.element(), 'click', '.js-per-page', this.onPerPageClick.bind(this));
         this.render();
         window.addEventListener('popstate', this.onWindowPopstate.bind(this));
         return this;
@@ -46,7 +47,7 @@ class Pagination{
         this.options.totalItems = totalItems;
         this.renderWithNewPageCount();
     }
-    setItemCount(itemsPerPage){
+    setPerPage(itemsPerPage){
         itemsPerPage = parseInt(itemsPerPage);
         if (!itemsPerPage){
             return;
@@ -68,6 +69,13 @@ class Pagination{
             return;
         }
         this.changePage(newPage);
+    }
+    onPerPageClick(e){
+        e.preventDefault();
+        let newItemsPerPage = e.target.getAttribute('data-items-per-page');
+        this.element().dispatchEvent(new CustomEvent(Pagination.ON_BEFORE_CHANGE_ITEMS_PER_PAGE, {"bubbles":true, "cancelable":false, detail: { page: this.options.currentPage, itemsPerPage: newItemsPerPage }}));
+        this.setPerPage(newItemsPerPage);
+        this.element().dispatchEvent(new CustomEvent(Pagination.ON_AFTER_CHANGE_ITEMS_PER_PAGE, {"bubbles":true, "cancelable":false, detail: { page: this.options.currentPage, itemsPerPage: this.options.itemsPerPage }}));
     }
     render(){
         this.container.innerHTML = this.paginationTpl.render({
@@ -112,9 +120,9 @@ class Pagination{
                 break;
         }
         if (pageChanged){
-            this.element().dispatchEvent(new CustomEvent(Pagination.ON_BEFORE_CHANGE_PAGE, {"bubbles":true, "cancelable":false, detail: { page: this.options.currentPage }}));
+            this.element().dispatchEvent(new CustomEvent(Pagination.ON_BEFORE_CHANGE_PAGE, {"bubbles":true, "cancelable":false, detail: { page: this.options.currentPage, itemsPerPage: this.options.itemsPerPage }}));
             this.render();
-            this.element().dispatchEvent(new CustomEvent(Pagination.ON_AFTER_CHANGE_PAGE, {"bubbles":true, "cancelable":false, detail: { page: this.options.currentPage }}));
+            this.element().dispatchEvent(new CustomEvent(Pagination.ON_AFTER_CHANGE_PAGE, {"bubbles":true, "cancelable":false, detail: { page: this.options.currentPage, itemsPerPage: this.options.itemsPerPage }}));
         }
         return pageChanged;
     }
@@ -122,6 +130,8 @@ class Pagination{
 
 Pagination.ON_BEFORE_CHANGE_PAGE = 'npress-paginator-before-change-page';
 Pagination.ON_AFTER_CHANGE_PAGE = 'npress-paginator-after-change-page';
+Pagination.ON_BEFORE_CHANGE_ITEMS_PER_PAGE = 'npress-paginator-before-change-items-per-page';
+Pagination.ON_AFTER_CHANGE_ITEMS_PER_PAGE = 'npress-paginator-after-change-items-per-page';
 Pagination.ON_BEFORE_NEXT_PAGE = 'npress-paginator-before-next';
 Pagination.ON_AFTER_NEXT_PAGE = 'npress-paginator-after-next';
 Pagination.ON_BEFORE_PREV_PAGE = 'npress-paginator-before-prev';

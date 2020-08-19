@@ -19,7 +19,7 @@ export abstract class Base{
     @Column('datetime')
     updated_at:Date;
 
-    assign(requestBody: any): Base{
+    assign(requestBody: Partial<Base>): Base{
         this.status = requestBody.status || (this.status || Base.STATUS_ACTIVE);
         this.created_at = requestBody.created_at || (this.created_at || new Date());
         this.updated_at = requestBody.updated_at || (this.updated_at || new Date());

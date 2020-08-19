@@ -63,10 +63,10 @@ export class Page extends Base{
     @Column('text')
     header_content: string;
 
-    assign(requestBody: any): Page {
+    assign(requestBody: Partial<Page>): Page {
         super.assign(requestBody);
 
-        this.title = requestBody.title;
+        this.title = requestBody.title || '';
         this.uri = requestBody.uri ? requestBody.uri : StringHelper.slugify(this.title);
         this.content = requestBody.content || '';
         this.custom_css = requestBody.custom_css || '';

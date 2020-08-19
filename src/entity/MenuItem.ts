@@ -19,9 +19,7 @@ export class MenuItem extends Base implements ITree{
     order: number;
 
     @Column('varchar', { length: 255 })
-    @IsNotEmpty({
-        message: 'Label must not be empty'
-    })
+    @IsNotEmpty({ message: 'Label must not be empty' })
     label: string;
 
     @Column('varchar', { length: 255 })
@@ -39,12 +37,12 @@ export class MenuItem extends Base implements ITree{
 
     temporary_uuid: string;
 
-    assign(requestBody: any): MenuItem {
+    assign(requestBody: Partial<MenuItem>): MenuItem {
         super.assign(requestBody);
 
-        this.label = requestBody.label;
+        this.label = requestBody.label || '';
         this.slug = StringHelper.slugify(this.label);
-        this.url = requestBody.url;
+        this.url = requestBody.url || '';
         this.parent_id = requestBody.parent_id || 0;
         this.order = requestBody.order || 0;
         return this;

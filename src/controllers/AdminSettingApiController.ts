@@ -8,7 +8,7 @@ import Container from "typedi";
 export class AdminSettingApiController{
     public static async getAll(req: Request, res: Response) {
         try{
-            let result: [Base[], number] = await (Container.get("SettingService") as SettingService).getPaged(0,0, (req.query.q as string) || '');
+            let result: [Base[], number] = await (Container.get("SettingService") as SettingService).getPaged(0,0, (req.query.q as string) || '', req.query.order as string || 'id,asc');
             return CountHeadersResponse(result[0], result[1], res);
         } catch(e){
             APIExceptionResponse(e,res);

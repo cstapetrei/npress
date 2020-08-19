@@ -23,10 +23,10 @@ export class Menu extends Base{
     @Column('int')
     is_default: boolean;
 
-    assign(requestBody: any): Menu {
+    assign(requestBody: Partial<Menu>): Menu {
         super.assign(requestBody);
 
-        this.name = requestBody.name;
+        this.name = requestBody.name || '';
         this.slug = StringHelper.slugify(this.name);
         this.is_default = requestBody.is_default || (this.is_default || false);
         return this;

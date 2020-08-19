@@ -1,12 +1,11 @@
+{% set columns = [ { id: 'id', label: 'Id' }, { id: 'title', label: 'Title' }, { id: 'uri', label: 'Uri' }, { id: 'created_at', label: 'Created at' }, { id: 'status', label: 'Status' } ] %}
 <table class="table table-bordered table-hover dataTable table-sm" role="grid">
     <caption>Pages</caption>
     <thead>
         <tr role="row">
-            <th>Id</th>
-            <th>Title</th>
-            <th>Uri</th>
-            <th>Created at</th>
-            <th>Status</th>
+            {% for item in columns %}
+                <th class="sorting{{ sort.column == item.id ? " sorting_"~sort.order : ''}}" data-sort-column="{{ item.id }}"{% if sort.column == item.id %} data-sort-order="{{ sort.order }}"{% endif %}>{{ item.label }}</th>
+            {% endfor %}
             <th>Actions</th>
         </tr>
     </thead>
@@ -31,11 +30,9 @@
     </tbody>
     <tfoot>
         <tr>
-            <th>Id</th>
-            <th>Title</th>
-            <th>Uri</th>
-            <th>Created at</th>
-            <th>Status</th>
+            {% for item in columns %}
+                <th>{{ item.label }}</th>
+            {% endfor %}
             <th>Actions</th>
         </tr>
     </tfoot>
