@@ -1,14 +1,19 @@
-{% extends "admin-layout.twig" %}
+{% extends "base-table-page-layout.twig" %}
 
 {% block footer_js %}
-    <script type="text/javascript" src="/js/admin/base-admin-page.js"></script>
+    {{ parent() }}
     <script type="text/javascript" src="/js/admin/pages.js"></script>
 {% endblock %}
 
 {% block body %}
 <div class="card">
-    <div class="card-header">
-        <a class="btn btn-primary btn-sm" href="/admin/new-page" target="_blank">New item</a>
+    <div class="card-header page-card-header d-flex align-items-center">
+        <a class="btn btn-primary btn-sm mx-1" href="/admin/new-page" target="_blank">New item</a>
+        <button class="btn btn-danger btn-sm js-bulk-delete mx-1">Delete rows</button>
+            <div class="form-check form-check-inline mx-1">
+                <input class="form-check-input js-show-checkboxes-input" type="checkbox" id="show-checkboxes-input">
+                <label class="form-check-label" for="show-checkboxes-input">Show checkboxes</label>
+            </div>
     </div>
     <div class="card-body js-data-table-wrapper"></div>
     <div class="card-footer js-pagination-wrapper"></div>

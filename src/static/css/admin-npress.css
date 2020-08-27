@@ -71,7 +71,20 @@ header{
     width: 200px;
 }
 
-@media (min-width: 768px){
+.bulk-select-row-chk{
+    display: none;
+}
+.show-bulk-select .bulk-select-row-chk{
+    display: inline-block;
+}
+.bulk-select-row-chk + label{
+    pointer-events: none;
+}
+.show-bulk-select .bulk-select-row-chk + label{
+    pointer-events: initial;
+}
+
+@media (min-width: 992px){
     body:not(.sidebar-mini-md) .wrapper .content-wrapper, body:not(.sidebar-mini-md) .wrapper .main-footer, body:not(.sidebar-mini-md) .wrapper .main-header {
         margin-left: 200px;
     }
