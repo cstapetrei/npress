@@ -12,7 +12,6 @@ NPress.PageBuilder = class PageBuilder{
 
         this.addToolbar();
 
-
         this.initEvents();
         this.load();
     }
@@ -185,7 +184,9 @@ NPress.PageBuilder = class PageBuilder{
                 for (let i = 1; i <= Array(12).length; i++){
                     result += `<button class="btn btn-default btn-xs js-add-col mx-1" data-class="${i}">${i}/12</button>`;
                 }
-                result += `<button class="btn btn-danger btn-xs js-remove-element"><i class="fas fa-times"></i></button>`;
+                result += `
+                <button class="btn btn-default btn-xs js-move-element" data-widget-type="${widgetType}"><i class="fas fa-arrows-alt"></i></button>
+                <button class="btn btn-danger btn-xs js-remove-element"><i class="fas fa-times"></i></button>`;
                 break;
             case 'column':
                 result = `
@@ -199,6 +200,7 @@ NPress.PageBuilder = class PageBuilder{
                         <a class="dropdown-item" href="#" data-widget-type="code">Code</a>
                     </div>
                 </div>
+                <button class="btn btn-default btn-xs js-move-element" data-widget-type="${widgetType}"><i class="fas fa-arrows-alt"></i></button>
                 <button class="btn btn-danger btn-xs js-remove-element" data-is-column="1"><i class="fas fa-times"></i></button>`;
                 break;
             case 'text':
@@ -206,6 +208,7 @@ NPress.PageBuilder = class PageBuilder{
             case 'code':
                 result = `
                 <button class="btn btn-default btn-xs js-edit-element" data-widget-type="${widgetType}"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-default btn-xs js-move-element" data-widget-type="${widgetType}"><i class="fas fa-arrows-alt"></i></button>
                 <button class="btn btn-danger btn-xs js-remove-element" data-is-element="1"><i class="fas fa-times"></i></button>`;
                 break;
         }
@@ -222,5 +225,7 @@ NPress.PageBuilder = class PageBuilder{
             let toolbarNode = NPress.node(this.getToolbarHtml(type));
             element.appendChild(toolbarNode);
         });
+
+        Sortable.create(this.options.el, { handle: '.js-move-element', animation: 150 });
     }
 }

@@ -4,6 +4,10 @@
     <h1>{{ (edit ? "Edit" : "New") ~ " page" }}</h1>
 {% endblock %}
 
+{% block header_js %}
+    <script type="text/javascript" src="/vendor/Sortable.min.js"></script>
+{% endblock %}
+
 {% block header_css %}
     {% include './partials/_codemirror-css-dependencies.twig' %}
     <link rel="stylesheet" href="/css/jodit.min.css">
