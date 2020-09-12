@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "NodeJS + Typescript pseudo framework project",
   "scripts": {
-    "dev": "node node_modules/ts-node-dev/lib/bin --respawn --inspect=9300 --watch src/views,src/views/admin,src/views/admin/partials,src/views/partials,src/views/index,src/views/error -- server.ts --poll",
+    "dev": "node node_modules/ts-node-dev/lib/bin --respawn --transpile-only --inspect=9300 --rs --watch src/views,src/views/admin,src/views/admin/partials,src/views/partials,src/views/index,src/views/error -- server.ts --poll",
     "prod": "gulp && node ./build/server.js NODE_ENV=production",
     "migration:run": "ts-node ./node_modules/typeorm/cli -f ./migrationsConfig.ts migration:run"
   },
