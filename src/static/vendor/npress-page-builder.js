@@ -9,9 +9,6 @@ NPress.PageBuilder = class PageBuilder{
         if (!this.options.el){
             return;
         }
-
-        this.addToolbar();
-
         this.initEvents();
         this.load();
     }
@@ -20,7 +17,7 @@ NPress.PageBuilder = class PageBuilder{
         NPress.live(this.options.el, 'click', '.js-remove-element', this.onRemoveElement);
         NPress.live(this.options.el, 'click', '.js-add-container', this.onAddContainer.bind(this));
         NPress.live(this.options.el, 'click', '.js-add-fluid-container', this.onAddContainer.bind(this));
-        NPress.live(this.options.el, 'click', '.js-get-code', (e, el) => { e.preventDefault() });
+        NPress.live(this.options.el, 'click', '.js-get-code', this.onGetCode.bind(this));
         NPress.live(this.options.el, 'click', '.js-edit-element', this.onEditElement.bind(this));
         NPress.live(this.options.el, 'click', '.dropdown-menu a', this.onAddElement.bind(this));
     }
@@ -147,9 +144,9 @@ NPress.PageBuilder = class PageBuilder{
         this.toolbarNode = document.createElement('aside');
         this.toolbarNode.className = 'npress-page-builder-widget-toolbar';
         this.toolbarNode.innerHTML = `
-            <button class="btn btn-default js-add-container btn-xs" data-class="container" title="Boxed" data-toggle="tooltip"><i class="fas fa-angle-right"></i> <i class="fas fa-angle-left"></i></button>
-            <button class="btn btn-default js-add-fluid-container btn-xs" data-class="container-fluid" title="Fluid" data-toggle="tooltip"><i class="fas fa-angle-double-left"></i> <i class="fas fa-angle-double-right"></i></button>
-            <button class="btn btn-default js-get-code btn-xs" title="Switch to source" data-toggle="tooltip"><i class="fas fa-code"></i></button>
+            <button type="button" class="btn btn-default js-add-container btn-xs" data-class="container" title="Boxed" data-toggle="tooltip"><i class="fas fa-angle-right"></i> <i class="fas fa-angle-left"></i></button>
+            <button type="button" class="btn btn-default js-add-fluid-container btn-xs" data-class="container-fluid" title="Fluid" data-toggle="tooltip"><i class="fas fa-angle-double-left"></i> <i class="fas fa-angle-double-right"></i></button>
+            <button type="button" class="btn btn-default js-get-code btn-xs" title="View source" data-toggle="tooltip"><i class="fas fa-code"></i></button>
         `;
         this.options.el.appendChild(this.toolbarNode);
     }
@@ -182,16 +179,16 @@ NPress.PageBuilder = class PageBuilder{
         switch(widgetType){
             case 'container':
                 for (let i = 1; i <= Array(12).length; i++){
-                    result += `<button class="btn btn-default btn-xs js-add-col mx-1" data-class="${i}">${i}/12</button>`;
+                    result += `<button type="button" class="btn btn-default btn-xs js-add-col mx-1" data-class="${i}">${i}/12</button>`;
                 }
                 result += `
-                <button class="btn btn-default btn-xs js-move-element" data-widget-type="${widgetType}"><i class="fas fa-arrows-alt"></i></button>
+                <button type="button" class="btn btn-default btn-xs js-move-element" data-widget-type="${widgetType}"><i class="fas fa-arrows-alt"></i></button>
                 <button class="btn btn-danger btn-xs js-remove-element"><i class="fas fa-times"></i></button>`;
                 break;
             case 'column':
                 result = `
                 <div class="dropdown">
-                    <button class="btn btn-default btn-xs" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button type="button" class="btn btn-default btn-xs" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-plus"></i>
                     </button>
                     <div class="dropdown-menu">
@@ -200,26 +197,51 @@ NPress.PageBuilder = class PageBuilder{
                         <a class="dropdown-item" href="#" data-widget-type="code">Code</a>
                     </div>
                 </div>
-                <button class="btn btn-default btn-xs js-move-element" data-widget-type="${widgetType}"><i class="fas fa-arrows-alt"></i></button>
-                <button class="btn btn-danger btn-xs js-remove-element" data-is-column="1"><i class="fas fa-times"></i></button>`;
+                <button type="button" class="btn btn-danger btn-xs js-remove-element" data-is-column="1"><i class="fas fa-times"></i></button>`;
                 break;
             case 'text':
             case 'file':
             case 'code':
                 result = `
-                <button class="btn btn-default btn-xs js-edit-element" data-widget-type="${widgetType}"><i class="fas fa-edit"></i></button>
-                <button class="btn btn-default btn-xs js-move-element" data-widget-type="${widgetType}"><i class="fas fa-arrows-alt"></i></button>
-                <button class="btn btn-danger btn-xs js-remove-element" data-is-element="1"><i class="fas fa-times"></i></button>`;
+                <button type="button" class="btn btn-default btn-xs js-edit-element" data-widget-type="${widgetType}"><i class="fas fa-edit"></i></button>
+                <button type="button" class="btn btn-danger btn-xs js-remove-element" data-is-element="1"><i class="fas fa-times"></i></button>`;
                 break;
         }
         return `<div class="npress-page-builder-widget-toolbar">${result}</div>`;
     }
+    onGetCode(e, el){
+        e.preventDefault();
+        new NPress.Modal({
+            content: `<textarea name="page_source">${this.getHtml()}</textarea>`,
+            title: 'Code',
+            size: 'xl',
+            buttons: [
+                {
+                    label: 'Cancel',
+                    className: 'btn btn-info'
+                },
+                {
+                    label: 'Save',
+                    className: 'btn btn-primary',
+                    onClick: (e, modal) => {
+                        this.options.el.innerHTML = modal.modalBody.querySelector('textarea[name="page_source"]').value;
+                        this.load();
+                        modal.onCloseModal();
+                    }
+                }
+            ],
+            onInit: (instance) => {
+                this.editor = new Jodit('textarea[name="page_source"]', { height: 500, defaultMode: Jodit.MODE_SOURCE });
+            }
+        });
+    }
     getHtml(){
         let copy = this.options.el.cloneNode(true);
         copy.querySelectorAll('.npress-page-builder-widget-toolbar').forEach( item => item.remove() );
-        return copy.innerHTML;
+        return copy.innerHTML.trim();
     }
     load(){
+        this.addToolbar();
         this.options.el.querySelectorAll('[data-widget-type]').forEach(element => {
             let type = element.getAttribute('data-widget-type');
             let toolbarNode = NPress.node(this.getToolbarHtml(type));

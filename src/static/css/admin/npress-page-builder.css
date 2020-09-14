@@ -38,3 +38,7 @@
 .npress-page-builder [class^="col-"] > .npress-page-builder-widget-toolbar{
     right: 9px;
 }
+
+.npress-page-builder [data-widget-type="column"]{
+    height: 100%
+}

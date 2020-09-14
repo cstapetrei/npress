@@ -24,124 +24,120 @@
 
 {% block body %}
     <form method="post" class="add-new-page-form js-{{ edit ? "edit" : "add-new" }}-page-form" data-page-id="{{ data.id|default('') }}">
-        <div id="npress-page-builder" class="npress-page-builder">
-            {{ data.content }}
-        </div>
-        <div class="row">
-            <div class="col-6">
                 <div class="card">
-                    <div class="card-body">
-                        <div class="form-row">
-                            <div class="form-group col">
-                                <label>Title</label>
-                                <input type="text" class="form-control form-control-sm" name="title" value="{{ data.title|default('') }}">
-                            </div>
-                            <div class="form-group col">
-                                <label>URI</label>
-                                <input type="text" class="form-control form-control-sm" name="uri" value="{{ data.uri|default('') }}">
-                            </div>
+                    <div class="card-header row">
+                        <div class="col-3">
+                            <span class="nav-link">General</span>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group col-6">
-                                <label>Date</label>
-                                <input type="text" class="form-control form-control-sm" name="created_at" value="{{ data.created_at|default('') }}" data-calendar>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col">
-                                <button type="button" class="btn btn-sm btn-info js-add-file mb-3">Add file from library</button>
-                                <textarea class="d-none" name="content">{{ data.content|default('') }}</textarea>
-                            </div>
+                        <div class="col-9">
+                            <ul class="nav nav-pills w-100" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link btn-sm active" id="nav-header-tab" data-toggle="tab" href="#nav-header" aria-controls="nav-header" role="tab">Header</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link btn-sm" id="nav-seo-tab" data-toggle="tab" href="#nav-seo" aria-controls="nav-seo" role="tab">SEO</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link btn-sm" id="nav-comments-tab" data-toggle="tab" href="#nav-comments" aria-controls="nav-comments" role="tab">Comments</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link btn-sm" id="nav-custom-css-js-tab" data-toggle="tab" href="#nav-custom-css-js" aria-controls="nav-custom-css-js" role="tab">Custom CSS / JS</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link btn-sm" id="nav-sidebar-tab" data-toggle="tab" href="#nav-sidebar" aria-controls="nav-sidebar" role="tab">Sidebar</a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="card">
-                    <div class="card-header">
-                        <ul class="nav nav-pills w-100" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link btn-sm active" id="nav-header-tab" data-toggle="tab" href="#nav-header" aria-controls="nav-header" role="tab">Header</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link btn-sm" id="nav-seo-tab" data-toggle="tab" href="#nav-seo" aria-controls="nav-seo" role="tab">SEO</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link btn-sm" id="nav-comments-tab" data-toggle="tab" href="#nav-comments" aria-controls="nav-comments" role="tab">Comments</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link btn-sm" id="nav-custom-css-js-tab" data-toggle="tab" href="#nav-custom-css-js" aria-controls="nav-custom-css-js" role="tab">Custom CSS / JS</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link btn-sm" id="nav-sidebar-tab" data-toggle="tab" href="#nav-sidebar" aria-controls="nav-sidebar" role="tab">Sidebar</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="card-body tab-content">
-                        <div class="tab-pane fade show active" id="nav-header" role="tabpanel" aria-labelledby="nav-header-tab">
-                            <div class="form-group col">
-                                <label for="page-settings-header-full-width">Header full width</label>
-                                <input id="page-settings-header-full-width" type="checkbox" name="header_full_width" value="{{ data.header_full_width|default(0) }}"{{ data.header_full_width|default(0) ? ' checked' : '' }}>
-                            </div>
-                            <div class="form-group col">
-                                <label for="page-settings-header-content">Header Content</label>
-                                <textarea class="form-control js-header-content-textarea" name="header_content">{{ data.header_content|default('') }}</textarea>
+                    <div class="card-body row">
+                        <div class="col-3">
+                            <div class="form-row">
+                                <div class="form-group col-12">
+                                    <label>Title</label>
+                                    <input type="text" class="form-control" name="title" value="{{ data.title|default('') }}">
+                                </div>
+                                <div class="form-group col-12">
+                                    <label>URI</label>
+                                    <input type="text" class="form-control" name="uri" value="{{ data.uri|default('') }}">
+                                </div>
+                                <div class="form-group col-12">
+                                    <label>Date</label>
+                                    <input type="text" class="form-control" name="created_at" value="{{ data.created_at|default('') }}" data-calendar>
+                                </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="nav-seo" role="tabpanel" aria-labelledby="nav-seo-tab">
-                            <div class="form-group col">
-                                <label>Title</label>
-                                <input type="text" class="form-control" placeholder="SEO Title" name="seo_title" value="{{ data.seo_title|default('') }}">
-                            </div>
-                            <div class="form-group col">
-                                <label>Description</label>
-                                <textarea class="form-control" placeholder="SEO Description" name="seo_description">{{ data.seo_description|default('') }}</textarea>
-                            </div>
-                            <div class="form-group col">
-                                <label>Keywords</label>
-                                <input type="text" class="form-control" placeholder="SEO Keywords" name="seo_keywords" value="{{ data.seo_keywords|default('') }}">
-                            </div>
-                            <div class="form-group col">
-                                <label>Robots</label>
-                                <input type="text" class="form-control" placeholder="SEO Robots" name="seo_robots" value="{{ data.seo_robots|default('') }}">
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="nav-comments" role="tabpanel" aria-labelledby="nav-comments-tab">
-                            <div class="form-group col">
-                                <label for="page-settings-show-comment-section">Show Comments Section</label>
-                                <input id="page-settings-show-comment-section" type="checkbox" placeholder="Show Comment Section" name="show_comment_section" value="{{ data.show_comment_section|default(0) }}"{{ data.show_comment_section|default(0) ? ' checked' : '' }}>
-                            </div>
-                            <div class="form-group col">
-                                <label for="page-settings-comments-enabled">Show Comment Form</label>
-                                <input id="page-settings-comments-enabled" type="checkbox" placeholder="Show Comment Form" name="show_comment_form" value="{{ data.show_comment_form|default(0) }}"{{ data.show_comment_form|default(0) ? ' checked' : '' }}>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="nav-custom-css-js" role="tabpanel" aria-labelledby="nav-custom-css-js-tab">
-                            <div class="form-group col">
-                                <label>Custom CSS</label>
-                                <textarea class="form-control js-css-editor" name="custom_css">{{ data.custom_css|default('') }}</textarea>
-                            </div>
-                            <div class="form-group col">
-                                <label>Custom JS</label>
-                                <textarea class="form-control js-javascript-editor" name="custom_js">{{ data.custom_js|default('') }}</textarea>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="nav-sidebar" role="tabpanel" aria-labelledby="nav-sidebar-tab">
-                            <div class="form-group col">
-                                <label for="page-settings-show-sidebar">Show sidebar</label>
-                                <input id="page-settings-show-sidebar" type="checkbox" placeholder="Show sidebar" name="show_sidebar" value="{{ data.show_sidebar|default(0) }}"{{ data.show_sidebar|default(0) ? ' checked' : '' }}>
-                            </div>
-                            <div class="form-group col">
-                                <label for="page-settings-show-sidebar">Sidebar Content</label>
-                                <textarea class="form-control js-sidebar-textarea" name="sidebar_content">{{ data.sidebar_content|default('') }}</textarea>
+                        <div class="col-9">
+                            <div class="tab-content">
+                                <div class="tab-pane fade show active" id="nav-header" role="tabpanel" aria-labelledby="nav-header-tab">
+                                    <div class="form-group col">
+                                        <label for="page-settings-header-full-width">Header full width</label>
+                                        <input id="page-settings-header-full-width" type="checkbox" name="header_full_width" value="{{ data.header_full_width|default(0) }}"{{ data.header_full_width|default(0) ? ' checked' : '' }}>
+                                    </div>
+                                    <div class="form-group col">
+                                        <label for="page-settings-header-content">Header Content</label>
+                                        <textarea class="form-control js-header-content-textarea" name="header_content">{{ data.header_content|default('') }}</textarea>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="nav-seo" role="tabpanel" aria-labelledby="nav-seo-tab">
+                                    <div class="form-group col">
+                                        <label>Title</label>
+                                        <input type="text" class="form-control" placeholder="SEO Title" name="seo_title" value="{{ data.seo_title|default('') }}">
+                                    </div>
+                                    <div class="form-group col">
+                                        <label>Description</label>
+                                        <textarea class="form-control" placeholder="SEO Description" name="seo_description">{{ data.seo_description|default('') }}</textarea>
+                                    </div>
+                                    <div class="form-group col">
+                                        <label>Keywords</label>
+                                        <input type="text" class="form-control" placeholder="SEO Keywords" name="seo_keywords" value="{{ data.seo_keywords|default('') }}">
+                                    </div>
+                                    <div class="form-group col">
+                                        <label>Robots</label>
+                                        <input type="text" class="form-control" placeholder="SEO Robots" name="seo_robots" value="{{ data.seo_robots|default('') }}">
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="nav-comments" role="tabpanel" aria-labelledby="nav-comments-tab">
+                                    <div class="form-group col">
+                                        <label for="page-settings-show-comment-section">Show Comments Section</label>
+                                        <input id="page-settings-show-comment-section" type="checkbox" placeholder="Show Comment Section" name="show_comment_section" value="{{ data.show_comment_section|default(0) }}"{{ data.show_comment_section|default(0) ? ' checked' : '' }}>
+                                    </div>
+                                    <div class="form-group col">
+                                        <label for="page-settings-comments-enabled">Show Comment Form</label>
+                                        <input id="page-settings-comments-enabled" type="checkbox" placeholder="Show Comment Form" name="show_comment_form" value="{{ data.show_comment_form|default(0) }}"{{ data.show_comment_form|default(0) ? ' checked' : '' }}>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="nav-custom-css-js" role="tabpanel" aria-labelledby="nav-custom-css-js-tab">
+                                    <div class="form-group col">
+                                        <label>Custom CSS</label>
+                                        <textarea class="form-control js-css-editor" name="custom_css">{{ data.custom_css|default('') }}</textarea>
+                                    </div>
+                                    <div class="form-group col">
+                                        <label>Custom JS</label>
+                                        <textarea class="form-control js-javascript-editor" name="custom_js">{{ data.custom_js|default('') }}</textarea>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="nav-sidebar" role="tabpanel" aria-labelledby="nav-sidebar-tab">
+                                    <div class="form-group col">
+                                        <label for="page-settings-show-sidebar">Show sidebar</label>
+                                        <input id="page-settings-show-sidebar" type="checkbox" placeholder="Show sidebar" name="show_sidebar" value="{{ data.show_sidebar|default(0) }}"{{ data.show_sidebar|default(0) ? ' checked' : '' }}>
+                                    </div>
+                                    <div class="form-group col">
+                                        <label for="page-settings-show-sidebar">Sidebar Content</label>
+                                        <textarea class="form-control js-sidebar-textarea" name="sidebar_content">{{ data.sidebar_content|default('') }}</textarea>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="btn-wrap text-right">
+                    {% if data.uri is not empty %}
+                        <a href="{{ data.uri }}" class="btn btn-info" target="_blank">View page</a>
+                    {% endif %}
                     <button type="submit" class="btn btn-success js-save-page">Save page</button>
                 </div>
-            </div>
+        <div id="npress-page-builder" class="npress-page-builder">
+            {{ data.content }}
         </div>
     </form>
 {% endblock %}

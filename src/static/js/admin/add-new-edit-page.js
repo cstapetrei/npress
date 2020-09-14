@@ -12,10 +12,6 @@
                 return;
             }
 
-            this.editor = new Jodit('textarea[name="content"]', {
-                height: 500
-            });
-
             this.cssCodeMirror = CodeMirror.fromTextArea(document.querySelector('.js-css-editor'), {
                 lineNumbers: true,
                 extraKeys: {"Ctrl-Space": "autocomplete"},
