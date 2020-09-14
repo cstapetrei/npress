@@ -4,8 +4,6 @@ This may very well fall under the 'yet another' category, but it's my take on CM
 
 At the moment it isn't production ready since it hasn't been thoroughly tested, but you can clone it and have a look around.
 
-If you're not in the mood for cloning the repo, you could always visit this little [Demo instance](http://ec2-18-130-83-127.eu-west-2.compute.amazonaws.com/) and it's [Admin](http://ec2-18-130-83-127.eu-west-2.compute.amazonaws.com/admin) (user: `admin@npress.com` and password: `123123`).
-
 ## "How it's made"
 
 I'm using a standard MVC approach with the following backend tools:
@@ -115,6 +113,7 @@ To the following (or, in other words, what this project is using) for their awes
 ### Frontend
 - [AdminLTE](https://adminlte.io/) - v3 powers the admin area
 - [jQuery](https://jquery.com/)
+- [MomentJS](https://momentjs.com/)
 - [Bootstrap 4](https://getbootstrap.com/docs/4.5/getting-started/introduction/)
 - [CodeMirror](https://codemirror.net/)
 - [Bootstrap Native](https://github.com/thednp/bootstrap.native)

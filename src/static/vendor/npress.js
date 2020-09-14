@@ -39,8 +39,11 @@ const ajax = async (url, params = {}) => {
 
     const parseResponse = async (response) => {
         let itemCount = response.headers.get('X-Item-Count') || 0,
-            totalCount = response.headers.get('X-Item-Total-Count') || 0,
+            totalCount = response.headers.get('X-Item-Total-Count') || 0;
+        let json = {};
+        try {
             json = await response.json();
+        } catch (e){}
         return Promise.resolve((totalCount && itemCount) ? { data: json, count: itemCount, total: totalCount } : json);
     }
 
@@ -148,8 +151,8 @@ NPress.serializeElementInputs = (el) => {
                             continue;
                         }
                         resultObj[field.name] = field.value;
-                    } else {
-                        resultObj[field.name] = field.checked | 0;
+                    } else if (field.checked) {
+                        resultObj[field.name] = field.value;
                     }
                 }
             }

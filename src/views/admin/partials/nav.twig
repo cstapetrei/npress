@@ -10,17 +10,20 @@
     <span class="strong">{{ nav_title|default('Admin page') }}</span>
 
     <!-- Right navbar links -->
-    <ul class="navbar-nav ml-auto">
+    <!-- Right navbar links -->
+    <ul class="navbar-nav align-items-center ml-auto">
+      <li class="nav-item">
+        Logged in as: <strong>{{ logged_in_email|default('') }}</strong>
+      </li>
       {% if show_search|default(true) %}
       <li class="nav-item">
         <!-- SEARCH FORM -->
         <form class="form-inline ml-3 js-search-form">
-          <div class="input-group input-group-sm">
-            <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+          <div class="input-group">
+            <input class="form-control form-control-navbar js-search-input" type="text" placeholder="Search">
             <div class="input-group-append">
-              <button class="btn btn-navbar" type="submit">
-                <i class="fas fa-search"></i>
-              </button>
+              <button class="btn btn-navbar js-clear-search-btn" type="button"><i class="fas fa-times"></i></button>
+              <button class="btn btn-navbar" type="submit"><i class="fas fa-search"></i></button>
             </div>
           </div>
         </form>
@@ -33,7 +36,7 @@
       </li>
       #}
       <li class="nav-item">
-        <a class="nav-link" href="/admin/logout" data-toggle="tooltip" title="Logout"><i class="fas fa-door-open"></i></a>
+        <a class="nav-link" href="/logout" data-toggle="tooltip" title="Logout"><i class="fas fa-door-open"></i></a>
     </li>
     </ul>
   </nav>

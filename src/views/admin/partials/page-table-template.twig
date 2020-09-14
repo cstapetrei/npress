@@ -10,19 +10,22 @@
         </tr>
     </thead>
     </tbody>
-        {% for p in data %}
+        {% for item in data %}
         <tr>
-            <td>{{ p.id }}</td>
-            <td>{{ p.title }}</td>
-            <td><a href="{{ p.uri }}" target="_blank">{{ p.uri }}</td>
-            <td>{{ p.created_at|date('d/m/Y') }}</td>
-            <td><span class="badge badge-{{ p.status == 'draft' ? 'danger' : 'success' }}">{{ p.status|capitalize }}</span></td>
+            <td>{{ item.id }}</td>
             <td>
-                <a href="/admin/edit-page/{{ p.id }}" class="btn btn-xs btn-primary js-edit" data-page-id="{{ p.id }}" title="Edit"><i class="fas fa-edit"></i></a>
-                <button class="btn btn-xs btn-danger js-delete" data-page-id="{{ p.id }}" title="Delete"><i class="fas fa-trash-alt"></i></button>
-                <button class="btn btn-xs btn-info js-change-status" data-page-id="{{ p.id }}" data-to-status="{{ p.status == 'draft' ? 'active' : 'draft' }}" title="{{ p.status == 'draft' ? 'Publish' : 'To Draft' }}"><i class="fas fa-{{ p.status == 'draft' ? 'eye' : 'eye-slash' }}"></i></button>
-                {% if not p.is_homepage %}
-                    <button class="btn btn-xs btn-info js-set-as-homepage" data-page-title="{{ p.title }}" data-page-id="{{ p.id }}" title="Set as homepage"><i class="fas fa-home"></i></button>
+                <input class="bulk-select-row-chk js-bulk-select-row-chk" id="select-bulk-chk-{{ item.id }}" type="checkbox" value="{{ item.id }}" />
+                <label class="font-weight-normal" for="select-bulk-chk-{{ item.id }}">{{ item.title }}</label>
+            </td>
+            <td><a href="{{ item.uri }}" target="_blank">{{ item.uri }}</td>
+            <td>{{ item.created_at|date('d/m/Y') }}</td>
+            <td><span class="badge badge-{{ item.status == 'draft' ? 'danger' : 'success' }}">{{ item.status|capitalize }}</span></td>
+            <td>
+                <a href="/admin/edit-page/{{ item.id }}" class="btn btn-xs btn-primary js-edit" data-page-id="{{ item.id }}" title="Edit"><i class="fas fa-edit"></i></a>
+                <button class="btn btn-xs btn-danger js-delete" data-page-id="{{ item.id }}" title="Delete"><i class="fas fa-trash-alt"></i></button>
+                <button class="btn btn-xs btn-info js-change-status" data-page-id="{{ item.id }}" data-to-status="{{ item.status == 'draft' ? 'active' : 'draft' }}" title="{{ item.status == 'draft' ? 'Publish' : 'To Draft' }}"><i class="fas fa-{{ item.status == 'draft' ? 'eye' : 'eye-slash' }}"></i></button>
+                {% if not item.is_homepage %}
+                    <button class="btn btn-xs btn-info js-set-as-homepage" data-page-title="{{ item.title }}" data-page-id="{{ item.id }}" title="Set as homepage"><i class="fas fa-home"></i></button>
                 {% endif %}
             </td>
         </tr>

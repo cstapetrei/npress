@@ -173,7 +173,7 @@ export default class App {
         Container.set("EventEmitter", new events.EventEmitter());
         Container.set("App", this.app);
         Container.set("Logger", new Logger());
-        Container.set("AdminRoutesMap", this.adminMenu);
+        Container.set("AllAdminRoutesMap", this.adminMenu);
         Container.set("AdminRoutesArray", [...this.adminMenu.values()]);
 
         this.initListeners();

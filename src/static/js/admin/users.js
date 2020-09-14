@@ -55,7 +55,7 @@
                 message: 'Delete user?',
                 onConfirm: (e, modal) => {
                     N.api.users.delete({ id: rowId }, { form: this.dataTableWrapper }).then(() => {
-                        this.getData( this.currentFetchedItemCount == 1 ? this.paginator.options.currentPage - 1 : this.paginator.options.currentPage );
+                        this.onRefreshData();
                     });
                 }
             });
@@ -72,7 +72,7 @@
                 let requestData = N.serializeElementInputs(modal.modalBody);
                 N.api.users.update(requestData, { form: modal.modalContent }).then((e)=>{
                     modal.onCloseModal();
-                    this.getData(this.paginator.options.currentPage);
+                    this.onRefreshData();
                 }).catch((e)=>{
                     new Noty({text: 'Error updating user'}).show();
                 });
@@ -105,7 +105,7 @@
                 let requestData = N.serializeElementInputs(modal.modalBody);
                 N.api.users.create(requestData, { form: modal.modalContent }).then((e)=>{
                     modal.onCloseModal();
-                    this.getData( this.currentFetchedItemCount == this.paginator.options.itemsPerPage ? this.paginator.options.currentPage + 1 : this.paginator.options.currentPage );
+                    this.onRefreshData();
                 }).catch((e)=>{
                     new Noty({text: 'Error creating user'}).show();
                 });

@@ -5,13 +5,18 @@ NPress.SearchHandler = class SearchHandler{
     constructor(options = {}){
         this.options = Object.assign({
             query: '',
-            el: document.querySelector('input[type="search"]'),
+            el: document.querySelector('input.js-search-input'),
             searchDelay: 1000
         }, options);
         if (!this.options.el){
             return;
         }
+        this.form = this.options.el.closest('form');
+
         this.options.el.addEventListener('keyup', this.onKeyup.bind(this));
+        this.form.addEventListener('submit', e => e.preventDefault());
+        NPress.live(this.form, 'click', '.js-clear-search-btn', this.onClearSearchClick.bind(this));
+
         if (this.options.query){
             this.options.el.value = this.options.query;
         }
@@ -20,8 +25,16 @@ NPress.SearchHandler = class SearchHandler{
     element(){
         return this.options.el;
     }
+    value(){
+        return this.options.el.value;
+    }
     dispatchRefresh(){
         this.options.el.dispatchEvent(new Event('keyup'));
+    }
+    onClearSearchClick(){
+        if (this.options.el.value === ''){ return; }
+        this.options.el.value = '';
+        this.dispatchRefresh();
     }
     onKeyup(e){
         clearTimeout(this.dispatchTimeoutIndex);

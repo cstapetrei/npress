@@ -62,36 +62,39 @@ export class UserService extends BaseService{
     getSessionDataForLogin(u: User){
         return {
             auth: 1,
+            user_id: u.id,
             email: u.email || '',
             role: u.role
         }
     }
 
     refreshAdminRoutesForUser(u: User){
-        if (u.role === User.ROLE_ADMIN){
-            return
-        }
-        let adminRoutesMap: Map<string, AdminMenu> = Container.get("AdminRoutes") as Map<string, AdminMenu>;
+        let adminRoutesMap: Map<string, AdminMenu> = Container.get("AllAdminRoutesMap") as Map<string, AdminMenu>;
         let newAdminRoutesMap: Map<string, AdminMenu> = new Map<string, AdminMenu>();
         let adminRoutesKeys:Array<string> = [...adminRoutesMap.keys()];
-        let acl: any = Container.get("Acl");
-        let allowedAclArray:Array<string> = [];
-        for (let rule of acl){
-            if (rule.group === u.role){
-                allowedAclArray = rule.permissions.map((o:any) => o .action === 'allow' ? o.resource : null)
-                for (let a of allowedAclArray){
-                    if (!a || a === '/admin'){ continue; }
-                    const re = RegExp(a);
-                    for (let adminRoute of adminRoutesKeys){
-                        if (re.test(adminRoute)){
-                            newAdminRoutesMap.set(adminRoute, adminRoutesMap.get(adminRoute) as AdminMenu);
+        if (u.role === User.ROLE_ADMIN){
+            for (let adminRoute of adminRoutesKeys){
+                newAdminRoutesMap.set(adminRoute, adminRoutesMap.get(adminRoute) as AdminMenu);
+            }
+        } else {
+            let acl: any = Container.get("Acl");
+            let allowedAclArray:Array<string> = [];
+            for (let rule of acl){
+                if (rule.group === u.role){
+                    allowedAclArray = rule.permissions.map((o:any) => o .action === 'allow' ? o.resource : null)
+                    for (let a of allowedAclArray){
+                        if (!a || a === '/'){ continue; }
+                        const re = RegExp(a);
+                        for (let adminRoute of adminRoutesKeys){
+                            if (re.test(adminRoute)){
+                                newAdminRoutesMap.set(adminRoute, adminRoutesMap.get(adminRoute) as AdminMenu);
+                            }
                         }
                     }
+                    break;
                 }
-                break;
             }
         }
-        Container.set("AdminRoutes", newAdminRoutesMap);
         Container.set("AdminRoutesArray", [...newAdminRoutesMap.values()]);
     }
 }
