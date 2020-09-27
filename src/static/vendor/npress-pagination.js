@@ -58,7 +58,7 @@ class Pagination{
     renderWithNewPageCount(){
         this.options.totalPageCount = this.computePageCount(this.options.itemsPerPage, this.options.totalItems);
         if (this.options.currentPage > this.options.totalPageCount){
-            this.options.currentPage--;
+            this.options.currentPage = this.options.totalPageCount;
         }
         this.render();
     }
