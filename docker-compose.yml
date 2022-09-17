@@ -1,0 +1,17 @@
+version: '3'
+services:
+  mariadb:
+    container_name: npress
+    image: mariadb:10.5.8-focal
+    volumes:
+      - ./docker-data/mariadb:/var/lib/mysql
+    ports:
+      - 3306:3306
+    env_file:
+      - mariadb.env
+    networks:
+      - npress
+
+networks:
+  npress:
+    name: npress

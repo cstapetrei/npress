@@ -18,7 +18,7 @@ export const Auth = (req: Request, res: Response, next: NextFunction) => {
             return next();
         }
 
-        if (req.originalUrl === '/login' || req.session.auth){
+        if (req.originalUrl === '/admin/login' || req.session.auth){
             if (req.originalUrl === '/' && req.session.role !== 'admin'){
                 if (!res.locals.menu.length){
                     res.redirect('/logout');
@@ -31,5 +31,5 @@ export const Auth = (req: Request, res: Response, next: NextFunction) => {
         }
     }
 
-    res.redirect('/login');
+    res.redirect('/admin/login');
 };
